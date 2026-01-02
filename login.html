@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Acceso — Red Educativa México</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root{--azul-oscuro:#0a2e5a;--logo-teal:#27F5DA;--bg:#f6f8fb;--panel:#fff;--muted:#6b7280}
+        *{box-sizing:border-box}
+        body{font-family:Segoe UI, Tahoma, Geneva, Verdana, sans-serif;margin:0;background:var(--bg);color:var(--azul-oscuro)}
+        .wrap{max-width:920px;margin:40px auto;padding:20px}
+        .header{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+        .header img{height:56px}
+        .brand{font-weight:700}
+        .panel{background:var(--panel);padding:22px;border-radius:12px;box-shadow:0 12px 30px rgba(2,24,63,0.06)}
+        .tabs{display:flex;gap:8px;margin-bottom:16px}
+        .tab{padding:8px 12px;border-radius:8px;border:1px solid rgba(10,46,90,0.06);cursor:pointer;background:transparent}
+        .tab.active{background:var(--logo-teal);color:#042533;border-color:transparent}
+        form{display:grid;gap:12px;max-width:560px}
+        .form-group{display:flex;flex-direction:column;gap:6px}
+        input[type=text],input[type=email],input[type=password]{padding:10px;border:1px solid #e6eef7;border-radius:8px}
+        .btn{padding:10px 14px;background:var(--logo-teal);color:#042533;border:none;border-radius:8px;cursor:pointer;font-weight:700}
+        .muted{color:var(--muted);font-size:0.9rem}
+        .form-success{display:none;padding:10px;border-radius:8px;background:rgba(39,245,218,0.12);color:#042533}
+        .form-error{display:none;padding:10px;border-radius:8px;background:#ffe9e6;color:#6b0b00}
+        .helper{font-size:0.85rem;color:var(--muted)}
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="header">
+            <img src="logo.png" alt="logo">
+            <div class="brand">Red Educativa México <div class="helper">Acceso / Registro</div></div>
+        </div>
+
+        <div class="panel">
+            <div class="tabs">
+                <button id="tabLogin" class="tab active">Iniciar sesión</button>
+                <button id="tabRegister" class="tab">Registrarse</button>
+            </div>
+
+            <div id="messages">
+                <div id="msgSuccess" class="form-success" role="status" aria-live="polite"></div>
+                <div id="msgError" class="form-error" role="alert"></div>
+            </div>
+
+            <div id="loginBox">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Correo electrónico</label>
+                        <input id="loginEmail" type="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Contraseña</label>
+                        <input id="loginPassword" type="password" required minlength="6">
+                    </div>
+                    <div style="display:flex;gap:8px;align-items:center">
+                        <button class="btn" type="submit">Acceder</button>
+                        <div class="muted">Si tienes cuenta, inicia sesión aquí.</div>
+                    </div>
+                </form>
+            </div>
+
+            <div id="registerBox" style="display:none;margin-top:8px">
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="regName">Nombre completo</label>
+                        <input id="regName" type="text" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regEmail">Correo electrónico</label>
+                        <input id="regEmail" type="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regPassword">Contraseña (mín. 6)</label>
+                        <input id="regPassword" type="password" required minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label for="regPassword2">Repetir contraseña</label>
+                        <input id="regPassword2" type="password" required minlength="6">
+                    </div>
+                    <div style="display:flex;gap:8px;align-items:center">
+                        <button class="btn" type="submit">Crear cuenta</button>
+                        <div class="muted">Registraremos tu cuenta en la base local (demo).</div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/pouchdb@7.3.0/dist/pouchdb.min.js"></script>
+    <script>
+        // helper: SHA-256 hex
+        async function sha256Hex(str){
+            const enc = new TextEncoder();
+            const data = enc.encode(str);
+            const hash = await crypto.subtle.digest('SHA-256', data);
+            const arr = Array.from(new Uint8Array(hash));
+            return arr.map(b=>b.toString(16).padStart(2,'0')).join('');
+        }
+
+        document.addEventListener('DOMContentLoaded', function(){
+            const tabLogin = document.getElementById('tabLogin');
+            const tabRegister = document.getElementById('tabRegister');
+            const loginBox = document.getElementById('loginBox');
+            const registerBox = document.getElementById('registerBox');
+            const msgSuccess = document.getElementById('msgSuccess');
+            const msgError = document.getElementById('msgError');
+
+            function showSuccess(txt){ msgSuccess.textContent = txt; msgSuccess.style.display = 'block'; setTimeout(()=>msgSuccess.style.display='none',6000); }
+            function showError(txt){ msgError.textContent = txt; msgError.style.display = 'block'; setTimeout(()=>msgError.style.display='none',8000); }
+
+            tabLogin.addEventListener('click', ()=>{ tabLogin.classList.add('active'); tabRegister.classList.remove('active'); loginBox.style.display='block'; registerBox.style.display='none'; });
+            tabRegister.addEventListener('click', ()=>{ tabRegister.classList.add('active'); tabLogin.classList.remove('active'); registerBox.style.display='block'; loginBox.style.display='none'; });
+
+            // init PouchDB for users
+            let db = null;
+            if (window.PouchDB) db = new PouchDB('rem-users');
+
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+
+            loginForm.addEventListener('submit', async function(e){
+                e.preventDefault();
+                const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+                const password = document.getElementById('loginPassword').value;
+                if (!email || !password) return showError('Completa email y contraseña.');
+                if (!db) return showError('Base de datos no disponible.');
+                try{
+                    const id = 'user_' + encodeURIComponent(email);
+                    const doc = await db.get(id);
+                    const hash = await sha256Hex(password);
+                    if (doc.passwordHash === hash){
+                        // success: set session key and redirect to admin
+                        localStorage.setItem('rem-user', id);
+                        showSuccess('Acceso correcto. Redirigiendo...');
+                        setTimeout(()=>{ window.location.href = 'admin.html'; }, 800);
+                    } else {
+                        showError('Credenciales incorrectas.');
+                    }
+                }catch(err){
+                    showError('Usuario no encontrado. Por favor regístrate.');
+                }
+            });
+
+            registerForm.addEventListener('submit', async function(e){
+                e.preventDefault();
+                const name = document.getElementById('regName').value.trim();
+                const email = document.getElementById('regEmail').value.trim().toLowerCase();
+                const pw = document.getElementById('regPassword').value;
+                const pw2 = document.getElementById('regPassword2').value;
+                if (!name || !email || !pw) return showError('Completa todos los campos.');
+                if (pw !== pw2) return showError('Las contraseñas no coinciden.');
+                if (!db) return showError('Base de datos no disponible.');
+                try{
+                    const id = 'user_' + encodeURIComponent(email);
+                    // check exists
+                    const existing = await db.get(id).catch(()=>null);
+                    if (existing) return showError('Ya existe una cuenta con ese correo.');
+                    const hash = await sha256Hex(pw);
+                    const doc = { _id: id, name: name, email: email, passwordHash: hash, createdAt: new Date().toISOString() };
+                    await db.put(doc);
+                    showSuccess('Cuenta creada. Ya puedes iniciar sesión.');
+                    registerForm.reset();
+                    tabLogin.click();
+                }catch(err){
+                    console.error(err);
+                    showError('Error al crear la cuenta.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>login</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
+</head>
+<body>
+    
+</body>
+</html>

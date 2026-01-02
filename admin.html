@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Red Educativa México - Panel de Administración</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <style>
+        :root{ --bg:#f6f8fb; --panel:#ffffff; --teal:#27F5DA; --dark:#0a2e5a; --muted:#6b7280 }
+        *{box-sizing:border-box}
+        body{font-family:Segoe UI, Tahoma, Geneva, Verdana, sans-serif; margin:0; background:var(--bg); color:var(--dark)}
+        .container{max-width:1100px;margin:32px auto;padding:20px}
+        .panel{background:var(--panel);border-radius:10px;padding:18px;box-shadow:0 8px 24px rgba(10,46,90,0.06)}
+        h1{margin:0 0 12px;font-size:1.4rem;color:var(--dark)}
+        .controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+        .tab{padding:8px 12px;border-radius:8px;background:transparent;border:1px solid rgba(10,46,90,0.06);cursor:pointer;color:var(--dark)}
+        .tab.active{background:var(--teal);color:#042533;border-color:transparent}
+        .table-wrap{overflow:auto;margin-top:12px}
+        table{width:100%;border-collapse:collapse}
+        th,td{padding:10px 8px;border-bottom:1px solid #eef2f7;text-align:left;font-size:0.95rem}
+        th{background:#fbfdfe;color:var(--muted);font-weight:600}
+        td.status{font-weight:700}
+        .btn{padding:6px 10px;border-radius:8px;border:none;cursor:pointer;font-weight:600}
+        .btn.revisar{background:var(--teal);color:#042533}
+        .btn.deshabilitar{background:#f3f4f6;color:#6b7280}
+        .small{font-size:0.85rem;color:var(--muted)}
+        .actions{display:flex;gap:8px}
+        .topline{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+        .note{color:var(--muted);font-size:0.9rem}
+
+        .admin-header{background:var(--panel);border-bottom:1px solid #eef4f8;padding:12px 20px;display:flex;align-items:center;gap:16px;border-radius:0 0 8px 8px;box-shadow:0 6px 18px rgba(10,46,90,0.04);margin-bottom:18px}
+        .admin-header img{height:44px;display:block}
+        .admin-header .brand{font-weight:700;color:var(--dark);margin-left:6px}
+        .admin-header .brand small{display:block;font-weight:600;color:var(--muted);font-size:0.85rem}
+        .admin-header .actions{margin-left:auto;display:flex;gap:8px}
+        .admin-footer{margin-top:22px;padding:18px;text-align:center;color:var(--muted);font-size:0.9rem}
+    </style>
+</head>
+<body>
+    <header class="admin-header">
+        <img src="logo.png" alt="logo">
+        <div class="brand">Red Educativa México <small>Panel de administración</small></div>
+        <div class="actions">
+            <a href="inicio.html" class="tab">cerrar secion</a>
+            <button id="refreshBtnTop" class="tab">Actualizar</button>
+        </div>
+    </header>
+    <div class="container">
+        <div class="panel">
+            <div class="topline">
+                <div>
+                    <h1>Panel de Administración — Registros de Contacto</h1>
+                    <div class="note">Listado de envíos guardados localmente (base `rem-contactos`). Marca solicitudes como revisadas o deshabilitadas.</div>
+                </div>
+                <div>
+                    <button id="refreshBtn" class="tab">Actualizar</button>
+                </div>
+            </div>
+
+            <div class="controls" id="statusTabs">
+                <button class="tab active" data-status="all">Todos</button>
+                <button class="tab" data-status="pendiente">Pendientes</button>
+                <button class="tab" data-status="revisada">Revisadas</button>
+                <button class="tab" data-status="deshabilitada">Deshabilitadas</button>
+            </div>
+
+            <div class="table-wrap">
+                <table id="recordsTable" aria-live="polite">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Fecha</th>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Teléfono</th>
+                            <th>Asunto</th>
+                            <th>Mensaje</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <footer class="admin-footer">&copy; 2025 Red Educativa México — Panel de administración</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/pouchdb@7.3.0/dist/pouchdb.min.js"></script>
+    <script>
+        (function(){
+            const db = new PouchDB('rem-contactos');
+            const tbody = document.querySelector('#recordsTable tbody');
+            const tabs = Array.from(document.querySelectorAll('#statusTabs .tab'));
+            const refreshBtn = document.getElementById('refreshBtn');
+            const refreshBtnTop = document.getElementById('refreshBtnTop');
+            let currentFilter = 'all';
+
+            function renderRow(doc){
+                const tr = document.createElement('tr');
+                const idCell = doc._id || '';
+                const created = doc.createdAt ? new Date(doc.createdAt).toLocaleString() : '';
+                const nombre = doc.nombre || '';
+                const email = doc.email || '';
+                const telefono = doc.telefono || '';
+                const asunto = doc.asunto || '';
+                const mensaje = doc.mensaje ? (doc.mensaje.length>80 ? doc.mensaje.slice(0,80)+'…' : doc.mensaje) : '';
+                const status = doc.status || 'pendiente';
+
+                tr.innerHTML = `
+                    <td class="small">${idCell}</td>
+                    <td>${created}</td>
+                    <td>${escapeHtml(nombre)}</td>
+                    <td>${escapeHtml(email)}</td>
+                    <td>${escapeHtml(telefono)}</td>
+                    <td>${escapeHtml(asunto)}</td>
+                    <td>${escapeHtml(mensaje)}</td>
+                    <td class="status">${status}</td>
+                    <td class="actions"></td>
+                `;
+
+                const actionsTd = tr.querySelector('.actions');
+                if (status !== 'revisada'){
+                    const btnRev = document.createElement('button');
+                    btnRev.className = 'btn revisar';
+                    btnRev.textContent = 'Marcar revisada';
+                    btnRev.addEventListener('click', ()=>changeStatus(doc, 'revisada'));
+                    actionsTd.appendChild(btnRev);
+                }
+                if (status === 'revisada'){
+                    const btnPend = document.createElement('button');
+                    btnPend.className = 'btn deshabilitar';
+                    btnPend.textContent = 'Marcar pendiente';
+                    btnPend.addEventListener('click', ()=>changeStatus(doc, 'pendiente'));
+                    actionsTd.appendChild(btnPend);
+                }
+                if (status !== 'deshabilitada'){
+                    const btnDes = document.createElement('button');
+                    btnDes.className = 'btn deshabilitar';
+                    btnDes.textContent = 'Deshabilitar';
+                    btnDes.addEventListener('click', ()=>changeStatus(doc, 'deshabilitada'));
+                    actionsTd.appendChild(btnDes);
+                }
+
+                return tr;
+            }
+
+            function escapeHtml(s){
+                return String(s||'').replace(/[&<>\"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":"&#39;"}[m]; });
+            }
+
+            function loadAll(){
+                tbody.innerHTML = '<tr><td colspan="9" class="small">Cargando...</td></tr>';
+                db.allDocs({include_docs:true, descending:true}).then(res=>{
+                    const rows = res.rows.map(r=>r.doc).filter(d=>d && d._id && d._id.indexOf('contact_')===0);
+                    renderList(rows);
+                }).catch(err=>{
+                    tbody.innerHTML = '<tr><td colspan="9" class="small">Error al leer la base local.</td></tr>';
+                    console.error(err);
+                });
+            }
+
+            function renderList(docs){
+                const filtered = docs.filter(d=>{
+                    const s = d.status||'pendiente';
+                    if (currentFilter==='all') return true;
+                    return s===currentFilter;
+                });
+                if (!filtered.length){
+                    tbody.innerHTML = '<tr><td colspan="9" class="small">No hay registros.</td></tr>';
+                    return;
+                }
+                tbody.innerHTML = '';
+                filtered.forEach(doc=>{
+                    tbody.appendChild(renderRow(doc));
+                });
+            }
+
+            function changeStatus(doc, newStatus){
+                const copy = Object.assign({}, doc);
+                copy.status = newStatus;
+                db.put(copy).then(()=>{
+                    loadAll();
+                }).catch(err=>{
+                    console.error('Error updating', err);
+                    alert('Error al actualizar el estado.');
+                });
+            }
+
+            tabs.forEach(t=>t.addEventListener('click', ()=>{
+                tabs.forEach(x=>x.classList.remove('active'));
+                t.classList.add('active');
+                currentFilter = t.dataset.status || 'all';
+                loadAll();
+            }));
+
+            refreshBtn.addEventListener('click', loadAll);
+            if (refreshBtnTop) refreshBtnTop.addEventListener('click', loadAll);
+
+            loadAll();
+
+            db.changes({live:true, since:'now', include_docs:true}).on('change', loadAll);
+        })();
+    </script>
+</body>
+</html>
