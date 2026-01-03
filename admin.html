@@ -5,35 +5,177 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Red Educativa México - Panel de Administración</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="shortcut icon" href="https://acuerdo286.org/wp-content/uploads/2025/01/cropped-cropped-RED_MEXICO_FINAL-logo-32x32.png">
     <style>
-        :root{ --bg:#f6f8fb; --panel:#ffffff; --teal:#27F5DA; --dark:#0a2e5a; --muted:#6b7280 }
+        /* Palette aligned with inicio.html */
+        :root{
+            --azul-oscuro:#0a2e5a;
+            --azul-medio:#0056a6;
+            --azul-claro:#007bff;
+            --logo-teal:#27F5DA;
+            --naranja:#27F5DA;
+            --bg:#f6f8fb;
+            --panel:#ffffff;
+            --muted:#6b7280;
+            --muted-2:#94a3b8;
+            --header-bg: var(--azul-oscuro);
+        }
         *{box-sizing:border-box}
-        body{font-family:Segoe UI, Tahoma, Geneva, Verdana, sans-serif; margin:0; background:var(--bg); color:var(--dark)}
-        .container{max-width:1100px;margin:32px auto;padding:20px}
-        .panel{background:var(--panel);border-radius:10px;padding:18px;box-shadow:0 8px 24px rgba(10,46,90,0.06)}
-        h1{margin:0 0 12px;font-size:1.4rem;color:var(--dark)}
+        body{font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin:0; background:linear-gradient(180deg,var(--bg),#eef6f9); color:var(--azul-oscuro); -webkit-font-smoothing:antialiased}
+        .container{max-width:1200px;margin:32px auto;padding:20px}
+
+        /* layout: main + sidebar */
+        .admin-grid{display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:start;min-height:calc(100vh - 200px)}
+        .panel{background:var(--panel);border-radius:12px;padding:20px;box-shadow:0 20px 40px rgba(2,24,63,0.06);border:1px solid rgba(2,24,63,0.04)}
+        h1{margin:0 0 12px;font-size:1.4rem;color:var(--azul-oscuro)}
         .controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-        .tab{padding:8px 12px;border-radius:8px;background:transparent;border:1px solid rgba(10,46,90,0.06);cursor:pointer;color:var(--dark)}
-        .tab.active{background:var(--teal);color:#042533;border-color:transparent}
+
+        /* tabs */
+        .tab{padding:8px 12px;border-radius:10px;background:transparent;border:1px solid rgba(10,46,90,0.06);cursor:pointer;color:var(--azul-oscuro);font-weight:600}
+        .tab.active{background:var(--logo-teal);color:#042533;border-color:transparent;box-shadow:0 8px 20px rgba(39,245,218,0.06)}
+
         .table-wrap{overflow:auto;margin-top:12px}
-        table{width:100%;border-collapse:collapse}
-        th,td{padding:10px 8px;border-bottom:1px solid #eef2f7;text-align:left;font-size:0.95rem}
-        th{background:#fbfdfe;color:var(--muted);font-weight:600}
-        td.status{font-weight:700}
-        .btn{padding:6px 10px;border-radius:8px;border:none;cursor:pointer;font-weight:600}
-        .btn.revisar{background:var(--teal);color:#042533}
-        .btn.deshabilitar{background:#f3f4f6;color:#6b7280}
+        table{width:100%;border-collapse:collapse;table-layout:fixed;background:transparent}
+        th,td{padding:10px 10px;border-bottom:1px solid #eef4f8;text-align:left;font-size:0.95rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+        th{background:linear-gradient(180deg,#fbfdfe,#fbfdfe);color:var(--muted);font-weight:700}
+        td.status{font-weight:700;color:var(--azul-medio)}
+
+        /* column widths to avoid oversized expansion */
+        th:nth-child(1), td:nth-child(1){width:120px}
+        th:nth-child(2), td:nth-child(2){width:160px}
+        th:nth-child(6), td:nth-child(6){width:160px}
+        th:nth-child(7), td:nth-child(7){width:360px}
+        th:nth-child(8), td:nth-child(8){width:110px}
+        /* Ampliar espacio para acciones para que los botones no se recorten */
+        th:nth-child(9), td:nth-child(9){width:260px;min-width:200px}
+
+        /* message cell: allow multi-line clamp to avoid blowing row height */
+        td.message{white-space:normal;word-break:break-word;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;max-height:4.5em;line-height:1.5}
+
+        /* acciones: permitir wrap y mostrar botones completos */
+        .actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+        .actions .btn{white-space:nowrap;padding:8px 10px;font-size:0.9rem}
+        td.actions{overflow:visible}
+        td.message{cursor:pointer}
+
+        /* Buttons aligned with inicio palette */
+        .btn{padding:8px 12px;border-radius:8px;border:none;cursor:pointer;font-weight:700;background:var(--azul-claro);color:#fff}
+        .btn.revisar{background:var(--logo-teal);color:#042533}
+        .btn.deshabilitar{background:#f3f4f6;color:var(--muted)}
+        .copy-btn{padding:8px 10px;border-radius:8px;border:none;background:rgba(10,46,90,0.9);color:#fff;cursor:pointer}
+
         .small{font-size:0.85rem;color:var(--muted)}
-        .actions{display:flex;gap:8px}
         .topline{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
         .note{color:var(--muted);font-size:0.9rem}
 
-        .admin-header{background:var(--panel);border-bottom:1px solid #eef4f8;padding:12px 20px;display:flex;align-items:center;gap:16px;border-radius:0 0 8px 8px;box-shadow:0 6px 18px rgba(10,46,90,0.04);margin-bottom:18px}
-        .admin-header img{height:44px;display:block}
-        .admin-header .brand{font-weight:700;color:var(--dark);margin-left:6px}
+        /* Header styled like inicio */
+        .admin-header{background:var(--panel);border-bottom:1px solid rgba(2,24,63,0.04);padding:12px 20px;display:flex;align-items:center;gap:16px;border-radius:0 0 10px 10px;box-shadow:0 12px 30px rgba(2,24,63,0.06);margin-bottom:18px;position:sticky;top:0;z-index:1100}
+        .admin-header img{height:48px;display:block}
+        .admin-header .brand{font-weight:800;color:var(--azul-oscuro);margin-left:6px}
         .admin-header .brand small{display:block;font-weight:600;color:var(--muted);font-size:0.85rem}
         .admin-header .actions{margin-left:auto;display:flex;gap:8px}
         .admin-footer{margin-top:22px;padding:18px;text-align:center;color:var(--muted);font-size:0.9rem}
+
+        /* MODIFICACIONES PARA EL GLOSARIO/DETALLES */
+        .sidebar-panel {
+            background: linear-gradient(180deg, var(--panel), #fbfdfe);
+            border-radius: 10px;
+            padding: 18px;
+            box-shadow: 0 12px 30px rgba(2, 24, 63, 0.05);
+            height: fit-content;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: sticky;
+            top: 20px;
+        }
+
+        /* Contenedor del contenido del glosario con scroll */
+        #glossaryContent {
+            max-height: 60vh;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        /* Personalizar scrollbar para mejor apariencia */
+        #glossaryContent::-webkit-scrollbar,
+        .sidebar-panel::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #glossaryContent::-webkit-scrollbar-track,
+        .sidebar-panel::-webkit-scrollbar-track {
+            background: rgba(10, 46, 90, 0.05);
+            border-radius: 3px;
+        }
+
+        #glossaryContent::-webkit-scrollbar-thumb,
+        .sidebar-panel::-webkit-scrollbar-thumb {
+            background: var(--logo-teal);
+            border-radius: 3px;
+        }
+
+        /* Ajustar entrada del glosario para mejor presentación */
+        .glossary-entry {
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(10, 46, 90, 0.08);
+        }
+
+        .glossary-entry:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        /* Área de mensaje completo en glosario */
+        #g-msg {
+            max-height: 180px;
+            overflow-y: auto;
+            font-size: 0.95rem;
+            color: var(--dark);
+            background: rgba(10, 46, 90, 0.03);
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(10, 46, 90, 0.08);
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        /* Para pantallas más pequeñas, cambiar a una sola columna */
+        @media (max-width: 1100px) {
+            .admin-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar-panel {
+                max-height: 400px;
+                position: static;
+                margin-top: 20px;
+            }
+        }
+
+        /* Modal for full message */
+        .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:2200}
+        .modal{background:var(--panel);width:90%;max-width:760px;border-radius:10px;overflow:hidden;box-shadow:0 30px 60px rgba(2,24,63,0.35)}
+        .modal-header{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;background:var(--header-bg);color:#fff}
+        .modal-body{padding:18px;max-height:60vh;overflow:auto;color:var(--azul-oscuro)}
+
+        /* Dark theme overrides (toggle with `body.dark-theme`) */
+        body.dark-theme{
+            --panel:#071024;
+            --bg:#071022;
+            --azul-oscuro:#e6fbf9;
+            --azul-medio:#27F5DA;
+            --azul-claro:#0ea5a4;
+            --logo-teal:#27F5DA;
+            --muted:#9fb0c1;
+            --muted-2:#9fb0c1;
+            --header-bg:#071024;
+        }
+        
+        body.dark-theme #g-msg {
+            background: rgba(39, 245, 218, 0.08);
+            border-color: rgba(39, 245, 218, 0.15);
+        }
     </style>
 </head>
 <body>
@@ -46,7 +188,8 @@
         </div>
     </header>
     <div class="container">
-        <div class="panel">
+            <div class="admin-grid">
+                <div class="panel">
             <div class="topline">
                 <div>
                     <h1>Panel de Administración — Registros de Contacto</h1>
@@ -82,16 +225,64 @@
                     <tbody></tbody>
                 </table>
             </div>
-        </div>
+                </div>
+
+                <aside class="sidebar-panel" id="glossarySidebar" aria-live="polite">
+                    <h3>Glosario / Detalle</h3>
+                    <div class="meta">Selecciona un registro para ver el glosario y detalles del asunto.</div>
+                    <div id="glossaryContent">
+                        <div class="glossary-entry"><strong>Asunto:</strong><div id="g-asunto" class="small">-</div></div>
+                        <div class="glossary-entry"><strong>Definición:</strong><div id="g-def" class="small">Seleccione un registro para mostrar la definición relacionada con el asunto.</div></div>
+                        <div class="glossary-entry"><strong>Mensaje completo:</strong><div id="g-msg">-</div></div>
+                        <div class="glossary-entry"><strong>Contacto:</strong><div id="g-contact" class="small">-</div></div>
+                    </div>
+                    <div class="sidebar-actions">
+                        <button id="g-mark-reviewed" class="btn revisar">Marcar revisada</button>
+                        <button id="g-disable" class="btn deshabilitar">Deshabilitar</button>
+                    </div>
+                </aside>
+            </div>
     </div>
 
     <footer class="admin-footer">&copy; 2025 Red Educativa México — Panel de administración</footer>
+
+    <!-- Modal: mensaje completo -->
+    <div id="msgModal" class="modal-overlay" role="dialog" aria-modal="true">
+        <div class="modal" role="document">
+            <div class="modal-header">
+                <strong id="modalTitle">Mensaje completo</strong>
+                <button id="modalClose" aria-label="Cerrar" class="copy-btn">X</button>
+            </div>
+            <div class="modal-body">
+                <div id="modalMsg" style="white-space:pre-wrap;line-height:1.4;color:var(--dark)"></div>
+                <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end">
+                    <button id="modalCopy" class="copy-btn">Copiar mensaje</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/pouchdb@7.3.0/dist/pouchdb.min.js"></script>
     <script>
         (function(){
             const db = new PouchDB('rem-contactos');
             const tbody = document.querySelector('#recordsTable tbody');
+            const docsCache = new Map();
+            const glossary = {
+                'inscripción': 'Consultas relacionadas con inscripción o procesos de admisión.',
+                'inscripcion': 'Consultas relacionadas con inscripción o procesos de admisión.',
+                'consulta': 'Preguntas generales sobre programas, temarios o horarios.',
+                'soporte': 'Reportes técnicos o solicitud de ayuda para acceso/sistemas.',
+                'reclamo': 'Quejas formales sobre servicios o procesos.',
+                'sugerencia': 'Propuestas de mejora o retroalimentación.',
+                'servicio': 'Solicitudes relacionadas con la contratación, contratación o información de servicios (asesoría, evaluación).',
+                'ruta286': 'Consultas relacionadas con la Ruta 286 / Acuerdo 286: homologación y trámites asociados.',
+                'ruta 286': 'Consultas relacionadas con la Ruta 286 / Acuerdo 286: homologación y trámites asociados.',
+                'ruta-286': 'Consultas relacionadas con la Ruta 286 / Acuerdo 286: homologación y trámites asociados.',
+                'información': 'Peticiones de información general sobre programas y requisitos.',
+                'informacion': 'Peticiones de información general sobre programas y requisitos.',
+                'info': 'Peticiones de información general sobre programas y requisitos.'
+            };
             const tabs = Array.from(document.querySelectorAll('#statusTabs .tab'));
             const refreshBtn = document.getElementById('refreshBtn');
             const refreshBtnTop = document.getElementById('refreshBtnTop');
@@ -105,8 +296,11 @@
                 const email = doc.email || '';
                 const telefono = doc.telefono || '';
                 const asunto = doc.asunto || '';
-                const mensaje = doc.mensaje ? (doc.mensaje.length>80 ? doc.mensaje.slice(0,80)+'…' : doc.mensaje) : '';
+                const mensajeFull = doc.mensaje || '';
+                const mensaje = mensajeFull.length>180 ? mensajeFull.slice(0,180)+'…' : mensajeFull;
                 const status = doc.status || 'pendiente';
+                tr.dataset.id = idCell || '';
+                tr.dataset.asunto = asunto;
 
                 tr.innerHTML = `
                     <td class="small">${idCell}</td>
@@ -115,17 +309,24 @@
                     <td>${escapeHtml(email)}</td>
                     <td>${escapeHtml(telefono)}</td>
                     <td>${escapeHtml(asunto)}</td>
-                    <td>${escapeHtml(mensaje)}</td>
+                    <td class="message" title="${escapeHtml(mensajeFull)}">${escapeHtml(mensaje)}</td>
                     <td class="status">${status}</td>
                     <td class="actions"></td>
                 `;
 
                 const actionsTd = tr.querySelector('.actions');
+                // Ver completo
+                const btnVer = document.createElement('button');
+                btnVer.className = 'btn revisar';
+                btnVer.textContent = 'Ver';
+                btnVer.addEventListener('click', (e)=>{ e.stopPropagation(); showMessageModal(doc); });
+                actionsTd.appendChild(btnVer);
+
                 if (status !== 'revisada'){
                     const btnRev = document.createElement('button');
                     btnRev.className = 'btn revisar';
                     btnRev.textContent = 'Marcar revisada';
-                    btnRev.addEventListener('click', ()=>changeStatus(doc, 'revisada'));
+                    btnRev.addEventListener('click', (e)=>{ e.stopPropagation(); changeStatus(doc, 'revisada'); });
                     actionsTd.appendChild(btnRev);
                 }
                 if (status === 'revisada'){
@@ -139,7 +340,7 @@
                     const btnDes = document.createElement('button');
                     btnDes.className = 'btn deshabilitar';
                     btnDes.textContent = 'Deshabilitar';
-                    btnDes.addEventListener('click', ()=>changeStatus(doc, 'deshabilitada'));
+                    btnDes.addEventListener('click', (e)=>{ e.stopPropagation(); changeStatus(doc, 'deshabilitada'); });
                     actionsTd.appendChild(btnDes);
                 }
 
@@ -154,6 +355,8 @@
                 tbody.innerHTML = '<tr><td colspan="9" class="small">Cargando...</td></tr>';
                 db.allDocs({include_docs:true, descending:true}).then(res=>{
                     const rows = res.rows.map(r=>r.doc).filter(d=>d && d._id && d._id.indexOf('contact_')===0);
+                    docsCache.clear();
+                    rows.forEach(d=>{ if (d && d._id) docsCache.set(d._id, d); });
                     renderList(rows);
                 }).catch(err=>{
                     tbody.innerHTML = '<tr><td colspan="9" class="small">Error al leer la base local.</td></tr>';
@@ -188,6 +391,34 @@
                 });
             }
 
+            // Delegated click to show glossary in sidebar
+            tbody.addEventListener('click', function(e){
+                const tr = e.target.closest('tr');
+                if (!tr) return;
+                const id = tr.dataset.id;
+                if (!id) return;
+                const doc = docsCache.get(id);
+                if (!doc) return;
+                showSidebarFor(doc);
+            });
+
+            function showSidebarFor(doc){
+                const asunto = (doc.asunto || '').toString();
+                const asuntoNorm = asunto.toLowerCase();
+                const defKey = Object.keys(glossary).find(k => asuntoNorm.includes(k));
+                const defin = defKey ? glossary[defKey] : 'No hay una definición predefinida para este asunto. Puedes añadirla al glosario.';
+                document.getElementById('g-asunto').textContent = asunto || '(sin asunto)';
+                document.getElementById('g-def').textContent = defin;
+                document.getElementById('g-msg').textContent = doc.mensaje || '';
+                document.getElementById('g-contact').textContent = (doc.nombre? doc.nombre + ' — ' : '') + (doc.email? doc.email : '');
+
+                // attach actions
+                const revBtn = document.getElementById('g-mark-reviewed');
+                const disBtn = document.getElementById('g-disable');
+                revBtn.onclick = function(){ changeStatus(doc, 'revisada'); };
+                disBtn.onclick = function(){ changeStatus(doc, 'deshabilitada'); };
+            }
+
             tabs.forEach(t=>t.addEventListener('click', ()=>{
                 tabs.forEach(x=>x.classList.remove('active'));
                 t.classList.add('active');
@@ -201,6 +432,25 @@
             loadAll();
 
             db.changes({live:true, since:'now', include_docs:true}).on('change', loadAll);
+
+            // Modal behavior
+            const modal = document.getElementById('msgModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalMsg = document.getElementById('modalMsg');
+            const modalClose = document.getElementById('modalClose');
+            const modalCopy = document.getElementById('modalCopy');
+
+            function showMessageModal(doc){
+                modalTitle.textContent = doc.asunto || 'Mensaje completo';
+                modalMsg.textContent = doc.mensaje || '';
+                modal.style.display = 'flex';
+            }
+            window.showMessageModal = showMessageModal; // expose to row buttons
+
+            function closeModal(){ modal.style.display = 'none'; }
+            modalClose.addEventListener('click', closeModal);
+            modal.addEventListener('click', function(e){ if (e.target === modal) closeModal(); });
+            modalCopy.addEventListener('click', function(){ navigator.clipboard.writeText(modalMsg.textContent||'').then(()=>{ alert('Mensaje copiado'); }).catch(()=>alert('No se pudo copiar')); });
         })();
     </script>
 </body>
