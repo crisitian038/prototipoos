@@ -175,7 +175,7 @@
                         // success: set session key and redirect to admin
                         localStorage.setItem('rem-user', id);
                         showSuccess('Acceso correcto. Redirigiendo...');
-                        setTimeout(()=>{ window.location.href = 'admin.html'; }, 800);
+                        setTimeout(()=>{ window.location.href = './admin.html'; }, 800);
                     } else {
                         showError('Credenciales incorrectas.');
                     }
