@@ -429,6 +429,29 @@
             cursor: default;
         }
 
+
+        /* Estilos para las acciones del modal */
+.modal-actions {
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-info-extra {
+    background-color: var(--azul-oscuro);
+    border: 1px solid var(--logo-teal);
+}
+
+/* Ajuste para Tema Oscuro */
+body.dark-theme .modal-actions {
+    border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-theme .btn-info-extra {
+    background-color: rgba(39, 245, 218, 0.1);
+    color: var(--logo-teal);
+}
+
+
         /* Modal detalles de carrera */
         .modal-overlay {
             position: fixed;
@@ -1527,6 +1550,44 @@
         .pagina {
             display: block;
         }
+
+
+        /* Corrección para Modal de Oferta Educativa en Tema Oscuro */
+body.dark-theme .modal {
+    background: #1a2533; /* Un azul muy oscuro para el fondo del modal */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
+}
+
+body.dark-theme .modal-header {
+    background-color: var(--azul-oscuro); /* Mantiene el encabezado oscuro */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body.dark-theme .modal-body {
+    color: #d7e6ef; /* Color de texto claro para legibilidad */
+    background: transparent;
+}
+
+body.dark-theme .modal-body h3, 
+body.dark-theme .modal-body h4 {
+    color: var(--logo-teal); /* Resalta los títulos con el color turquesa */
+}
+
+body.dark-theme .modal-body ul li {
+    color: rgba(215, 230, 239, 0.9); /* Texto de las listas claro */
+}
+
+body.dark-theme .modal img {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    filter: brightness(0.9); /* Opcional: reduce un poco el brillo de la imagen */
+}
+
+/* Si usas botones dentro del modal, aseguremos su contraste */
+body.dark-theme .modal .btn-naranja {
+    background-color: var(--naranja);
+    color: var(--azul-oscuro);
+}
 
         /* Dark theme variables and overrides */
         body.dark-theme {
@@ -2792,7 +2853,6 @@
                     if (pagina) pagina.style.display = 'none';
                 });
             }
-
             function mostrarPagina(nombrePagina) {
                 ocultarTodasLasPaginas();
                 if (paginas[nombrePagina]) paginas[nombrePagina].style.display = 'block';
@@ -2925,11 +2985,11 @@
 
                     if (db) {
                         db.put(doc).then(() => {
-                            showSuccess('¡Gracias por tu mensaje! Se ha guardado localmente.');
+                            showSuccess('¡Gracias por tu mensaje! Se ha guardado.');
                             formularioContacto.reset();
                         }).catch(err => {
                             console.error('PouchDB save error', err);
-                            showSuccess('Gracias. Ocurrió un error local al guardar, pero recibimos tu mensaje.');
+                            showSuccess('Gracias. Ocurrió un error al guardar, pero recibimos tu mensaje.');
                             formularioContacto.reset();
                         });
                     } else {
@@ -3204,15 +3264,16 @@
                     <ul style="margin-bottom: 25px;">
                         ${carrera.requisitos.map(req => `<li>${req}</li>`).join('')}
                     </ul>
-                    
-                    <div style="display: flex; gap: 15px; margin-top: 25px;">
-                        <button class="btn" style="flex: 1;" onclick="mostrarPagina('contacto'); document.getElementById('modalOverlay').style.display='none'">
-                            <i class="fas fa-info-circle"></i> Más información
-                        </button>
-                        <button class="btn btn-naranja" style="flex: 1;" onclick="alert('Redirigiendo al formulario de inscripción...')">
-                            <i class="fas fa-file-signature"></i> Inscribirme
-                        </button>
-                    </div>
+                    <div class="modal-body">
+    <div class="modal-actions" style="margin-top: 30px; display: flex; gap: 15px; border-top: 1px solid var(--gris-medio); padding-top: 20px;">
+        <button class="btn btn-info-extra" onclick="showMoreInfo()">
+            <i class="fas fa-info-circle"></i> Más Información
+        </button>
+        <button class="btn btn-naranja" onclick="goToInscripcion()">
+            <i class="fas fa-edit"></i> Inscribirme Ahora
+        </button>
+    </div>
+</div>
                 `;
 
                 document.getElementById('modalOverlay').style.display = 'flex';

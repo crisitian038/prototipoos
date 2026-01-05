@@ -1,80 +1,288 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Red Educativa México - Panel de Administración</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel="shortcut icon" href="https://acuerdo286.org/wp-content/uploads/2025/01/cropped-cropped-RED_MEXICO_FINAL-logo-32x32.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="shortcut icon"
+        href="https://acuerdo286.org/wp-content/uploads/2025/01/cropped-cropped-RED_MEXICO_FINAL-logo-32x32.png">
     <style>
         /* Palette aligned with inicio.html */
-        :root{
-            --azul-oscuro:#0a2e5a;
-            --azul-medio:#0056a6;
-            --azul-claro:#007bff;
-            --logo-teal:#27F5DA;
-            --naranja:#27F5DA;
-            --bg:#f6f8fb;
-            --panel:#ffffff;
-            --muted:#6b7280;
-            --muted-2:#94a3b8;
+        :root {
+            --azul-oscuro: #0a2e5a;
+            --azul-medio: #0056a6;
+            --azul-claro: #007bff;
+            --logo-teal: #27F5DA;
+            --naranja: #27F5DA;
+            --bg: #f6f8fb;
+            --panel: #ffffff;
+            --muted: #6b7280;
+            --muted-2: #94a3b8;
             --header-bg: var(--azul-oscuro);
         }
-        *{box-sizing:border-box}
-        body{font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin:0; background:linear-gradient(180deg,var(--bg),#eef6f9); color:var(--azul-oscuro); -webkit-font-smoothing:antialiased}
-        .container{max-width:1200px;margin:32px auto;padding:20px}
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background: linear-gradient(180deg, var(--bg), #eef6f9);
+            color: var(--azul-oscuro);
+            -webkit-font-smoothing: antialiased
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 32px auto;
+            padding: 20px
+        }
 
         /* layout: main + sidebar */
-        .admin-grid{display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:start;min-height:calc(100vh - 200px)}
-        .panel{background:var(--panel);border-radius:12px;padding:20px;box-shadow:0 20px 40px rgba(2,24,63,0.06);border:1px solid rgba(2,24,63,0.04)}
-        h1{margin:0 0 12px;font-size:1.4rem;color:var(--azul-oscuro)}
-        .controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+        .admin-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 20px;
+            align-items: start;
+            min-height: calc(100vh - 200px)
+        }
+
+        .panel {
+            background: var(--panel);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 20px 40px rgba(2, 24, 63, 0.06);
+            border: 1px solid rgba(2, 24, 63, 0.04)
+        }
+
+        h1 {
+            margin: 0 0 12px;
+            font-size: 1.4rem;
+            color: var(--azul-oscuro)
+        }
+
+        .controls {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 12px
+        }
 
         /* tabs */
-        .tab{padding:8px 12px;border-radius:10px;background:transparent;border:1px solid rgba(10,46,90,0.06);cursor:pointer;color:var(--azul-oscuro);font-weight:600}
-        .tab.active{background:var(--logo-teal);color:#042533;border-color:transparent;box-shadow:0 8px 20px rgba(39,245,218,0.06)}
+        .tab {
+            padding: 8px 12px;
+            border-radius: 10px;
+            background: transparent;
+            border: 1px solid rgba(10, 46, 90, 0.06);
+            cursor: pointer;
+            color: var(--azul-oscuro);
+            font-weight: 600
+        }
 
-        .table-wrap{overflow:auto;margin-top:12px}
-        table{width:100%;border-collapse:collapse;table-layout:fixed;background:transparent}
-        th,td{padding:10px 10px;border-bottom:1px solid #eef4f8;text-align:left;font-size:0.95rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-        th{background:linear-gradient(180deg,#fbfdfe,#fbfdfe);color:var(--muted);font-weight:700}
-        td.status{font-weight:700;color:var(--azul-medio)}
+        .tab.active {
+            background: var(--logo-teal);
+            color: #042533;
+            border-color: transparent;
+            box-shadow: 0 8px 20px rgba(39, 245, 218, 0.06)
+        }
+
+        .table-wrap {
+            overflow: auto;
+            margin-top: 12px
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            background: transparent
+        }
+
+        th,
+        td {
+            padding: 10px 10px;
+            border-bottom: 1px solid #eef4f8;
+            text-align: left;
+            font-size: 0.95rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap
+        }
+
+        th {
+            background: linear-gradient(180deg, #fbfdfe, #fbfdfe);
+            color: var(--muted);
+            font-weight: 700
+        }
+
+        td.status {
+            font-weight: 700;
+            color: var(--azul-medio)
+        }
 
         /* column widths to avoid oversized expansion */
-        th:nth-child(1), td:nth-child(1){width:120px}
-        th:nth-child(2), td:nth-child(2){width:160px}
-        th:nth-child(6), td:nth-child(6){width:160px}
-        th:nth-child(7), td:nth-child(7){width:360px}
-        th:nth-child(8), td:nth-child(8){width:110px}
+        th:nth-child(1),
+        td:nth-child(1) {
+            width: 120px
+        }
+
+        th:nth-child(2),
+        td:nth-child(2) {
+            width: 160px
+        }
+
+        th:nth-child(6),
+        td:nth-child(6) {
+            width: 160px
+        }
+
+        th:nth-child(7),
+        td:nth-child(7) {
+            width: 360px
+        }
+
+        th:nth-child(8),
+        td:nth-child(8) {
+            width: 110px
+        }
+
         /* Ampliar espacio para acciones para que los botones no se recorten */
-        th:nth-child(9), td:nth-child(9){width:260px;min-width:200px}
+        th:nth-child(9),
+        td:nth-child(9) {
+            width: 260px;
+            min-width: 200px
+        }
 
         /* message cell: allow multi-line clamp to avoid blowing row height */
-        td.message{white-space:normal;word-break:break-word;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;max-height:4.5em;line-height:1.5}
+        td.message {
+            white-space: normal;
+            word-break: break-word;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            max-height: 4.5em;
+            line-height: 1.5
+        }
 
         /* acciones: permitir wrap y mostrar botones completos */
-        .actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-        .actions .btn{white-space:nowrap;padding:8px 10px;font-size:0.9rem}
-        td.actions{overflow:visible}
-        td.message{cursor:pointer}
+        .actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center
+        }
+
+        .actions .btn {
+            white-space: nowrap;
+            padding: 8px 10px;
+            font-size: 0.9rem
+        }
+
+        td.actions {
+            overflow: visible
+        }
+
+        td.message {
+            cursor: pointer
+        }
 
         /* Buttons aligned with inicio palette */
-        .btn{padding:8px 12px;border-radius:8px;border:none;cursor:pointer;font-weight:700;background:var(--azul-claro);color:#fff}
-        .btn.revisar{background:var(--logo-teal);color:#042533}
-        .btn.deshabilitar{background:#f3f4f6;color:var(--muted)}
-        .copy-btn{padding:8px 10px;border-radius:8px;border:none;background:rgba(10,46,90,0.9);color:#fff;cursor:pointer}
+        .btn {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            background: var(--azul-claro);
+            color: #fff
+        }
 
-        .small{font-size:0.85rem;color:var(--muted)}
-        .topline{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-        .note{color:var(--muted);font-size:0.9rem}
+        .btn.revisar {
+            background: var(--logo-teal);
+            color: #042533
+        }
+
+        .btn.deshabilitar {
+            background: #f3f4f6;
+            color: var(--muted)
+        }
+
+        .copy-btn {
+            padding: 8px 10px;
+            border-radius: 8px;
+            border: none;
+            background: rgba(10, 46, 90, 0.9);
+            color: #fff;
+            cursor: pointer
+        }
+
+        .small {
+            font-size: 0.85rem;
+            color: var(--muted)
+        }
+
+        .topline {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px
+        }
+
+        .note {
+            color: var(--muted);
+            font-size: 0.9rem
+        }
 
         /* Header styled like inicio */
-        .admin-header{background:var(--panel);border-bottom:1px solid rgba(2,24,63,0.04);padding:12px 20px;display:flex;align-items:center;gap:16px;border-radius:0 0 10px 10px;box-shadow:0 12px 30px rgba(2,24,63,0.06);margin-bottom:18px;position:sticky;top:0;z-index:1100}
-        .admin-header img{height:48px;display:block}
-        .admin-header .brand{font-weight:800;color:var(--azul-oscuro);margin-left:6px}
-        .admin-header .brand small{display:block;font-weight:600;color:var(--muted);font-size:0.85rem}
-        .admin-header .actions{margin-left:auto;display:flex;gap:8px}
-        .admin-footer{margin-top:22px;padding:18px;text-align:center;color:var(--muted);font-size:0.9rem}
+        .admin-header {
+            background: var(--panel);
+            border-bottom: 2px solid var(--logo-teal);
+            /* Línea turquesa del index */
+            padding: 12px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1100;
+        }
+
+        .admin-header img {
+            height: 48px;
+            display: block
+        }
+
+        .admin-header .brand {
+            font-weight: 800;
+            color: var(--azul-oscuro);
+            margin-left: 6px
+        }
+
+        .admin-header .brand small {
+            display: block;
+            font-weight: 600;
+            color: var(--muted);
+            font-size: 0.85rem
+        }
+
+        .admin-header .actions {
+            margin-left: auto;
+            display: flex;
+            gap: 8px
+        }
+
+        .admin-footer {
+            margin-top: 22px;
+            padding: 18px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.9rem
+        }
 
         /* MODIFICACIONES PARA EL GLOSARIO/DETALLES */
         .sidebar-panel {
@@ -140,12 +348,64 @@
             word-break: break-word;
         }
 
+        /* --- AJUSTES DE RESPONSIVIDAD --- */
+
+/* Ajuste del Navbar para móviles */
+@media (max-width: 768px) {
+    .admin-header {
+        padding: 10px 15px;
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    .admin-header .actions {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .admin-grid {
+        grid-template-columns: 1fr !important; /* Cambia a una sola columna */
+        margin-top: 10px;
+    }
+
+    .topline {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .controls {
+        justify-content: center;
+    }
+}
+
+/* Manejo de la tabla en pantallas pequeñas */
+.table-wrap {
+    width: 100%;
+    overflow-x: auto; /* Permite scroll lateral en la tabla */
+    -webkit-overflow-scrolling: touch;
+}
+
+table {
+    min-width: 800px; /* Evita que la tabla se colapse demasiado */
+}
+
+/* Ajuste del Sidebar (Glosario) en móviles */
+@media (max-width: 1100px) {
+    .sidebar-panel {
+        position: static;
+        max-height: none;
+        width: 100%;
+    }
+}
+
         /* Para pantallas más pequeñas, cambiar a una sola columna */
         @media (max-width: 1100px) {
             .admin-grid {
                 grid-template-columns: 1fr;
             }
-            
+
             .sidebar-panel {
                 max-height: 400px;
                 position: static;
@@ -154,94 +414,244 @@
         }
 
         /* Modal for full message */
-        .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:2200}
-        .modal{background:var(--panel);width:90%;max-width:760px;border-radius:10px;overflow:hidden;box-shadow:0 30px 60px rgba(2,24,63,0.35)}
-        .modal-header{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;background:var(--header-bg);color:#fff}
-        .modal-body{padding:18px;max-height:60vh;overflow:auto;color:var(--azul-oscuro)}
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2200
+        }
+
+        .modal {
+            background: var(--panel);
+            width: 90%;
+            max-width: 760px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(2, 24, 63, 0.35)
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 18px;
+            background: var(--header-bg);
+            color: #fff
+        }
+
+        .modal-body {
+            padding: 18px;
+            max-height: 60vh;
+            overflow: auto;
+            color: var(--azul-oscuro)
+        }
 
         /* Dark theme overrides (toggle with `body.dark-theme`) */
-        body.dark-theme{
-            --panel:#071024;
-            --bg:#071022;
-            --azul-oscuro:#e6fbf9;
-            --azul-medio:#27F5DA;
-            --azul-claro:#0ea5a4;
-            --logo-teal:#27F5DA;
-            --muted:#9fb0c1;
-            --muted-2:#9fb0c1;
-            --header-bg:#071024;
+        /* Paleta profesional de azul oscuro para Modo Oscuro */
+        /* Dark theme con colores sólidos basados en tu index.html */
+        body.dark-theme {
+            --bg: #04152d;
+            /* Color sólido de fondo */
+            --panel: #0a2e5a;
+            /* Color sólido de paneles */
+            --azul-oscuro: #ffffff;
+            --azul-medio: #27F5DA;
+            /* Color de acento turquesa */
+            --azul-claro: #0056a6;
+            --logo-teal: #27F5DA;
+            --muted: #94a3b8;
+            --header-bg: #0a2e5a;
         }
-        
+
+        .theme-btn {
+            background: transparent;
+            border: 1px solid var(--logo-teal);
+            color: var(--logo-teal);
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: all 0.2s ease;
+        }
+
+        .theme-btn:hover {
+            background: var(--logo-teal);
+            color: var(--panel);
+        }
+
+        .btn-logout {
+            background: #e11d48;
+            /* Rojo corporativo para salida */
+            color: #fff !important;
+            text-decoration: none;
+            padding: 8px 18px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: opacity 0.2s;
+            border: none;
+        }
+
+        .btn-logout:hover {
+            opacity: 0.9;
+        }
+
+        /* --- Reemplazar o añadir en tu <style> --- */
+
+        /* Botón de tema circular idéntico al front */
+        #themeToggle {
+            background: transparent;
+            border: 1px solid var(--logo-teal);
+            color: #0056a6;
+            /* Icono blanco como pediste */
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        #themeToggle:hover {
+            background: var(--logo-teal);
+            color: var(--panel);
+        }
+
+        /* Forzar colores sólidos del index.html en modo oscuro */
+        body.dark-theme {
+            --bg: #04152d !important;
+            /* Fondo sólido del front */
+            --panel: #0a2e5a !important;
+            /* Paneles sólidos del front */
+            background: #04152d !important;
+        }
+
+        body.dark-theme .admin-header {
+            background: #0a2e5a;
+            border-bottom: 2px solid var(--logo-teal);
+        }
+
+        /* Tabla con colores planos */
+        body.dark-theme table th {
+            background: #061b3d;
+            /* Un tono ligeramente distinto pero sólido */
+            color: var(--logo-teal);
+        }
+
+        body.dark-theme table td {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: #e2e8f0;
+        }
+
+        /* Paneles sin efectos de degradado */
+        body.dark-theme .panel,
+        body.dark-theme .sidebar-panel,
+        body.dark-theme .admin-header {
+            background: var(--panel);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
         body.dark-theme #g-msg {
-            background: rgba(39, 245, 218, 0.08);
-            border-color: rgba(39, 245, 218, 0.15);
+            background: #04152d;
+            border-color: rgba(39, 245, 218, 0.3);
         }
     </style>
 </head>
+
 <body>
     <header class="admin-header">
-        <img src="logo.png" alt="logo">
-        <div class="brand">Red Educativa México <small>Panel de administración</small></div>
-        <div class="actions">
-            <a href="inicio.html" class="tab">cerrar secion</a>
-            <button id="refreshBtnTop" class="tab">Actualizar</button>
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <img src="logo.png" alt="logo" style="height: 45px;">
+            <div class="brand">
+    <span style="font-weight: 800;">Red Educativa México</span>
+    <small style="display: block; font-weight: 600; color: var(--muted); font-size: 0.75rem;">Administración</small>
+</div>
+        </div>
+
+        <div class="actions" style="display: flex; align-items: center; gap: 15px;">
+            <button id="themeToggle" title="Cambiar Tema">
+                <i class="fas fa-moon"></i>
+            </button>
+            <a href="Index.html" class="btn-logout">Cerrar Sesión</a>
         </div>
     </header>
     <div class="container">
-            <div class="admin-grid">
-                <div class="panel">
-            <div class="topline">
-                <div>
-                    <h1>Panel de Administración — Registros de Contacto</h1>
-                    <div class="note">Listado de envíos guardados localmente (base `rem-contactos`). Marca solicitudes como revisadas o deshabilitadas.</div>
-                </div>
-                <div>
-                    <button id="refreshBtn" class="tab">Actualizar</button>
-                </div>
-            </div>
-
-            <div class="controls" id="statusTabs">
-                <button class="tab active" data-status="all">Todos</button>
-                <button class="tab" data-status="pendiente">Pendientes</button>
-                <button class="tab" data-status="revisada">Revisadas</button>
-                <button class="tab" data-status="deshabilitada">Deshabilitadas</button>
-            </div>
-
-            <div class="table-wrap">
-                <table id="recordsTable" aria-live="polite">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Fecha</th>
-                            <th>Nombre</th>
-                            <th>Email</th>
-                            <th>Teléfono</th>
-                            <th>Asunto</th>
-                            <th>Mensaje</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-                </div>
-
-                <aside class="sidebar-panel" id="glossarySidebar" aria-live="polite">
-                    <h3>Glosario / Detalle</h3>
-                    <div class="meta">Selecciona un registro para ver el glosario y detalles del asunto.</div>
-                    <div id="glossaryContent">
-                        <div class="glossary-entry"><strong>Asunto:</strong><div id="g-asunto" class="small">-</div></div>
-                        <div class="glossary-entry"><strong>Definición:</strong><div id="g-def" class="small">Seleccione un registro para mostrar la definición relacionada con el asunto.</div></div>
-                        <div class="glossary-entry"><strong>Mensaje completo:</strong><div id="g-msg">-</div></div>
-                        <div class="glossary-entry"><strong>Contacto:</strong><div id="g-contact" class="small">-</div></div>
+        <div class="admin-grid">
+            <div class="panel">
+                <div class="topline">
+                    <div>
+                        <h1>Panel de Administración — Registros de Contacto</h1>
+                        <div class="note">Listado de envíos guardados localmente (base `rem-contactos`). Marca
+                            solicitudes como revisadas o deshabilitadas.</div>
                     </div>
-                    <div class="sidebar-actions">
-                        <button id="g-mark-reviewed" class="btn revisar">Marcar revisada</button>
-                        <button id="g-disable" class="btn deshabilitar">Deshabilitar</button>
+                    <div>
+                        <button id="exportBtn" class="tab"
+                            style="background: var(--azul-claro); color: white; border: none;">Exportar CSV</button>
+                        <button id="refreshBtn" class="tab">Actualizar</button>
                     </div>
-                </aside>
+                </div>
+
+                <div class="controls" id="statusTabs">
+                    <button class="tab active" data-status="all">Todos</button>
+                    <button class="tab" data-status="pendiente">Pendientes</button>
+                    <button class="tab" data-status="revisada">Revisadas</button>
+                    <button class="tab" data-status="deshabilitada">Deshabilitadas</button>
+                </div>
+
+                <div class="table-wrap">
+                    <table id="recordsTable" aria-live="polite">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Fecha</th>
+                                <th>Nombre</th>
+                                <th>Email</th>
+                                <th>Teléfono</th>
+                                <th>Asunto</th>
+                                <th>Mensaje</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
             </div>
+
+            <aside class="sidebar-panel" id="glossarySidebar" aria-live="polite">
+                <h3>Glosario / Detalle</h3>
+                <div class="meta">Selecciona un registro para ver el glosario y detalles del asunto.</div>
+                <div id="glossaryContent">
+                    <div class="glossary-entry"><strong>Asunto:</strong>
+                        <div id="g-asunto" class="small">-</div>
+                    </div>
+                    <div class="glossary-entry"><strong>Definición:</strong>
+                        <div id="g-def" class="small">Seleccione un registro para mostrar la definición relacionada con
+                            el asunto.</div>
+                    </div>
+                    <div class="glossary-entry"><strong>Mensaje completo:</strong>
+                        <div id="g-msg">-</div>
+                    </div>
+                    <div class="glossary-entry"><strong>Contacto:</strong>
+                        <div id="g-contact" class="small">-</div>
+                    </div>
+                </div>
+                <div class="sidebar-actions">
+                    <button id="g-mark-reviewed" class="btn revisar">Marcar revisada</button>
+                    <button id="g-disable" class="btn deshabilitar">Deshabilitar</button>
+                </div>
+            </aside>
+        </div>
     </div>
 
     <footer class="admin-footer">&copy; 2025 Red Educativa México — Panel de administración</footer>
@@ -264,7 +674,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/pouchdb@7.3.0/dist/pouchdb.min.js"></script>
     <script>
-        (function(){
+        (function () {
             const db = new PouchDB('rem-contactos');
             const tbody = document.querySelector('#recordsTable tbody');
             const docsCache = new Map();
@@ -288,7 +698,7 @@
             const refreshBtnTop = document.getElementById('refreshBtnTop');
             let currentFilter = 'all';
 
-            function renderRow(doc){
+            function renderRow(doc) {
                 const tr = document.createElement('tr');
                 const idCell = doc._id || '';
                 const created = doc.createdAt ? new Date(doc.createdAt).toLocaleString() : '';
@@ -297,7 +707,7 @@
                 const telefono = doc.telefono || '';
                 const asunto = doc.asunto || '';
                 const mensajeFull = doc.mensaje || '';
-                const mensaje = mensajeFull.length>180 ? mensajeFull.slice(0,180)+'…' : mensajeFull;
+                const mensaje = mensajeFull.length > 180 ? mensajeFull.slice(0, 180) + '…' : mensajeFull;
                 const status = doc.status || 'pendiente';
                 tr.dataset.id = idCell || '';
                 tr.dataset.asunto = asunto;
@@ -319,80 +729,183 @@
                 const btnVer = document.createElement('button');
                 btnVer.className = 'btn revisar';
                 btnVer.textContent = 'Ver';
-                btnVer.addEventListener('click', (e)=>{ e.stopPropagation(); showMessageModal(doc); });
+                btnVer.addEventListener('click', (e) => { e.stopPropagation(); showMessageModal(doc); });
                 actionsTd.appendChild(btnVer);
 
-                if (status !== 'revisada'){
+                if (status !== 'revisada') {
                     const btnRev = document.createElement('button');
                     btnRev.className = 'btn revisar';
                     btnRev.textContent = 'Marcar revisada';
-                    btnRev.addEventListener('click', (e)=>{ e.stopPropagation(); changeStatus(doc, 'revisada'); });
+                    btnRev.addEventListener('click', (e) => { e.stopPropagation(); changeStatus(doc, 'revisada'); });
                     actionsTd.appendChild(btnRev);
                 }
-                if (status === 'revisada'){
+                if (status === 'revisada') {
                     const btnPend = document.createElement('button');
                     btnPend.className = 'btn deshabilitar';
                     btnPend.textContent = 'Marcar pendiente';
-                    btnPend.addEventListener('click', ()=>changeStatus(doc, 'pendiente'));
+                    btnPend.addEventListener('click', () => changeStatus(doc, 'pendiente'));
                     actionsTd.appendChild(btnPend);
                 }
-                if (status !== 'deshabilitada'){
+                if (status !== 'deshabilitada') {
                     const btnDes = document.createElement('button');
                     btnDes.className = 'btn deshabilitar';
                     btnDes.textContent = 'Deshabilitar';
-                    btnDes.addEventListener('click', (e)=>{ e.stopPropagation(); changeStatus(doc, 'deshabilitada'); });
+                    btnDes.addEventListener('click', (e) => { e.stopPropagation(); changeStatus(doc, 'deshabilitada'); });
                     actionsTd.appendChild(btnDes);
                 }
 
                 return tr;
             }
 
-            function escapeHtml(s){
-                return String(s||'').replace(/[&<>\"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":"&#39;"}[m]; });
+            function escapeHtml(s) {
+                return String(s || '').replace(/[&<>\"']/g, function (m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;', "'": "&#39;" }[m]; });
+
             }
 
-            function loadAll(){
+
+            // --- COPIAR DESDE AQUÍ ---
+            const exportBtn = document.getElementById('exportBtn');
+
+            function exportToCSV() {
+                db.allDocs({ include_docs: true }).then(res => {
+                    // Filtrar solo los documentos de contacto
+                    const docs = res.rows
+                        .map(r => r.doc)
+                        .filter(d => d && d._id && d._id.indexOf('contact_') === 0);
+
+                    if (docs.length === 0) {
+                        alert("No hay datos para exportar");
+                        return;
+                    }
+
+                    // 1. Definir encabezados profesionales
+                    const headers = ["ID", "FECHA", "NOMBRE", "EMAIL", "TELEFONO", "ASUNTO", "MENSAJE", "ESTADO"];
+
+                    // 2. Procesar filas con limpieza estricta
+                    const csvRows = [
+                        headers.join(','),
+                        ...docs.map(doc => {
+                            const created = doc.createdAt ? new Date(doc.createdAt).toLocaleString() : '';
+
+                            // Función interna para limpiar texto y evitar que se descuadre la tabla
+                            const clean = (text) => {
+                                if (!text) return '""';
+                                let t = String(text);
+                                // Paso A: Eliminar saltos de línea internos para que no cree filas nuevas por error
+                                t = t.replace(/(\r\n|\n|\r)/gm, " ");
+                                // Paso B: Escapar comillas dobles (estándar CSV)
+                                t = t.replace(/"/g, '""');
+                                // Paso C: Envolver todo en comillas dobles para proteger las comas
+                                return `"${t}"`;
+                            };
+
+                            return [
+                                clean(doc._id),
+                                clean(created),
+                                clean(doc.nombre),
+                                clean(doc.email),
+                                clean(doc.telefono),
+                                clean(doc.asunto),
+                                clean(doc.mensaje),
+                                clean(doc.status || 'pendiente')
+                            ].join(',');
+                        })
+                    ];
+
+                    // 3. Generar el archivo con BOM (para que Excel reconozca acentos y eñes)
+                    const csvContent = "\uFEFF" + csvRows.join("\n");
+                    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                    const url = URL.createObjectURL(blob);
+
+                    // 4. Crear link de descarga
+                    const link = document.createElement("a");
+                    const nombreArchivo = `Reporte_Contactos_REM_${new Date().toISOString().slice(0, 10)}.csv`;
+
+                    link.setAttribute("href", url);
+                    link.setAttribute("download", nombreArchivo);
+                    link.style.visibility = 'hidden';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+
+                }).catch(err => {
+                    console.error("Error al exportar:", err);
+                    alert("Ocurrió un error al generar el archivo.");
+                });
+            }
+
+            // Escuchar el click del botón
+            if (exportBtn) exportBtn.addEventListener('click', exportToCSV);
+            // --- HASTA AQUÍ ---
+
+            /* --- Añadir al final de tu script --- */
+            const themeToggle = document.getElementById('themeToggle');
+            const bodyEl = document.body;
+
+            function updateTheme(isDark) {
+                const icon = themeToggle.querySelector('i');
+                if (isDark) {
+                    bodyEl.classList.add('dark-theme');
+                    icon.className = 'fas fa-sun'; // Icono de sol
+                } else {
+                    bodyEl.classList.remove('dark-theme');
+                    icon.className = 'fas fa-moon'; // Icono de luna
+                }
+            }
+
+            // Cargar preferencia guardada
+            const currentTheme = localStorage.getItem('admin-theme') === 'dark';
+            updateTheme(currentTheme);
+
+            themeToggle.addEventListener('click', () => {
+                const isDarkNow = !bodyEl.classList.contains('dark-theme');
+                localStorage.setItem('admin-theme', isDarkNow ? 'dark' : 'light');
+                updateTheme(isDarkNow);
+            });
+
+
+            function loadAll() {
                 tbody.innerHTML = '<tr><td colspan="9" class="small">Cargando...</td></tr>';
-                db.allDocs({include_docs:true, descending:true}).then(res=>{
-                    const rows = res.rows.map(r=>r.doc).filter(d=>d && d._id && d._id.indexOf('contact_')===0);
+                db.allDocs({ include_docs: true, descending: true }).then(res => {
+                    const rows = res.rows.map(r => r.doc).filter(d => d && d._id && d._id.indexOf('contact_') === 0);
                     docsCache.clear();
-                    rows.forEach(d=>{ if (d && d._id) docsCache.set(d._id, d); });
+                    rows.forEach(d => { if (d && d._id) docsCache.set(d._id, d); });
                     renderList(rows);
-                }).catch(err=>{
+                }).catch(err => {
                     tbody.innerHTML = '<tr><td colspan="9" class="small">Error al leer la base local.</td></tr>';
                     console.error(err);
                 });
             }
 
-            function renderList(docs){
-                const filtered = docs.filter(d=>{
-                    const s = d.status||'pendiente';
-                    if (currentFilter==='all') return true;
-                    return s===currentFilter;
+            function renderList(docs) {
+                const filtered = docs.filter(d => {
+                    const s = d.status || 'pendiente';
+                    if (currentFilter === 'all') return true;
+                    return s === currentFilter;
                 });
-                if (!filtered.length){
+                if (!filtered.length) {
                     tbody.innerHTML = '<tr><td colspan="9" class="small">No hay registros.</td></tr>';
                     return;
                 }
                 tbody.innerHTML = '';
-                filtered.forEach(doc=>{
+                filtered.forEach(doc => {
                     tbody.appendChild(renderRow(doc));
                 });
             }
 
-            function changeStatus(doc, newStatus){
+            function changeStatus(doc, newStatus) {
                 const copy = Object.assign({}, doc);
                 copy.status = newStatus;
-                db.put(copy).then(()=>{
+                db.put(copy).then(() => {
                     loadAll();
-                }).catch(err=>{
+                }).catch(err => {
                     console.error('Error updating', err);
                     alert('Error al actualizar el estado.');
                 });
             }
 
             // Delegated click to show glossary in sidebar
-            tbody.addEventListener('click', function(e){
+            tbody.addEventListener('click', function (e) {
                 const tr = e.target.closest('tr');
                 if (!tr) return;
                 const id = tr.dataset.id;
@@ -402,7 +915,7 @@
                 showSidebarFor(doc);
             });
 
-            function showSidebarFor(doc){
+            function showSidebarFor(doc) {
                 const asunto = (doc.asunto || '').toString();
                 const asuntoNorm = asunto.toLowerCase();
                 const defKey = Object.keys(glossary).find(k => asuntoNorm.includes(k));
@@ -410,17 +923,17 @@
                 document.getElementById('g-asunto').textContent = asunto || '(sin asunto)';
                 document.getElementById('g-def').textContent = defin;
                 document.getElementById('g-msg').textContent = doc.mensaje || '';
-                document.getElementById('g-contact').textContent = (doc.nombre? doc.nombre + ' — ' : '') + (doc.email? doc.email : '');
+                document.getElementById('g-contact').textContent = (doc.nombre ? doc.nombre + ' — ' : '') + (doc.email ? doc.email : '');
 
                 // attach actions
                 const revBtn = document.getElementById('g-mark-reviewed');
                 const disBtn = document.getElementById('g-disable');
-                revBtn.onclick = function(){ changeStatus(doc, 'revisada'); };
-                disBtn.onclick = function(){ changeStatus(doc, 'deshabilitada'); };
+                revBtn.onclick = function () { changeStatus(doc, 'revisada'); };
+                disBtn.onclick = function () { changeStatus(doc, 'deshabilitada'); };
             }
 
-            tabs.forEach(t=>t.addEventListener('click', ()=>{
-                tabs.forEach(x=>x.classList.remove('active'));
+            tabs.forEach(t => t.addEventListener('click', () => {
+                tabs.forEach(x => x.classList.remove('active'));
                 t.classList.add('active');
                 currentFilter = t.dataset.status || 'all';
                 loadAll();
@@ -431,7 +944,7 @@
 
             loadAll();
 
-            db.changes({live:true, since:'now', include_docs:true}).on('change', loadAll);
+            db.changes({ live: true, since: 'now', include_docs: true }).on('change', loadAll);
 
             // Modal behavior
             const modal = document.getElementById('msgModal');
@@ -440,18 +953,19 @@
             const modalClose = document.getElementById('modalClose');
             const modalCopy = document.getElementById('modalCopy');
 
-            function showMessageModal(doc){
+            function showMessageModal(doc) {
                 modalTitle.textContent = doc.asunto || 'Mensaje completo';
                 modalMsg.textContent = doc.mensaje || '';
                 modal.style.display = 'flex';
             }
             window.showMessageModal = showMessageModal; // expose to row buttons
 
-            function closeModal(){ modal.style.display = 'none'; }
+            function closeModal() { modal.style.display = 'none'; }
             modalClose.addEventListener('click', closeModal);
-            modal.addEventListener('click', function(e){ if (e.target === modal) closeModal(); });
-            modalCopy.addEventListener('click', function(){ navigator.clipboard.writeText(modalMsg.textContent||'').then(()=>{ alert('Mensaje copiado'); }).catch(()=>alert('No se pudo copiar')); });
+            modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
+            modalCopy.addEventListener('click', function () { navigator.clipboard.writeText(modalMsg.textContent || '').then(() => { alert('Mensaje copiado'); }).catch(() => alert('No se pudo copiar')); });
         })();
     </script>
 </body>
+
 </html>
