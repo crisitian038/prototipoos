@@ -308,7 +308,7 @@
 
         /* Estilos específicos para páginas internas */
         .page-hero {
-            background: linear-gradient(rgba(10, 46, 90, 0.8), rgba(10, 46, 90, 0.9)), url('img/banner.jpg');
+            background: linear-gradient(rgba(10, 46, 90, 0.8), rgba(10, 46, 90, 0.9)), url('./img/banner.jpg');
             background-size: cover;
             background-position: center;
             color: var(--blanco);
@@ -318,7 +318,7 @@
 
         /* Hero principal (Inicio) - más vida */
         .hero {
-            background: linear-gradient(135deg, rgba(2, 24, 63, 0.9), rgba(3, 88, 122, 0.85)), url('img/banner.jpg');
+            background: linear-gradient(135deg, rgba(2, 24, 63, 0.9), rgba(3, 88, 122, 0.85)), url('./img/banner.jpg');
             background-size: cover;
             background-position: center;
             color: var(--blanco);
@@ -1918,7 +1918,7 @@ body.dark-theme .modal .btn-naranja {
                     admin@rededucativamexico.org
                 </div>
                 <div class="header-top-links">
-                    <a href="login.html"><i class="fas fa-user"></i> Acceso</a>
+                    <a href="./login.html"><i class="fas fa-user"></i> Acceso</a>
                     <button id="themeToggle" aria-label="Alternar tema"><i class="fas fa-moon"></i></button>
                 </div>
             </div>
@@ -1927,7 +1927,7 @@ body.dark-theme .modal .btn-naranja {
         <div class="header-main">
             <div class="container">
                 <div class="logo-container">
-                    <div class="logo"><img src="logo.png" alt="Red Educativa México logo"></div>
+                    <div class="logo"><img src="./logo.png" alt="Red Educativa México logo"></div>
                     <div class="logo-text">
                         <h1>Red Educativa México</h1>
                         <span>Calidad y Evaluación Educativa</span>
@@ -3155,14 +3155,14 @@ body.dark-theme .modal .btn-naranja {
                 carrerasMostrar.forEach((carrera, i) => {
                     // elegir imagen local según categoría / icono (fallback a banner)
                     const imgMap = {
-                        'educacion': 'img/banner.jpg',
-                        'ingenieria': 'img/inge.jpg',
+                        'educacion': './img/banner.jpg',
+                        'ingenieria': './img/inge.jpg',
                     };
                     const imgByIcon = {
-                        'fas fa-graduation-cap': 'img/banner.jpg',
+                        'fas fa-graduation-cap': './img/banner.jpg',
                         'fas fa-industry': 'img/inge.jpg'
                     };
-                    let imageSrc = imgMap[carrera.categoria] || imgByIcon[carrera.icono] || 'img/banner.jpg';
+                    let imageSrc = imgMap[carrera.categoria] || imgByIcon[carrera.icono] || './img/banner.jpg';
                     const card = document.createElement('div');
                     card.className = 'carousel-card';
                     card.dataset.id = carrera.id;
