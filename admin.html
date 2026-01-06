@@ -90,6 +90,48 @@
             box-shadow: 0 8px 20px rgba(39, 245, 218, 0.06)
         }
 
+        /* Pestañas principales (Contactos/Usuarios) */
+        .main-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid rgba(10, 46, 90, 0.1);
+            padding-bottom: 10px;
+        }
+
+        .main-tab {
+            padding: 10px 20px;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--muted);
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .main-tab.active {
+            color: var(--azul-oscuro);
+        }
+
+        .main-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--logo-teal);
+            border-radius: 3px 3px 0 0;
+        }
+
+        .main-tab:hover:not(.active) {
+            background: rgba(10, 46, 90, 0.05);
+            color: var(--azul-oscuro);
+        }
+
         .table-wrap {
             overflow: auto;
             margin-top: 12px
@@ -124,36 +166,110 @@
             color: var(--azul-medio)
         }
 
+        /* Estados de usuarios */
+        .status-activo {
+            color: #10b981;
+            font-weight: 700;
+        }
+
+        .status-inactivo {
+            color: #ef4444;
+            font-weight: 700;
+        }
+
+        .status-pendiente {
+            color: #f59e0b;
+            font-weight: 700;
+        }
+
+        /* Roles de usuarios */
+        .role-admin {
+            background: rgba(39, 245, 218, 0.1);
+            color: #042533;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .role-user {
+            background: rgba(10, 46, 90, 0.1);
+            color: var(--azul-oscuro);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
         /* column widths to avoid oversized expansion */
-        th:nth-child(1),
-        td:nth-child(1) {
+        /* Para contactos */
+        .contacts-table th:nth-child(1),
+        .contacts-table td:nth-child(1) {
             width: 120px
         }
 
-        th:nth-child(2),
-        td:nth-child(2) {
+        .contacts-table th:nth-child(2),
+        .contacts-table td:nth-child(2) {
             width: 160px
         }
 
-        th:nth-child(6),
-        td:nth-child(6) {
+        .contacts-table th:nth-child(6),
+        .contacts-table td:nth-child(6) {
             width: 160px
         }
 
-        th:nth-child(7),
-        td:nth-child(7) {
+        .contacts-table th:nth-child(7),
+        .contacts-table td:nth-child(7) {
             width: 360px
         }
 
-        th:nth-child(8),
-        td:nth-child(8) {
+        .contacts-table th:nth-child(8),
+        .contacts-table td:nth-child(8) {
             width: 110px
         }
 
-        /* Ampliar espacio para acciones para que los botones no se recorten */
-        th:nth-child(9),
-        td:nth-child(9) {
+        .contacts-table th:nth-child(9),
+        .contacts-table td:nth-child(9) {
             width: 260px;
+            min-width: 200px
+        }
+
+        /* Para usuarios */
+        .users-table th:nth-child(1),
+        .users-table td:nth-child(1) {
+            width: 120px
+        }
+
+        .users-table th:nth-child(2),
+        .users-table td:nth-child(2) {
+            width: 150px
+        }
+
+        .users-table th:nth-child(3),
+        .users-table td:nth-child(3) {
+            width: 200px
+        }
+
+        .users-table th:nth-child(4),
+        .users-table td:nth-child(4) {
+            width: 140px
+        }
+
+        .users-table th:nth-child(5),
+        .users-table td:nth-child(5) {
+            width: 120px
+        }
+
+        .users-table th:nth-child(6),
+        .users-table td:nth-child(6) {
+            width: 100px
+        }
+
+        .users-table th:nth-child(7),
+        .users-table td:nth-child(7) {
+            width: 280px;
             min-width: 200px
         }
 
@@ -172,15 +288,16 @@
         /* acciones: permitir wrap y mostrar botones completos */
         .actions {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             flex-wrap: wrap;
             align-items: center
         }
 
         .actions .btn {
             white-space: nowrap;
-            padding: 8px 10px;
-            font-size: 0.9rem
+            padding: 6px 8px;
+            font-size: 0.85rem;
+            min-width: 70px;
         }
 
         td.actions {
@@ -199,7 +316,13 @@
             cursor: pointer;
             font-weight: 700;
             background: var(--azul-claro);
-            color: #fff
+            color: #fff;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
         }
 
         .btn.revisar {
@@ -210,6 +333,26 @@
         .btn.deshabilitar {
             background: #f3f4f6;
             color: var(--muted)
+        }
+
+        .btn-activar {
+            background: #10b981;
+            color: #fff;
+        }
+
+        .btn-desactivar {
+            background: #ef4444;
+            color: #fff;
+        }
+
+        .btn-editar {
+            background: #f59e0b;
+            color: #fff;
+        }
+
+        .btn-eliminar {
+            background: #dc2626;
+            color: #fff;
         }
 
         .copy-btn {
@@ -236,6 +379,74 @@
         .note {
             color: var(--muted);
             font-size: 0.9rem
+        }
+
+        /* Paginación */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(10, 46, 90, 0.1);
+        }
+
+        .pagination-btn {
+            padding: 8px 12px;
+            background: var(--azul-claro);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            min-width: 40px;
+        }
+
+        .pagination-btn:disabled {
+            background: #e5e7eb;
+            color: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .pagination-info {
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        .pagination-numbers {
+            display: flex;
+            gap: 5px;
+        }
+
+        .page-number {
+            padding: 6px 10px;
+            background: transparent;
+            border: 1px solid rgba(10, 46, 90, 0.1);
+            border-radius: 4px;
+            cursor: pointer;
+            color: var(--azul-oscuro);
+        }
+
+        .page-number.active {
+            background: var(--logo-teal);
+            color: #042533;
+            border-color: var(--logo-teal);
+        }
+
+        .items-per-page {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .items-per-page select {
+            padding: 6px 10px;
+            border: 1px solid rgba(10, 46, 90, 0.1);
+            border-radius: 4px;
+            background: white;
+            color: var(--azul-oscuro);
         }
 
         /* Header styled like inicio */
@@ -347,58 +558,6 @@
             white-space: pre-wrap;
             word-break: break-word;
         }
-
-        /* --- AJUSTES DE RESPONSIVIDAD --- */
-
-/* Ajuste del Navbar para móviles */
-@media (max-width: 768px) {
-    .admin-header {
-        padding: 10px 15px;
-        flex-direction: column;
-        gap: 15px;
-        text-align: center;
-    }
-
-    .admin-header .actions {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .admin-grid {
-        grid-template-columns: 1fr !important; /* Cambia a una sola columna */
-        margin-top: 10px;
-    }
-
-    .topline {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
-    }
-
-    .controls {
-        justify-content: center;
-    }
-}
-
-/* Manejo de la tabla en pantallas pequeñas */
-.table-wrap {
-    width: 100%;
-    overflow-x: auto; /* Permite scroll lateral en la tabla */
-    -webkit-overflow-scrolling: touch;
-}
-
-table {
-    min-width: 800px; /* Evita que la tabla se colapse demasiado */
-}
-
-/* Ajuste del Sidebar (Glosario) en móviles */
-@media (max-width: 1100px) {
-    .sidebar-panel {
-        position: static;
-        max-height: none;
-        width: 100%;
-    }
-}
 
         /* Para pantallas más pequeñas, cambiar a una sola columna */
         @media (max-width: 1100px) {
@@ -565,18 +724,68 @@ table {
             background: #04152d;
             border-color: rgba(39, 245, 218, 0.3);
         }
+
+        /* Dark theme para roles y estados */
+        body.dark-theme .role-admin {
+            background: rgba(39, 245, 218, 0.2);
+            color: #e6fbf9;
+        }
+
+        body.dark-theme .role-user {
+            background: rgba(255, 255, 255, 0.1);
+            color: #d7e6ef;
+        }
+
+        /* Sección oculta inicialmente */
+        .section-hidden {
+            display: none;
+        }
+
+        /* Formularios en modales */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: var(--azul-oscuro);
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid rgba(10, 46, 90, 0.1);
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--logo-teal);
+            box-shadow: 0 0 0 3px rgba(39, 245, 218, 0.1);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
     </style>
 </head>
 
 <body>
     <header class="admin-header">
-<<<<<<< HEAD
         <div style="display: flex; align-items: center; gap: 12px;">
             <img src="logo.png" alt="logo" style="height: 45px;">
             <div class="brand">
-    <span style="font-weight: 800;">Red Educativa México</span>
-    <small style="display: block; font-weight: 600; color: var(--muted); font-size: 0.75rem;">Administración</small>
-</div>
+                Red Educativa México
+                <small style="display: block; font-size: 0.75rem; color: var(--muted);">Panel de Administración</small>
+            </div>
         </div>
 
         <div class="actions" style="display: flex; align-items: center; gap: 15px;">
@@ -584,61 +793,142 @@ table {
                 <i class="fas fa-moon"></i>
             </button>
             <a href="Index.html" class="btn-logout">Cerrar Sesión</a>
-=======
-        <img src="logo.png" alt="logo">
-        <div class="brand">Red Educativa México <small>Panel de administración</small></div>
-        <div class="actions">
-            <a href="./index.html" class="tab">cerrar secion</a>
-            <button id="refreshBtnTop" class="tab">Actualizar</button>
->>>>>>> ba099eee567b4d2ef9831b002808e7c8f3bed6f2
         </div>
     </header>
     <div class="container">
         <div class="admin-grid">
             <div class="panel">
-                <div class="topline">
-                    <div>
-                        <h1>Panel de Administración — Registros de Contacto</h1>
-                        <div class="note">Listado de envíos guardados localmente (base `rem-contactos`). Marca
-                            solicitudes como revisadas o deshabilitadas.</div>
+                <!-- Pestañas principales -->
+                <div class="main-tabs">
+                    <button class="main-tab active" id="tabContactos">Contactos</button>
+                    <button class="main-tab" id="tabUsuarios">Usuarios</button>
+                </div>
+
+                <!-- Sección de Contactos -->
+                <div id="seccionContactos">
+                    <div class="topline">
+                        <div>
+                            <h1>Panel de Administración — Registros de Contacto</h1>
+                            <div class="note">Listado de envíos guardados localmente (base `rem-contactos`). Marca
+                                solicitudes como revisadas o deshabilitadas.</div>
+                        </div>
+                        <div>
+                            <button id="exportBtn" class="tab"
+                                style="background: var(--azul-claro); color: white; border: none;">Exportar CSV</button>
+                            <button id="refreshBtn" class="tab">Actualizar</button>
+                        </div>
                     </div>
-                    <div>
-                        <button id="exportBtn" class="tab"
-                            style="background: var(--azul-claro); color: white; border: none;">Exportar CSV</button>
-                        <button id="refreshBtn" class="tab">Actualizar</button>
+
+                    <div class="controls" id="statusTabs">
+                        <button class="tab active" data-status="all">Todos</button>
+                        <button class="tab" data-status="pendiente">Pendientes</button>
+                        <button class="tab" data-status="revisada">Revisadas</button>
+                        <button class="tab" data-status="deshabilitada">Deshabilitadas</button>
+                    </div>
+
+                    <!-- Selector de items por página para contactos -->
+                    <div class="items-per-page">
+                        <span class="small">Mostrar:</span>
+                        <select id="contactsPerPage">
+                            <option value="10">10 registros</option>
+                            <option value="25">25 registros</option>
+                            <option value="50">50 registros</option>
+                            <option value="100">100 registros</option>
+                        </select>
+                    </div>
+
+                    <div class="table-wrap">
+                        <table id="recordsTable" class="contacts-table" aria-live="polite">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Fecha</th>
+                                    <th>Nombre</th>
+                                    <th>Email</th>
+                                    <th>Teléfono</th>
+                                    <th>Asunto</th>
+                                    <th>Mensaje</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+
+                    <!-- Paginación para contactos -->
+                    <div class="pagination" id="contactsPagination">
+                        <button class="pagination-btn" id="contactsPrevBtn" disabled>‹ Anterior</button>
+                        <div class="pagination-numbers" id="contactsPageNumbers"></div>
+                        <button class="pagination-btn" id="contactsNextBtn">Siguiente ›</button>
+                        <span class="pagination-info" id="contactsPageInfo"></span>
                     </div>
                 </div>
 
-                <div class="controls" id="statusTabs">
-                    <button class="tab active" data-status="all">Todos</button>
-                    <button class="tab" data-status="pendiente">Pendientes</button>
-                    <button class="tab" data-status="revisada">Revisadas</button>
-                    <button class="tab" data-status="deshabilitada">Deshabilitadas</button>
-                </div>
+                <!-- Sección de Usuarios -->
+                <div id="seccionUsuarios" class="section-hidden">
+                    <div class="topline">
+                        <div>
+                            <h1>Panel de Administración — Gestión de Usuarios</h1>
+                            <div class="note">Administra los usuarios registrados en el sistema. Puedes activar/desactivar cuentas, editar y eliminar usuarios.</div>
+                        </div>
+                        <div>
+                            <button id="exportUsersBtn" class="tab"
+                                style="background: var(--azul-claro); color: white; border: none;">Exportar CSV</button>
+                            <button id="refreshUsersBtn" class="tab">Actualizar</button>
+                            <button id="addUserBtn" class="tab" style="background: var(--logo-teal); color: #042533; border: none;">Nuevo Usuario</button>
+                        </div>
+                    </div>
 
-                <div class="table-wrap">
-                    <table id="recordsTable" aria-live="polite">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Fecha</th>
-                                <th>Nombre</th>
-                                <th>Email</th>
-                                <th>Teléfono</th>
-                                <th>Asunto</th>
-                                <th>Mensaje</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                    <div class="controls" id="userStatusTabs">
+                        <button class="tab active" data-status="all">Todos</button>
+                        <button class="tab" data-status="activo">Activos</button>
+                        <button class="tab" data-status="inactivo">Inactivos</button>
+                        <button class="tab" data-status="admin">Administradores</button>
+                        <button class="tab" data-status="user">Usuarios</button>
+                    </div>
+
+                    <!-- Selector de items por página para usuarios -->
+                    <div class="items-per-page">
+                        <span class="small">Mostrar:</span>
+                        <select id="usersPerPage">
+                            <option value="10">10 usuarios</option>
+                            <option value="25">25 usuarios</option>
+                            <option value="50">50 usuarios</option>
+                            <option value="100">100 usuarios</option>
+                        </select>
+                    </div>
+
+                    <div class="table-wrap">
+                        <table id="usersTable" class="users-table" aria-live="polite">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Usuario</th>
+                                    <th>Email</th>
+                                    <th>Fecha Registro</th>
+                                    <th>Rol</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+
+                    <!-- Paginación para usuarios -->
+                    <div class="pagination" id="usersPagination">
+                        <button class="pagination-btn" id="usersPrevBtn" disabled>‹ Anterior</button>
+                        <div class="pagination-numbers" id="usersPageNumbers"></div>
+                        <button class="pagination-btn" id="usersNextBtn">Siguiente ›</button>
+                        <span class="pagination-info" id="usersPageInfo"></span>
+                    </div>
                 </div>
             </div>
 
             <aside class="sidebar-panel" id="glossarySidebar" aria-live="polite">
-                <h3>Glosario / Detalle</h3>
-                <div class="meta">Selecciona un registro para ver el glosario y detalles del asunto.</div>
+                <h3 id="sidebarTitle">Glosario / Detalle</h3>
+                <div class="meta" id="sidebarSubtitle">Selecciona un registro para ver el glosario y detalles del asunto.</div>
                 <div id="glossaryContent">
                     <div class="glossary-entry"><strong>Asunto:</strong>
                         <div id="g-asunto" class="small">-</div>
@@ -654,7 +944,7 @@ table {
                         <div id="g-contact" class="small">-</div>
                     </div>
                 </div>
-                <div class="sidebar-actions">
+                <div class="sidebar-actions" id="sidebarActions">
                     <button id="g-mark-reviewed" class="btn revisar">Marcar revisada</button>
                     <button id="g-disable" class="btn deshabilitar">Deshabilitar</button>
                 </div>
@@ -680,12 +970,152 @@ table {
         </div>
     </div>
 
+    <!-- Modal: detalles/edición de usuario -->
+    <div id="userModal" class="modal-overlay" role="dialog" aria-modal="true">
+        <div class="modal" role="document" style="max-width: 500px;">
+            <div class="modal-header">
+                <strong id="userModalTitle">Detalles del Usuario</strong>
+                <button id="userModalClose" aria-label="Cerrar" class="copy-btn">X</button>
+            </div>
+            <div class="modal-body">
+                <form id="userForm">
+                    <input type="hidden" id="editUserId">
+                    
+                    <div class="form-group">
+                        <label for="editUsername">Nombre de usuario *</label>
+                        <input type="text" id="editUsername" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editEmail">Correo electrónico</label>
+                        <input type="email" id="editEmail">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editPassword">Contraseña (dejar en blanco para no cambiar)</label>
+                        <input type="password" id="editPassword" placeholder="Nueva contraseña">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editRole">Rol *</label>
+                        <select id="editRole" required>
+                            <option value="user">Usuario</option>
+                            <option value="admin">Administrador</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editStatus">Estado *</label>
+                        <select id="editStatus" required>
+                            <option value="activo">Activo</option>
+                            <option value="inactivo">Inactivo</option>
+                        </select>
+                    </div>
+                    
+                    <div class="modal-actions">
+                        <button type="button" id="userModalCancel" class="btn deshabilitar">Cancelar</button>
+                        <button type="button" id="userModalDelete" class="btn btn-eliminar" style="display: none;">Eliminar</button>
+                        <button type="submit" id="userModalSave" class="btn revisar">Guardar Cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/pouchdb@7.3.0/dist/pouchdb.min.js"></script>
     <script>
         (function () {
-            const db = new PouchDB('rem-contactos');
-            const tbody = document.querySelector('#recordsTable tbody');
+            // Bases de datos
+            const contactsDB = new PouchDB('rem-contactos');
+            const usersDB = new PouchDB('rem-users');
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{"username": "admin", "role": "admin"}');
+            
+            // Elementos del DOM
+            const tbodyContacts = document.querySelector('#recordsTable tbody');
+            const tbodyUsers = document.querySelector('#usersTable tbody');
             const docsCache = new Map();
+            const usersCache = new Map();
+            
+            // Variables de paginación
+            let currentContactsPage = 1;
+            let currentUsersPage = 1;
+            let contactsPerPage = 10;
+            let usersPerPage = 10;
+            let totalContacts = 0;
+            let totalUsers = 0;
+            
+            // Pestañas principales
+            const tabContactos = document.getElementById('tabContactos');
+            const tabUsuarios = document.getElementById('tabUsuarios');
+            const seccionContactos = document.getElementById('seccionContactos');
+            const seccionUsuarios = document.getElementById('seccionUsuarios');
+            
+            // Elementos del sidebar
+            const sidebarTitle = document.getElementById('sidebarTitle');
+            const sidebarSubtitle = document.getElementById('sidebarSubtitle');
+            const sidebarActions = document.getElementById('sidebarActions');
+            
+            // Selectores de items por página
+            document.getElementById('contactsPerPage').addEventListener('change', function(e) {
+                contactsPerPage = parseInt(e.target.value);
+                currentContactsPage = 1;
+                loadAllContacts();
+            });
+            
+            document.getElementById('usersPerPage').addEventListener('change', function(e) {
+                usersPerPage = parseInt(e.target.value);
+                currentUsersPage = 1;
+                loadAllUsers();
+            });
+            
+            // Funciones para cambiar entre secciones
+            function showContactos() {
+                tabContactos.classList.add('active');
+                tabUsuarios.classList.remove('active');
+                seccionContactos.style.display = 'block';
+                seccionUsuarios.style.display = 'none';
+                
+                // Actualizar sidebar para contactos
+                sidebarTitle.textContent = 'Glosario / Detalle';
+                sidebarSubtitle.textContent = 'Selecciona un registro para ver el glosario y detalles del asunto.';
+                sidebarActions.innerHTML = `
+                    <button id="g-mark-reviewed" class="btn revisar">Marcar revisada</button>
+                    <button id="g-disable" class="btn deshabilitar">Deshabilitar</button>
+                `;
+                
+                // Recargar contactos
+                loadAllContacts();
+            }
+            
+            function showUsuarios() {
+                tabContactos.classList.remove('active');
+                tabUsuarios.classList.add('active');
+                seccionContactos.style.display = 'none';
+                seccionUsuarios.style.display = 'block';
+                
+                // Actualizar sidebar para usuarios
+                sidebarTitle.textContent = 'Detalles del Usuario';
+                sidebarSubtitle.textContent = 'Selecciona un usuario para ver sus detalles.';
+                sidebarActions.innerHTML = `
+                    <button id="g-activate-user" class="btn btn-activar">Activar Usuario</button>
+                    <button id="g-deactivate-user" class="btn btn-desactivar">Desactivar Usuario</button>
+                    <button id="g-edit-user" class="btn btn-editar">Editar Usuario</button>
+                `;
+                
+                // Recargar usuarios
+                loadAllUsers();
+            }
+            
+            // Event listeners para pestañas principales
+            tabContactos.addEventListener('click', showContactos);
+            tabUsuarios.addEventListener('click', showUsuarios);
+            
+            // Botón para agregar nuevo usuario
+            document.getElementById('addUserBtn').addEventListener('click', function() {
+                openUserModal(null, 'Nuevo Usuario');
+            });
+            
+            // ========== FUNCIONES PARA CONTACTOS ==========
             const glossary = {
                 'inscripción': 'Consultas relacionadas con inscripción o procesos de admisión.',
                 'inscripcion': 'Consultas relacionadas con inscripción o procesos de admisión.',
@@ -701,12 +1131,12 @@ table {
                 'informacion': 'Peticiones de información general sobre programas y requisitos.',
                 'info': 'Peticiones de información general sobre programas y requisitos.'
             };
+            
             const tabs = Array.from(document.querySelectorAll('#statusTabs .tab'));
             const refreshBtn = document.getElementById('refreshBtn');
-            const refreshBtnTop = document.getElementById('refreshBtnTop');
             let currentFilter = 'all';
 
-            function renderRow(doc) {
+            function renderContactRow(doc) {
                 const tr = document.createElement('tr');
                 const idCell = doc._id || '';
                 const created = doc.createdAt ? new Date(doc.createdAt).toLocaleString() : '';
@@ -722,7 +1152,7 @@ table {
 
                 tr.innerHTML = `
                     <td class="small">${idCell}</td>
-                    <td>${created}</td>
+                    <td>${escapeHtml(created)}</td>
                     <td>${escapeHtml(nombre)}</td>
                     <td>${escapeHtml(email)}</td>
                     <td>${escapeHtml(telefono)}</td>
@@ -744,21 +1174,21 @@ table {
                     const btnRev = document.createElement('button');
                     btnRev.className = 'btn revisar';
                     btnRev.textContent = 'Marcar revisada';
-                    btnRev.addEventListener('click', (e) => { e.stopPropagation(); changeStatus(doc, 'revisada'); });
+                    btnRev.addEventListener('click', (e) => { e.stopPropagation(); changeContactStatus(doc, 'revisada'); });
                     actionsTd.appendChild(btnRev);
                 }
                 if (status === 'revisada') {
                     const btnPend = document.createElement('button');
                     btnPend.className = 'btn deshabilitar';
                     btnPend.textContent = 'Marcar pendiente';
-                    btnPend.addEventListener('click', () => changeStatus(doc, 'pendiente'));
+                    btnPend.addEventListener('click', () => changeContactStatus(doc, 'pendiente'));
                     actionsTd.appendChild(btnPend);
                 }
                 if (status !== 'deshabilitada') {
                     const btnDes = document.createElement('button');
                     btnDes.className = 'btn deshabilitar';
                     btnDes.textContent = 'Deshabilitar';
-                    btnDes.addEventListener('click', (e) => { e.stopPropagation(); changeStatus(doc, 'deshabilitada'); });
+                    btnDes.addEventListener('click', (e) => { e.stopPropagation(); changeContactStatus(doc, 'deshabilitada'); });
                     actionsTd.appendChild(btnDes);
                 }
 
@@ -766,17 +1196,16 @@ table {
             }
 
             function escapeHtml(s) {
-                return String(s || '').replace(/[&<>\"']/g, function (m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;', "'": "&#39;" }[m]; });
-
+                return String(s || '').replace(/[&<>\"']/g, function (m) { 
+                    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;', "'": "&#39;" }[m]; 
+                });
             }
 
-
-            // --- COPIAR DESDE AQUÍ ---
+            // Exportar CSV de contactos
             const exportBtn = document.getElementById('exportBtn');
 
-            function exportToCSV() {
-                db.allDocs({ include_docs: true }).then(res => {
-                    // Filtrar solo los documentos de contacto
+            function exportContactsToCSV() {
+                contactsDB.allDocs({ include_docs: true }).then(res => {
                     const docs = res.rows
                         .map(r => r.doc)
                         .filter(d => d && d._id && d._id.indexOf('contact_') === 0);
@@ -786,24 +1215,18 @@ table {
                         return;
                     }
 
-                    // 1. Definir encabezados profesionales
                     const headers = ["ID", "FECHA", "NOMBRE", "EMAIL", "TELEFONO", "ASUNTO", "MENSAJE", "ESTADO"];
 
-                    // 2. Procesar filas con limpieza estricta
                     const csvRows = [
                         headers.join(','),
                         ...docs.map(doc => {
                             const created = doc.createdAt ? new Date(doc.createdAt).toLocaleString() : '';
 
-                            // Función interna para limpiar texto y evitar que se descuadre la tabla
                             const clean = (text) => {
                                 if (!text) return '""';
                                 let t = String(text);
-                                // Paso A: Eliminar saltos de línea internos para que no cree filas nuevas por error
                                 t = t.replace(/(\r\n|\n|\r)/gm, " ");
-                                // Paso B: Escapar comillas dobles (estándar CSV)
                                 t = t.replace(/"/g, '""');
-                                // Paso C: Envolver todo en comillas dobles para proteger las comas
                                 return `"${t}"`;
                             };
 
@@ -820,12 +1243,10 @@ table {
                         })
                     ];
 
-                    // 3. Generar el archivo con BOM (para que Excel reconozca acentos y eñes)
                     const csvContent = "\uFEFF" + csvRows.join("\n");
                     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
                     const url = URL.createObjectURL(blob);
 
-                    // 4. Crear link de descarga
                     const link = document.createElement("a");
                     const nombreArchivo = `Reporte_Contactos_REM_${new Date().toISOString().slice(0, 10)}.csv`;
 
@@ -842,88 +1263,128 @@ table {
                 });
             }
 
-            // Escuchar el click del botón
-            if (exportBtn) exportBtn.addEventListener('click', exportToCSV);
-            // --- HASTA AQUÍ ---
+            if (exportBtn) exportBtn.addEventListener('click', exportContactsToCSV);
 
-            /* --- Añadir al final de tu script --- */
-            const themeToggle = document.getElementById('themeToggle');
-            const bodyEl = document.body;
-
-            function updateTheme(isDark) {
-                const icon = themeToggle.querySelector('i');
-                if (isDark) {
-                    bodyEl.classList.add('dark-theme');
-                    icon.className = 'fas fa-sun'; // Icono de sol
-                } else {
-                    bodyEl.classList.remove('dark-theme');
-                    icon.className = 'fas fa-moon'; // Icono de luna
-                }
-            }
-
-            // Cargar preferencia guardada
-            const currentTheme = localStorage.getItem('admin-theme') === 'dark';
-            updateTheme(currentTheme);
-
-            themeToggle.addEventListener('click', () => {
-                const isDarkNow = !bodyEl.classList.contains('dark-theme');
-                localStorage.setItem('admin-theme', isDarkNow ? 'dark' : 'light');
-                updateTheme(isDarkNow);
-            });
-
-
-            function loadAll() {
-                tbody.innerHTML = '<tr><td colspan="9" class="small">Cargando...</td></tr>';
-                db.allDocs({ include_docs: true, descending: true }).then(res => {
+            function loadAllContacts() {
+                tbodyContacts.innerHTML = '<tr><td colspan="9" class="small">Cargando...</td></tr>';
+                contactsDB.allDocs({ include_docs: true, descending: true }).then(res => {
                     const rows = res.rows.map(r => r.doc).filter(d => d && d._id && d._id.indexOf('contact_') === 0);
                     docsCache.clear();
                     rows.forEach(d => { if (d && d._id) docsCache.set(d._id, d); });
-                    renderList(rows);
+                    
+                    // Filtrar por estado
+                    let filteredRows = rows.filter(d => {
+                        const s = d.status || 'pendiente';
+                        if (currentFilter === 'all') return true;
+                        return s === currentFilter;
+                    });
+                    
+                    totalContacts = filteredRows.length;
+                    
+                    // Calcular paginación
+                    const totalPages = Math.ceil(totalContacts / contactsPerPage);
+                    const startIndex = (currentContactsPage - 1) * contactsPerPage;
+                    const endIndex = startIndex + contactsPerPage;
+                    const paginatedRows = filteredRows.slice(startIndex, endIndex);
+                    
+                    renderContactList(paginatedRows);
+                    updateContactsPagination(totalPages);
                 }).catch(err => {
-                    tbody.innerHTML = '<tr><td colspan="9" class="small">Error al leer la base local.</td></tr>';
+                    tbodyContacts.innerHTML = '<tr><td colspan="9" class="small">Error al leer la base local.</td></tr>';
                     console.error(err);
                 });
             }
 
-            function renderList(docs) {
-                const filtered = docs.filter(d => {
-                    const s = d.status || 'pendiente';
-                    if (currentFilter === 'all') return true;
-                    return s === currentFilter;
-                });
-                if (!filtered.length) {
-                    tbody.innerHTML = '<tr><td colspan="9" class="small">No hay registros.</td></tr>';
+            function renderContactList(docs) {
+                if (!docs.length) {
+                    tbodyContacts.innerHTML = '<tr><td colspan="9" class="small">No hay registros.</td></tr>';
                     return;
                 }
-                tbody.innerHTML = '';
-                filtered.forEach(doc => {
-                    tbody.appendChild(renderRow(doc));
+                tbodyContacts.innerHTML = '';
+                docs.forEach(doc => {
+                    tbodyContacts.appendChild(renderContactRow(doc));
                 });
             }
 
-            function changeStatus(doc, newStatus) {
+            function changeContactStatus(doc, newStatus) {
                 const copy = Object.assign({}, doc);
                 copy.status = newStatus;
-                db.put(copy).then(() => {
-                    loadAll();
+                contactsDB.put(copy).then(() => {
+                    loadAllContacts();
                 }).catch(err => {
                     console.error('Error updating', err);
                     alert('Error al actualizar el estado.');
                 });
             }
 
-            // Delegated click to show glossary in sidebar
-            tbody.addEventListener('click', function (e) {
+            // Funciones de paginación para contactos
+            function updateContactsPagination(totalPages) {
+                const prevBtn = document.getElementById('contactsPrevBtn');
+                const nextBtn = document.getElementById('contactsNextBtn');
+                const pageNumbers = document.getElementById('contactsPageNumbers');
+                const pageInfo = document.getElementById('contactsPageInfo');
+                
+                // Actualizar botones
+                prevBtn.disabled = currentContactsPage === 1;
+                nextBtn.disabled = currentContactsPage === totalPages || totalPages === 0;
+                
+                // Actualizar números de página
+                pageNumbers.innerHTML = '';
+                const maxPagesToShow = 5;
+                let startPage = Math.max(1, currentContactsPage - Math.floor(maxPagesToShow / 2));
+                let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+                
+                if (endPage - startPage + 1 < maxPagesToShow) {
+                    startPage = Math.max(1, endPage - maxPagesToShow + 1);
+                }
+                
+                for (let i = startPage; i <= endPage; i++) {
+                    const pageBtn = document.createElement('button');
+                    pageBtn.className = 'page-number';
+                    if (i === currentContactsPage) {
+                        pageBtn.classList.add('active');
+                    }
+                    pageBtn.textContent = i;
+                    pageBtn.addEventListener('click', () => {
+                        currentContactsPage = i;
+                        loadAllContacts();
+                    });
+                    pageNumbers.appendChild(pageBtn);
+                }
+                
+                // Actualizar información
+                const startItem = (currentContactsPage - 1) * contactsPerPage + 1;
+                const endItem = Math.min(currentContactsPage * contactsPerPage, totalContacts);
+                pageInfo.textContent = `Mostrando ${startItem}-${endItem} de ${totalContacts} registros`;
+                
+                // Event listeners para botones de navegación
+                prevBtn.onclick = () => {
+                    if (currentContactsPage > 1) {
+                        currentContactsPage--;
+                        loadAllContacts();
+                    }
+                };
+                
+                nextBtn.onclick = () => {
+                    if (currentContactsPage < totalPages) {
+                        currentContactsPage++;
+                        loadAllContacts();
+                    }
+                };
+            }
+
+            // Delegated click to show glossary in sidebar for contacts
+            tbodyContacts.addEventListener('click', function (e) {
                 const tr = e.target.closest('tr');
                 if (!tr) return;
                 const id = tr.dataset.id;
                 if (!id) return;
                 const doc = docsCache.get(id);
                 if (!doc) return;
-                showSidebarFor(doc);
+                showSidebarForContact(doc);
             });
 
-            function showSidebarFor(doc) {
+            function showSidebarForContact(doc) {
                 const asunto = (doc.asunto || '').toString();
                 const asuntoNorm = asunto.toLowerCase();
                 const defKey = Object.keys(glossary).find(k => asuntoNorm.includes(k));
@@ -936,25 +1397,526 @@ table {
                 // attach actions
                 const revBtn = document.getElementById('g-mark-reviewed');
                 const disBtn = document.getElementById('g-disable');
-                revBtn.onclick = function () { changeStatus(doc, 'revisada'); };
-                disBtn.onclick = function () { changeStatus(doc, 'deshabilitada'); };
+                if (revBtn) revBtn.onclick = function () { changeContactStatus(doc, 'revisada'); };
+                if (disBtn) disBtn.onclick = function () { changeContactStatus(doc, 'deshabilitada'); };
             }
 
             tabs.forEach(t => t.addEventListener('click', () => {
                 tabs.forEach(x => x.classList.remove('active'));
                 t.classList.add('active');
                 currentFilter = t.dataset.status || 'all';
-                loadAll();
+                currentContactsPage = 1;
+                loadAllContacts();
             }));
 
-            refreshBtn.addEventListener('click', loadAll);
-            if (refreshBtnTop) refreshBtnTop.addEventListener('click', loadAll);
+            refreshBtn.addEventListener('click', loadAllContacts);
 
-            loadAll();
+            // ========== FUNCIONES PARA USUARIOS ==========
+            const userTabs = Array.from(document.querySelectorAll('#userStatusTabs .tab'));
+            const refreshUsersBtn = document.getElementById('refreshUsersBtn');
+            const exportUsersBtn = document.getElementById('exportUsersBtn');
+            let currentUserFilter = 'all';
 
-            db.changes({ live: true, since: 'now', include_docs: true }).on('change', loadAll);
+            function renderUserRow(user) {
+                const tr = document.createElement('tr');
+                const idCell = user._id || '';
+                const username = user.username || '';
+                const email = user.email || '';
+                const created = user.createdAt ? new Date(user.createdAt).toLocaleString() : '';
+                const role = user.role || 'user';
+                const status = user.status || 'activo';
+                const isCurrentUser = username === currentUser.username;
+                
+                tr.dataset.id = idCell || '';
+                tr.dataset.username = username;
+                tr.dataset.isCurrent = isCurrentUser;
 
-            // Modal behavior
+                tr.innerHTML = `
+                    <td class="small">${idCell}</td>
+                    <td>${escapeHtml(username)} ${isCurrentUser ? '<span class="small">(Tú)</span>' : ''}</td>
+                    <td>${escapeHtml(email)}</td>
+                    <td>${escapeHtml(created)}</td>
+                    <td><span class="${role === 'admin' ? 'role-admin' : 'role-user'}">${role === 'admin' ? 'Administrador' : 'Usuario'}</span></td>
+                    <td class="${status === 'activo' ? 'status-activo' : 'status-inactivo'}">${status === 'activo' ? 'Activo' : 'Inactivo'}</td>
+                    <td class="actions"></td>
+                `;
+
+                const actionsTd = tr.querySelector('.actions');
+                
+                // Botón Ver/Editar
+                const btnEditar = document.createElement('button');
+                btnEditar.className = 'btn btn-editar';
+                btnEditar.textContent = 'Editar';
+                btnEditar.addEventListener('click', (e) => { 
+                    e.stopPropagation(); 
+                    openUserModal(user, 'Editar Usuario'); 
+                });
+                actionsTd.appendChild(btnEditar);
+                
+                // Si no es el usuario actual, mostrar botones de activar/desactivar
+                if (!isCurrentUser) {
+                    if (status === 'activo') {
+                        const btnDesactivar = document.createElement('button');
+                        btnDesactivar.className = 'btn btn-desactivar';
+                        btnDesactivar.textContent = 'Desactivar';
+                        btnDesactivar.addEventListener('click', (e) => { 
+                            e.stopPropagation(); 
+                            changeUserStatus(user, 'inactivo'); 
+                        });
+                        actionsTd.appendChild(btnDesactivar);
+                    } else {
+                        const btnActivar = document.createElement('button');
+                        btnActivar.className = 'btn btn-activar';
+                        btnActivar.textContent = 'Activar';
+                        btnActivar.addEventListener('click', (e) => { 
+                            e.stopPropagation(); 
+                            changeUserStatus(user, 'activo'); 
+                        });
+                        actionsTd.appendChild(btnActivar);
+                    }
+                    
+                    // Botón Eliminar (solo admin puede eliminar)
+                    if (currentUser.role === 'admin') {
+                        const btnEliminar = document.createElement('button');
+                        btnEliminar.className = 'btn btn-eliminar';
+                        btnEliminar.textContent = 'Eliminar';
+                        btnEliminar.addEventListener('click', (e) => { 
+                            e.stopPropagation(); 
+                            deleteUser(user); 
+                        });
+                        actionsTd.appendChild(btnEliminar);
+                    }
+                } else {
+                    // Para el usuario actual, mostrar mensaje
+                    const span = document.createElement('span');
+                    span.className = 'small';
+                    span.textContent = 'Usuario actual';
+                    span.style.color = 'var(--muted)';
+                    actionsTd.appendChild(span);
+                }
+
+                return tr;
+            }
+
+            function loadAllUsers() {
+                tbodyUsers.innerHTML = '<tr><td colspan="7" class="small">Cargando...</td></tr>';
+                usersDB.allDocs({ include_docs: true, descending: true }).then(res => {
+                    const rows = res.rows.map(r => r.doc).filter(d => d && d._id && d._id.indexOf('user_') === 0);
+                    usersCache.clear();
+                    rows.forEach(d => { if (d && d._id) usersCache.set(d._id, d); });
+                    
+                    // Filtrar por estado y rol
+                    let filteredRows = rows.filter(user => {
+                        if (currentUserFilter === 'all') return true;
+                        if (currentUserFilter === 'activo') return user.status === 'activo';
+                        if (currentUserFilter === 'inactivo') return user.status === 'inactivo';
+                        if (currentUserFilter === 'admin') return user.role === 'admin';
+                        if (currentUserFilter === 'user') return user.role === 'user';
+                        return true;
+                    });
+                    
+                    totalUsers = filteredRows.length;
+                    
+                    // Calcular paginación
+                    const totalPages = Math.ceil(totalUsers / usersPerPage);
+                    const startIndex = (currentUsersPage - 1) * usersPerPage;
+                    const endIndex = startIndex + usersPerPage;
+                    const paginatedRows = filteredRows.slice(startIndex, endIndex);
+                    
+                    renderUserList(paginatedRows);
+                    updateUsersPagination(totalPages);
+                }).catch(err => {
+                    tbodyUsers.innerHTML = '<tr><td colspan="7" class="small">Error al leer la base de usuarios.</td></tr>';
+                    console.error(err);
+                });
+            }
+
+            function renderUserList(users) {
+                if (!users.length) {
+                    tbodyUsers.innerHTML = '<tr><td colspan="7" class="small">No hay usuarios registrados.</td></tr>';
+                    return;
+                }
+                tbodyUsers.innerHTML = '';
+                users.forEach(user => {
+                    tbodyUsers.appendChild(renderUserRow(user));
+                });
+            }
+
+            function changeUserStatus(user, newStatus) {
+                if (user.username === currentUser.username) {
+                    alert('No puedes deshabilitar tu propia cuenta.');
+                    return;
+                }
+                
+                if (!confirm(`¿Estás seguro de que deseas ${newStatus === 'activo' ? 'activar' : 'desactivar'} la cuenta de ${user.username}?`)) {
+                    return;
+                }
+                
+                const copy = Object.assign({}, user);
+                copy.status = newStatus;
+                
+                usersDB.put(copy).then(() => {
+                    loadAllUsers();
+                    alert(`Usuario ${user.username} ${newStatus === 'activo' ? 'activado' : 'desactivado'} correctamente.`);
+                }).catch(err => {
+                    console.error('Error updating user status', err);
+                    alert('Error al actualizar el estado del usuario.');
+                });
+            }
+
+            function deleteUser(user) {
+                if (user.username === currentUser.username) {
+                    alert('No puedes eliminar tu propia cuenta.');
+                    return;
+                }
+                
+                if (!confirm(`¿Estás seguro de que deseas ELIMINAR permanentemente al usuario ${user.username}?\n\nEsta acción no se puede deshacer.`)) {
+                    return;
+                }
+                
+                usersDB.remove(user).then(() => {
+                    loadAllUsers();
+                    alert(`Usuario ${user.username} eliminado correctamente.`);
+                }).catch(err => {
+                    console.error('Error deleting user', err);
+                    alert('Error al eliminar el usuario.');
+                });
+            }
+
+            // Funciones de paginación para usuarios
+            function updateUsersPagination(totalPages) {
+                const prevBtn = document.getElementById('usersPrevBtn');
+                const nextBtn = document.getElementById('usersNextBtn');
+                const pageNumbers = document.getElementById('usersPageNumbers');
+                const pageInfo = document.getElementById('usersPageInfo');
+                
+                // Actualizar botones
+                prevBtn.disabled = currentUsersPage === 1;
+                nextBtn.disabled = currentUsersPage === totalPages || totalPages === 0;
+                
+                // Actualizar números de página
+                pageNumbers.innerHTML = '';
+                const maxPagesToShow = 5;
+                let startPage = Math.max(1, currentUsersPage - Math.floor(maxPagesToShow / 2));
+                let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+                
+                if (endPage - startPage + 1 < maxPagesToShow) {
+                    startPage = Math.max(1, endPage - maxPagesToShow + 1);
+                }
+                
+                for (let i = startPage; i <= endPage; i++) {
+                    const pageBtn = document.createElement('button');
+                    pageBtn.className = 'page-number';
+                    if (i === currentUsersPage) {
+                        pageBtn.classList.add('active');
+                    }
+                    pageBtn.textContent = i;
+                    pageBtn.addEventListener('click', () => {
+                        currentUsersPage = i;
+                        loadAllUsers();
+                    });
+                    pageNumbers.appendChild(pageBtn);
+                }
+                
+                // Actualizar información
+                const startItem = (currentUsersPage - 1) * usersPerPage + 1;
+                const endItem = Math.min(currentUsersPage * usersPerPage, totalUsers);
+                pageInfo.textContent = `Mostrando ${startItem}-${endItem} de ${totalUsers} usuarios`;
+                
+                // Event listeners para botones de navegación
+                prevBtn.onclick = () => {
+                    if (currentUsersPage > 1) {
+                        currentUsersPage--;
+                        loadAllUsers();
+                    }
+                };
+                
+                nextBtn.onclick = () => {
+                    if (currentUsersPage < totalPages) {
+                        currentUsersPage++;
+                        loadAllUsers();
+                    }
+                };
+            }
+
+            // Delegated click to show user details in sidebar
+            tbodyUsers.addEventListener('click', function (e) {
+                const tr = e.target.closest('tr');
+                if (!tr) return;
+                const id = tr.dataset.id;
+                if (!id) return;
+                const user = usersCache.get(id);
+                if (!user) return;
+                showSidebarForUser(user);
+            });
+
+            function showSidebarForUser(user) {
+                const isCurrentUser = user.username === currentUser.username;
+                
+                document.getElementById('g-asunto').textContent = user.username;
+                document.getElementById('g-def').textContent = user.email || 'No tiene email registrado';
+                document.getElementById('g-msg').textContent = `Rol: ${user.role === 'admin' ? 'Administrador' : 'Usuario'}\nEstado: ${user.status === 'activo' ? 'Activo' : 'Inactivo'}\nFecha de registro: ${user.createdAt ? new Date(user.createdAt).toLocaleString() : 'No disponible'}`;
+                document.getElementById('g-contact').textContent = isCurrentUser ? '⚠️ Este es tu usuario actual' : 'Usuario del sistema';
+
+                // Configurar botones del sidebar para usuarios
+                const activateBtn = document.getElementById('g-activate-user');
+                const deactivateBtn = document.getElementById('g-deactivate-user');
+                const editBtn = document.getElementById('g-edit-user');
+                
+                if (activateBtn && deactivateBtn && editBtn) {
+                    if (isCurrentUser) {
+                        activateBtn.style.display = 'none';
+                        deactivateBtn.style.display = 'none';
+                        editBtn.style.display = 'none';
+                    } else {
+                        activateBtn.style.display = user.status === 'inactivo' ? 'inline-block' : 'none';
+                        deactivateBtn.style.display = user.status === 'activo' ? 'inline-block' : 'none';
+                        editBtn.style.display = 'inline-block';
+                        
+                        activateBtn.onclick = function () { changeUserStatus(user, 'activo'); };
+                        deactivateBtn.onclick = function () { changeUserStatus(user, 'inactivo'); };
+                        editBtn.onclick = function () { openUserModal(user, 'Editar Usuario'); };
+                    }
+                }
+            }
+
+            userTabs.forEach(t => t.addEventListener('click', () => {
+                userTabs.forEach(x => x.classList.remove('active'));
+                t.classList.add('active');
+                currentUserFilter = t.dataset.status || 'all';
+                currentUsersPage = 1;
+                loadAllUsers();
+            }));
+
+            if (refreshUsersBtn) refreshUsersBtn.addEventListener('click', loadAllUsers);
+
+            // Exportar CSV de usuarios
+            function exportUsersToCSV() {
+                usersDB.allDocs({ include_docs: true }).then(res => {
+                    const users = res.rows
+                        .map(r => r.doc)
+                        .filter(d => d && d._id && d._id.indexOf('user_') === 0);
+
+                    if (users.length === 0) {
+                        alert("No hay usuarios para exportar");
+                        return;
+                    }
+
+                    const headers = ["ID", "USUARIO", "EMAIL", "FECHA_REGISTRO", "ROL", "ESTADO"];
+
+                    const csvRows = [
+                        headers.join(','),
+                        ...users.map(user => {
+                            const created = user.createdAt ? new Date(user.createdAt).toLocaleString() : '';
+
+                            const clean = (text) => {
+                                if (!text) return '""';
+                                let t = String(text);
+                                t = t.replace(/(\r\n|\n|\r)/gm, " ");
+                                t = t.replace(/"/g, '""');
+                                return `"${t}"`;
+                            };
+
+                            return [
+                                clean(user._id),
+                                clean(user.username),
+                                clean(user.email || ''),
+                                clean(created),
+                                clean(user.role || 'user'),
+                                clean(user.status || 'activo')
+                            ].join(',');
+                        })
+                    ];
+
+                    const csvContent = "\uFEFF" + csvRows.join("\n");
+                    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                    const url = URL.createObjectURL(blob);
+
+                    const link = document.createElement("a");
+                    const nombreArchivo = `Reporte_Usuarios_REM_${new Date().toISOString().slice(0, 10)}.csv`;
+
+                    link.setAttribute("href", url);
+                    link.setAttribute("download", nombreArchivo);
+                    link.style.visibility = 'hidden';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+
+                }).catch(err => {
+                    console.error("Error al exportar usuarios:", err);
+                    alert("Ocurrió un error al generar el archivo.");
+                });
+            }
+
+            if (exportUsersBtn) exportUsersBtn.addEventListener('click', exportUsersToCSV);
+
+            // Modal para edición/creación de usuarios
+            function openUserModal(user, title) {
+                document.getElementById('userModalTitle').textContent = title;
+                const form = document.getElementById('userForm');
+                const deleteBtn = document.getElementById('userModalDelete');
+                const saveBtn = document.getElementById('userModalSave');
+                
+                if (user) {
+                    // Modo edición
+                    document.getElementById('editUserId').value = user._id;
+                    document.getElementById('editUsername').value = user.username;
+                    document.getElementById('editEmail').value = user.email || '';
+                    document.getElementById('editPassword').value = '';
+                    document.getElementById('editPassword').placeholder = 'Dejar en blanco para no cambiar';
+                    document.getElementById('editRole').value = user.role || 'user';
+                    document.getElementById('editStatus').value = user.status || 'activo';
+                    
+                    // Mostrar botón eliminar solo si no es el usuario actual y es admin
+                    const isCurrentUser = user.username === currentUser.username;
+                    deleteBtn.style.display = (currentUser.role === 'admin' && !isCurrentUser) ? 'inline-block' : 'none';
+                    deleteBtn.onclick = function() { deleteUser(user); closeUserModal(); };
+                    
+                    saveBtn.textContent = 'Guardar Cambios';
+                } else {
+                    // Modo creación
+                    form.reset();
+                    document.getElementById('editUserId').value = '';
+                    document.getElementById('editPassword').placeholder = 'Contraseña obligatoria';
+                    document.getElementById('editPassword').required = true;
+                    deleteBtn.style.display = 'none';
+                    saveBtn.textContent = 'Crear Usuario';
+                }
+                
+                document.getElementById('userModal').style.display = 'flex';
+            }
+
+            // Manejar envío del formulario de usuario
+            document.getElementById('userForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const userId = document.getElementById('editUserId').value;
+                const username = document.getElementById('editUsername').value.trim();
+                const email = document.getElementById('editEmail').value.trim();
+                const password = document.getElementById('editPassword').value;
+                const role = document.getElementById('editRole').value;
+                const status = document.getElementById('editStatus').value;
+                
+                // Validaciones
+                if (!username) {
+                    alert('El nombre de usuario es obligatorio');
+                    return;
+                }
+                
+                if (!userId && !password) {
+                    alert('La contraseña es obligatoria para nuevos usuarios');
+                    return;
+                }
+                
+                // Verificar si es un nuevo usuario o edición
+                if (userId) {
+                    // Edición de usuario existente
+                    usersDB.get(userId).then(function(user) {
+                        const isCurrentUser = user.username === currentUser.username;
+                        
+                        // Si es el usuario actual y está intentando cambiar su propio rol
+                        if (isCurrentUser && user.role !== role) {
+                            alert('No puedes cambiar tu propio rol.');
+                            return;
+                        }
+                        
+                        // Actualizar usuario
+                        user.username = username;
+                        if (email) user.email = email;
+                        if (password) user.password = password;
+                        user.role = role;
+                        user.status = status;
+                        
+                        return usersDB.put(user);
+                    }).then(function() {
+                        alert('Usuario actualizado correctamente');
+                        closeUserModal();
+                        loadAllUsers();
+                    }).catch(function(err) {
+                        console.error('Error updating user:', err);
+                        alert('Error al actualizar el usuario');
+                    });
+                } else {
+                    // Creación de nuevo usuario
+                    // Verificar si el usuario ya existe
+                    usersDB.allDocs({ include_docs: true }).then(function(res) {
+                        const existingUser = res.rows.find(row => 
+                            row.doc && row.doc.username === username
+                        );
+                        
+                        if (existingUser) {
+                            alert('El nombre de usuario ya existe');
+                            return Promise.reject('Usuario duplicado');
+                        }
+                        
+                        // Crear nuevo usuario
+                        const newUser = {
+                            _id: 'user_' + Date.now(),
+                            username: username,
+                            password: password,
+                            email: email,
+                            role: role,
+                            status: status,
+                            createdAt: new Date().toISOString()
+                        };
+                        
+                        return usersDB.put(newUser);
+                    }).then(function() {
+                        alert('Usuario creado correctamente');
+                        closeUserModal();
+                        loadAllUsers();
+                    }).catch(function(err) {
+                        if (err !== 'Usuario duplicado') {
+                            console.error('Error creating user:', err);
+                            alert('Error al crear el usuario');
+                        }
+                    });
+                }
+            });
+
+            function closeUserModal() {
+                document.getElementById('userModal').style.display = 'none';
+                document.getElementById('editPassword').required = false;
+            }
+
+            // Cerrar modales
+            document.getElementById('userModalClose').addEventListener('click', closeUserModal);
+            document.getElementById('userModalCancel').addEventListener('click', closeUserModal);
+            
+            document.getElementById('userModal').addEventListener('click', function(e) { 
+                if (e.target === this) closeUserModal(); 
+            });
+
+            // ========== TEMA Y MODALES EXISTENTES ==========
+            const themeToggle = document.getElementById('themeToggle');
+            const bodyEl = document.body;
+
+            function updateTheme(isDark) {
+                const icon = themeToggle.querySelector('i');
+                if (isDark) {
+                    bodyEl.classList.add('dark-theme');
+                    icon.className = 'fas fa-sun';
+                } else {
+                    bodyEl.classList.remove('dark-theme');
+                    icon.className = 'fas fa-moon';
+                }
+            }
+
+            const currentTheme = localStorage.getItem('admin-theme') === 'dark';
+            updateTheme(currentTheme);
+
+            themeToggle.addEventListener('click', () => {
+                const isDarkNow = !bodyEl.classList.contains('dark-theme');
+                localStorage.setItem('admin-theme', isDarkNow ? 'dark' : 'light');
+                updateTheme(isDarkNow);
+            });
+
+            loadAllContacts();
+
+            contactsDB.changes({ live: true, since: 'now', include_docs: true }).on('change', loadAllContacts);
+            usersDB.changes({ live: true, since: 'now', include_docs: true }).on('change', loadAllUsers);
+
+            // Modal behavior (para contactos)
             const modal = document.getElementById('msgModal');
             const modalTitle = document.getElementById('modalTitle');
             const modalMsg = document.getElementById('modalMsg');
@@ -966,18 +1928,41 @@ table {
                 modalMsg.textContent = doc.mensaje || '';
                 modal.style.display = 'flex';
             }
-            window.showMessageModal = showMessageModal; // expose to row buttons
+            window.showMessageModal = showMessageModal;
 
-            function closeModal() { modal.style.display = 'none'; }
-            modalClose.addEventListener('click', closeModal);
-            modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
-            modalCopy.addEventListener('click', function () { navigator.clipboard.writeText(modalMsg.textContent || '').then(() => { alert('Mensaje copiado'); }).catch(() => alert('No se pudo copiar')); });
+            function closeMessageModal() { modal.style.display = 'none'; }
+            modalClose.addEventListener('click', closeMessageModal);
+            modal.addEventListener('click', function (e) { if (e.target === modal) closeMessageModal(); });
+            modalCopy.addEventListener('click', function () { 
+                navigator.clipboard.writeText(modalMsg.textContent || '').then(() => { 
+                    alert('Mensaje copiado'); 
+                }).catch(() => alert('No se pudo copiar')); 
+            });
+
+            // Crear usuario admin por defecto si no existe
+            usersDB.get('user_admin').catch(function(err) {
+                if (err.status === 404) {
+                    const defaultAdmin = {
+                        _id: 'user_admin',
+                        username: 'admin',
+                        password: 'admin123',
+                        email: 'admin@rededucativamexico.org',
+                        createdAt: new Date().toISOString(),
+                        role: 'admin',
+                        status: 'activo'
+                    };
+                    
+                    usersDB.put(defaultAdmin).then(function() {
+                        console.log('Usuario admin creado por defecto');
+                        loadAllUsers();
+                    }).catch(function(err) {
+                        console.error('Error al crear usuario admin:', err);
+                    });
+                }
+            });
+            
         })();
     </script>
 </body>
-<<<<<<< HEAD
 
 </html>
-=======
-</html>
->>>>>>> ba099eee567b4d2ef9831b002808e7c8f3bed6f2

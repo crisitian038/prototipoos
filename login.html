@@ -1,215 +1,1482 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
+
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Acceso — Red Educativa México</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Red Educativa México - Panel de Administración</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="shortcut icon"
+        href="https://acuerdo286.org/wp-content/uploads/2025/01/cropped-cropped-RED_MEXICO_FINAL-logo-32x32.png">
     <style>
-        :root{
-            --azul-oscuro:#0a2e5a;
-            --azul-medio:#0056a6;
-            --logo-teal:#27F5DA;
-            --bg:#e9f6f9;
-            --panel:#ffffffcc;
-            --muted:#6b7280;
-            --glass-border: rgba(255,255,255,0.6);
+        /* Palette aligned with inicio.html */
+        :root {
+            --azul-oscuro: #0a2e5a;
+            --azul-medio: #0056a6;
+            --azul-claro: #007bff;
+            --logo-teal: #27F5DA;
+            --naranja: #27F5DA;
+            --bg: #f6f8fb;
+            --panel: #ffffff;
+            --muted: #6b7280;
+            --muted-2: #94a3b8;
+            --header-bg: var(--azul-oscuro);
         }
-        *{box-sizing:border-box}
-        html,body{height:100%}
-        body{font-family:Segoe UI, Tahoma, Geneva, Verdana, sans-serif;margin:0;background:
-            linear-gradient(135deg, #e6f9f8 0%, #f3f7ff 55%, #eaf6ff 100%),
-            repeating-linear-gradient(135deg, rgba(255,255,255,0.03) 0 2px, rgba(255,255,255,0) 2px 8px);
-            color:var(--azul-oscuro);-webkit-font-smoothing:antialiased;position:relative;overflow-y:auto}
 
-        /* floating blurred shapes for depth + subtle pattern */
-        body::before, body::after{
-            content:'';position:fixed;inset:0;pointer-events:none;z-index:0;filter:blur(40px);opacity:0.5;
+        * {
+            box-sizing: border-box
         }
-        body::before{background:radial-gradient(circle at 10% 20%, rgba(39,245,218,0.18), transparent 14%), radial-gradient(circle at 90% 80%, rgba(10,46,90,0.08), transparent 20%)}
-        body::after{background:linear-gradient(120deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 30%), radial-gradient(circle at 20% 85%, rgba(2,24,63,0.04), transparent 25%)}
 
-        .wrap{max-width:920px;margin:6vh auto;padding:28px 20px;position:relative;z-index:2}
-        .header{display:flex;align-items:center;gap:14px;margin-bottom:18px}
-        .header img{height:56px;filter:drop-shadow(0 6px 18px rgba(2,24,63,0.12))}
-        .brand{font-weight:800;font-size:1.15rem}
-        .brand .helper{font-weight:600;font-size:0.85rem;color:var(--muted)}
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background: linear-gradient(180deg, var(--bg), #eef6f9);
+            color: var(--azul-oscuro);
+            -webkit-font-smoothing: antialiased
+        }
 
-        /* frosted card */
-        .panel{background:var(--panel);backdrop-filter:blur(8px) saturate(120%);-webkit-backdrop-filter:blur(8px);padding:26px;border-radius:14px;box-shadow:0 18px 50px rgba(2,24,63,0.12);border:1px solid rgba(255,255,255,0.6);position:relative;overflow:hidden}
-        .panel::after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00) 30%);mix-blend-mode:overlay;border-radius:14px}
+        .container {
+            max-width: 1200px;
+            margin: 32px auto;
+            padding: 20px
+        }
 
-        .tabs{display:flex;gap:12px;margin-bottom:16px}
-        .tab{padding:10px 16px;border-radius:999px;border:1px solid rgba(10,46,90,0.06);cursor:pointer;background:transparent;color:var(--azul-oscuro);font-weight:700;transition:all .22s}
-        .tab.active{background:linear-gradient(90deg,var(--logo-teal),#a6fff6);color:var(--azul-oscuro);transform:translateY(-2px);box-shadow:0 8px 20px rgba(39,245,218,0.12);border-color:transparent}
+        /* layout: main + sidebar */
+        .admin-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 20px;
+            align-items: start;
+            min-height: calc(100vh - 200px)
+        }
 
-        form{display:grid;gap:14px;max-width:560px}
-        .form-group{display:flex;flex-direction:column;gap:8px}
+        .panel {
+            background: var(--panel);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 20px 40px rgba(2, 24, 63, 0.06);
+            border: 1px solid rgba(2, 24, 63, 0.04)
+        }
 
-        input[type=text],input[type=email],input[type=password]{padding:12px 14px;border-radius:10px;border:1px solid rgba(10,46,90,0.08);background:rgba(255,255,255,0.8);transition:all .18s;outline:none;font-size:0.98rem}
-        input[type:text]:focus,input[type=email]:focus,input[type=password]:focus{box-shadow:0 8px 30px rgba(2,24,63,0.08);border-color:rgba(39,245,218,0.6)}
+        h1 {
+            margin: 0 0 12px;
+            font-size: 1.4rem;
+            color: var(--azul-oscuro)
+        }
 
-        .btn{padding:12px 16px;background:linear-gradient(90deg,var(--logo-teal),#8ef1e7);color:var(--azul-oscuro);border:none;border-radius:10px;cursor:pointer;font-weight:800;box-shadow:0 10px 30px rgba(39,245,218,0.08);transition:transform .16s,box-shadow .16s}
-        .btn:hover{transform:translateY(-3px);box-shadow:0 18px 40px rgba(39,245,218,0.14)}
+        .controls {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 12px
+        }
 
-        .muted{color:var(--muted);font-size:0.95rem}
-        .form-success{display:none;padding:12px;border-radius:10px;background:rgba(39,245,218,0.14);color:var(--azul-oscuro);font-weight:700}
-        .form-error{display:none;padding:12px;border-radius:10px;background:#ffecec;color:#6b0b00;font-weight:700}
+        /* tabs */
+        .tab {
+            padding: 8px 12px;
+            border-radius: 10px;
+            background: transparent;
+            border: 1px solid rgba(10, 46, 90, 0.06);
+            cursor: pointer;
+            color: var(--azul-oscuro);
+            font-weight: 600
+        }
 
-        /* helper text */
-        .helper{font-size:0.9rem;color:var(--muted)}
+        .tab.active {
+            background: var(--logo-teal);
+            color: #042533;
+            border-color: transparent;
+            box-shadow: 0 8px 20px rgba(39, 245, 218, 0.06)
+        }
 
-        /* small responsive tweaks */
-        @media (max-width:760px){
-            .wrap{margin:4vh 16px}
-            .panel{padding:18px}
+        .table-wrap {
+            overflow: auto;
+            margin-top: 12px
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            background: transparent
+        }
+
+        th,
+        td {
+            padding: 10px 10px;
+            border-bottom: 1px solid #eef4f8;
+            text-align: left;
+            font-size: 0.95rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap
+        }
+
+        th {
+            background: linear-gradient(180deg, #fbfdfe, #fbfdfe);
+            color: var(--muted);
+            font-weight: 700
+        }
+
+        td.status {
+            font-weight: 700;
+            color: var(--azul-medio)
+        }
+
+        /* column widths to avoid oversized expansion */
+        th:nth-child(1),
+        td:nth-child(1) {
+            width: 120px
+        }
+
+        th:nth-child(2),
+        td:nth-child(2) {
+            width: 160px
+        }
+
+        th:nth-child(6),
+        td:nth-child(6) {
+            width: 160px
+        }
+
+        th:nth-child(7),
+        td:nth-child(7) {
+            width: 360px
+        }
+
+        th:nth-child(8),
+        td:nth-child(8) {
+            width: 110px
+        }
+
+        /* Ampliar espacio para acciones para que los botones no se recorten */
+        th:nth-child(9),
+        td:nth-child(9) {
+            width: 260px;
+            min-width: 200px
+        }
+
+        /* message cell: allow multi-line clamp to avoid blowing row height */
+        td.message {
+            white-space: normal;
+            word-break: break-word;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            max-height: 4.5em;
+            line-height: 1.5
+        }
+
+        /* acciones: permitir wrap y mostrar botones completos */
+        .actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center
+        }
+
+        .actions .btn {
+            white-space: nowrap;
+            padding: 8px 10px;
+            font-size: 0.9rem
+        }
+
+        td.actions {
+            overflow: visible
+        }
+
+        td.message {
+            cursor: pointer
+        }
+
+        /* Buttons aligned with inicio palette */
+        .btn {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            background: var(--azul-claro);
+            color: #fff
+        }
+
+        .btn.revisar {
+            background: var(--logo-teal);
+            color: #042533
+        }
+
+        .btn.deshabilitar {
+            background: #f3f4f6;
+            color: var(--muted)
+        }
+
+        .copy-btn {
+            padding: 8px 10px;
+            border-radius: 8px;
+            border: none;
+            background: rgba(10, 46, 90, 0.9);
+            color: #fff;
+            cursor: pointer
+        }
+
+        .small {
+            font-size: 0.85rem;
+            color: var(--muted)
+        }
+
+        .topline {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px
+        }
+
+        .note {
+            color: var(--muted);
+            font-size: 0.9rem
+        }
+
+        /* Header styled like inicio */
+        .admin-header {
+            background: var(--panel);
+            border-bottom: 2px solid var(--logo-teal);
+            /* Línea turquesa del index */
+            padding: 12px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1100;
+        }
+
+        .admin-header img {
+            height: 48px;
+            display: block
+        }
+
+        .admin-header .brand {
+            font-weight: 800;
+            color: var(--azul-oscuro);
+            margin-left: 6px
+        }
+
+        .admin-header .brand small {
+            display: block;
+            font-weight: 600;
+            color: var(--muted);
+            font-size: 0.85rem
+        }
+
+        .admin-header .actions {
+            margin-left: auto;
+            display: flex;
+            gap: 8px
+        }
+
+        .admin-footer {
+            margin-top: 22px;
+            padding: 18px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.9rem
+        }
+
+        /* MODIFICACIONES PARA EL GLOSARIO/DETALLES */
+        .sidebar-panel {
+            background: linear-gradient(180deg, var(--panel), #fbfdfe);
+            border-radius: 10px;
+            padding: 18px;
+            box-shadow: 0 12px 30px rgba(2, 24, 63, 0.05);
+            height: fit-content;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: sticky;
+            top: 20px;
+        }
+
+        /* Contenedor del contenido del glosario con scroll */
+        #glossaryContent {
+            max-height: 60vh;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        /* Personalizar scrollbar para mejor apariencia */
+        #glossaryContent::-webkit-scrollbar,
+        .sidebar-panel::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #glossaryContent::-webkit-scrollbar-track,
+        .sidebar-panel::-webkit-scrollbar-track {
+            background: rgba(10, 46, 90, 0.05);
+            border-radius: 3px;
+        }
+
+        #glossaryContent::-webkit-scrollbar-thumb,
+        .sidebar-panel::-webkit-scrollbar-thumb {
+            background: var(--logo-teal);
+            border-radius: 3px;
+        }
+
+        /* Ajustar entrada del glosario para mejor presentación */
+        .glossary-entry {
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(10, 46, 90, 0.08);
+        }
+
+        .glossary-entry:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        /* Área de mensaje completo en glosario */
+        #g-msg {
+            max-height: 180px;
+            overflow-y: auto;
+            font-size: 0.95rem;
+            color: var(--dark);
+            background: rgba(10, 46, 90, 0.03);
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(10, 46, 90, 0.08);
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        /* Para pantallas más pequeñas, cambiar a una sola columna */
+        @media (max-width: 1100px) {
+            .admin-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar-panel {
+                max-height: 400px;
+                position: static;
+                margin-top: 20px;
+            }
+        }
+
+        /* Modal for full message */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2200
+        }
+
+        .modal {
+            background: var(--panel);
+            width: 90%;
+            max-width: 760px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(2, 24, 63, 0.35)
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 18px;
+            background: var(--header-bg);
+            color: #fff
+        }
+
+        .modal-body {
+            padding: 18px;
+            max-height: 60vh;
+            overflow: auto;
+            color: var(--azul-oscuro)
+        }
+
+        /* Dark theme overrides (toggle with `body.dark-theme`) */
+        /* Paleta profesional de azul oscuro para Modo Oscuro */
+        /* Dark theme con colores sólidos basados en tu index.html */
+        body.dark-theme {
+            --bg: #04152d;
+            /* Color sólido de fondo */
+            --panel: #0a2e5a;
+            /* Color sólido de paneles */
+            --azul-oscuro: #ffffff;
+            --azul-medio: #27F5DA;
+            /* Color de acento turquesa */
+            --azul-claro: #0056a6;
+            --logo-teal: #27F5DA;
+            --muted: #94a3b8;
+            --header-bg: #0a2e5a;
+        }
+
+        .theme-btn {
+            background: transparent;
+            border: 1px solid var(--logo-teal);
+            color: var(--logo-teal);
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: all 0.2s ease;
+        }
+
+        .theme-btn:hover {
+            background: var(--logo-teal);
+            color: var(--panel);
+        }
+
+        .btn-logout {
+            background: #e11d48;
+            /* Rojo corporativo para salida */
+            color: #fff !important;
+            text-decoration: none;
+            padding: 8px 18px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: opacity 0.2s;
+            border: none;
+        }
+
+        .btn-logout:hover {
+            opacity: 0.9;
+        }
+
+        /* --- Reemplazar o añadir en tu <style> --- */
+
+        /* Botón de tema circular idéntico al front */
+        #themeToggle {
+            background: transparent;
+            border: 1px solid var(--logo-teal);
+            color: #0056a6;
+            /* Icono blanco como pediste */
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        #themeToggle:hover {
+            background: var(--logo-teal);
+            color: var(--panel);
+        }
+
+        /* Forzar colores sólidos del index.html en modo oscuro */
+        body.dark-theme {
+            --bg: #04152d !important;
+            /* Fondo sólido del front */
+            --panel: #0a2e5a !important;
+            /* Paneles sólidos del front */
+            background: #04152d !important;
+        }
+
+        body.dark-theme .admin-header {
+            background: #0a2e5a;
+            border-bottom: 2px solid var(--logo-teal);
+        }
+
+        /* Tabla con colores planos */
+        body.dark-theme table th {
+            background: #061b3d;
+            /* Un tono ligeramente distinto pero sólido */
+            color: var(--logo-teal);
+        }
+
+        body.dark-theme table td {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: #e2e8f0;
+        }
+
+        /* Paneles sin efectos de degradado */
+        body.dark-theme .panel,
+        body.dark-theme .sidebar-panel,
+        body.dark-theme .admin-header {
+            background: var(--panel);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-theme #g-msg {
+            background: #04152d;
+            border-color: rgba(39, 245, 218, 0.3);
+        }
+
+        /* ========== ESTILOS PARA EL LOGIN ========== */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(10, 46, 90, 0.9), rgba(5, 88, 122, 0.8));
+        }
+
+        .login-card {
+            background: var(--panel);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 25px 50px rgba(2, 24, 63, 0.2);
+            width: 100%;
+            max-width: 420px;
+            border: 1px solid rgba(2, 24, 63, 0.1);
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-logo img {
+            height: 60px;
+            margin-bottom: 15px;
+        }
+
+        .login-logo h2 {
+            color: var(--azul-oscuro);
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .login-logo p {
+            color: var(--muted);
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--azul-oscuro);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--gris-medio);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--logo-teal);
+            box-shadow: 0 0 0 3px rgba(39, 245, 218, 0.1);
+        }
+
+        /* Contenedor especial para la contraseña */
+        .password-container {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--muted);
+            cursor: pointer;
+            padding: 5px;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+
+        .password-toggle:hover {
+            color: var(--azul-oscuro);
+        }
+
+        .password-toggle:focus {
+            outline: none;
+            color: var(--logo-teal);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--logo-teal);
+            color: #042533;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            background: #1de3c9;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(39, 245, 218, 0.2);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .login-links {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(10, 46, 90, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .login-links a {
+            color: var(--azul-claro);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .login-links a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            background: #fee;
+            color: #c00;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .success-message {
+            background: #dfd;
+            color: #070;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        /* Pestañas de login/registro */
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(10, 46, 90, 0.1);
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 12px;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--muted);
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .auth-tab.active {
+            color: var(--azul-oscuro);
+        }
+
+        .auth-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--logo-teal);
+            border-radius: 3px 3px 0 0;
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        /* Dark theme para login */
+        body.dark-theme .login-container {
+            background: linear-gradient(135deg, #04152d, #061b3d);
+        }
+
+        body.dark-theme .login-card {
+            background: var(--panel);
+            border-color: rgba(39, 245, 218, 0.1);
+        }
+
+        body.dark-theme .login-logo h2 {
+            color: #ffffff;
+        }
+
+        body.dark-theme .form-group label {
+            color: #e2e8f0;
+        }
+
+        body.dark-theme .form-group input {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
+
+        body.dark-theme .form-group input:focus {
+            border-color: var(--logo-teal);
+            box-shadow: 0 0 0 3px rgba(39, 245, 218, 0.2);
+        }
+
+        body.dark-theme .password-toggle {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        body.dark-theme .password-toggle:hover {
+            color: var(--logo-teal);
+        }
+
+        body.dark-theme .login-links {
+            border-top-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-theme .login-links a {
+            color: var(--logo-teal);
+        }
+
+        body.dark-theme .auth-tabs {
+            border-bottom-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-theme .auth-tab {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        body.dark-theme .auth-tab.active {
+            color: #ffffff;
+        }
+
+        /* Estilos para el botón de volver */
+        .back-home {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            text-decoration: none;
+            color: var(--azul-oscuro);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            background: var(--panel);
+            border-radius: 50px;
+            /* Bordes más redondeados para un look moderno */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        /* HOVER EN TEMA CLARO: Fondo turquesa, texto azul oscuro */
+        .back-home:hover {
+            transform: translateY(-2px);
+            background: var(--logo-teal);
+            color: var(--azul-oscuro);
+            box-shadow: 0 6px 20px rgba(39, 245, 218, 0.3);
+        }
+
+        /* --- AJUSTES PARA TEMA OSCURO --- */
+        body.dark-theme .back-home {
+            background: #1e293b;
+            color: var(--logo-teal);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* HOVER EN TEMA OSCURO: Fondo turquesa, texto azul muy oscuro */
+        body.dark-theme .back-home:hover {
+            background: var(--logo-teal);
+            color: #05162b;
+            /* Azul casi negro para máximo contraste sobre el turquesa */
+            box-shadow: 0 6px 20px rgba(39, 245, 218, 0.4);
         }
     </style>
 </head>
+
 <body>
-    <div class="wrap">
-        <div class="header">
-            <img src="logo.png" alt="logo">
-            <div class="brand">Red Educativa México <div class="helper">Acceso / Registro</div></div>
-        </div>
-
-        <div class="panel">
-            <div class="tabs">
-                <button id="tabLogin" class="tab active">Iniciar sesión</button>
-                <button id="tabRegister" class="tab">Registrarse</button>
+    <a href="index.html" class="back-home">
+        <i class="fas fa-arrow-left"></i>
+        <span>Volver al Inicio</span>
+    </a>
+    <!-- Página de Login -->
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-logo">
+                <img src="logo.png" alt="Red Educativa México">
+                <h2>Panel de Administración</h2>
+                <p>Acceso restringido al personal autorizado</p>
             </div>
 
-            <div id="messages">
-                <div id="msgSuccess" class="form-success" role="status" aria-live="polite"></div>
-                <div id="msgError" class="form-error" role="alert"></div>
+            <!-- Mensajes de error/éxito -->
+            <div id="loginError" class="error-message">
+                Credenciales incorrectas. Por favor, intente nuevamente.
             </div>
 
-            <div id="loginBox">
-                <form id="loginForm">
-                    <div class="form-group">
-                        <label for="loginEmail">Correo electrónico</label>
-                        <input id="loginEmail" type="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="loginPassword">Contraseña</label>
-                        <input id="loginPassword" type="password" required minlength="6">
-                    </div>
-                    <div style="display:flex;gap:8px;align-items:center">
-                        <button class="btn" type="submit">Acceder</button>
-                        <div class="muted">Si tienes cuenta, inicia sesión aquí.</div>
-                    </div>
-                </form>
+            <div id="registerSuccess" class="success-message">
+                ¡Usuario registrado exitosamente! Ahora puede iniciar sesión.
             </div>
 
-            <div id="registerBox" style="display:none;margin-top:8px">
-                <form id="registerForm">
-                    <div class="form-group">
-                        <label for="regName">Nombre completo</label>
-                        <input id="regName" type="text" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="regEmail">Correo electrónico</label>
-                        <input id="regEmail" type="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="regPassword">Contraseña (mín. 6)</label>
-                        <input id="regPassword" type="password" required minlength="6">
-                    </div>
-                    <div class="form-group">
-                        <label for="regPassword2">Repetir contraseña</label>
-                        <input id="regPassword2" type="password" required minlength="6">
-                    </div>
-                    <div style="display:flex;gap:8px;align-items:center">
-                        <button class="btn" type="submit">Crear cuenta</button>
-                        <div class="muted">Registraremos tu cuenta en la base local (demo).</div>
-                    </div>
-                </form>
+            <!-- Pestañas Login/Registro -->
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="loginTab">Iniciar Sesión</button>
+                <button class="auth-tab" id="registerTab">Registrarse</button>
             </div>
 
+            <!-- Formulario de Login -->
+            <form id="loginForm" class="auth-form active">
+                <div class="form-group">
+                    <label for="username">Usuario</label>
+                    <input type="text" id="username" name="username" placeholder="Ingrese su usuario" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <div class="password-container">
+                        <input type="password" id="password" name="password" placeholder="Ingrese su contraseña"
+                            required>
+                        <button type="button" class="password-toggle" id="togglePassword"
+                            aria-label="Mostrar contraseña">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="login-btn">
+                    <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                </button>
+            </form>
+
+            <!-- Formulario de Registro -->
+            <form id="registerForm" class="auth-form">
+                <div class="form-group">
+                    <label for="regUsername">Nombre de usuario</label>
+                    <input type="text" id="regUsername" name="regUsername" placeholder="Elija un nombre de usuario"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="regPassword">Contraseña</label>
+                    <div class="password-container">
+                        <input type="password" id="regPassword" name="regPassword"
+                            placeholder="Cree una contraseña segura" required>
+                        <button type="button" class="password-toggle" id="toggleRegPassword"
+                            aria-label="Mostrar contraseña">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirmar contraseña</label>
+                    <div class="password-container">
+                        <input type="password" id="confirmPassword" name="confirmPassword"
+                            placeholder="Repita la contraseña" required>
+                        <button type="button" class="password-toggle" id="toggleConfirmPassword"
+                            aria-label="Mostrar contraseña">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="regEmail">Correo electrónico (opcional)</label>
+                    <input type="email" id="regEmail" name="regEmail" placeholder="email@ejemplo.com">
+                </div>
+
+                <button type="submit" class="login-btn">
+                    <i class="fas fa-user-plus"></i> Registrarse
+                </button>
+            </form>
+
+            <div class="login-links">
+                <p style="font-size: 0.85rem; color: var(--muted); text-align: center;">
+                    Credenciales por defecto: admin / admin123
+                </p>
+            </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/pouchdb@7.3.0/dist/pouchdb.min.js"></script>
     <script>
-        // helper: SHA-256 hex
-        async function sha256Hex(str){
-            const enc = new TextEncoder();
-            const data = enc.encode(str);
-            const hash = await crypto.subtle.digest('SHA-256', data);
-            const arr = Array.from(new Uint8Array(hash));
-            return arr.map(b=>b.toString(16).padStart(2,'0')).join('');
-        }
 
-        document.addEventListener('DOMContentLoaded', function(){
-            const tabLogin = document.getElementById('tabLogin');
-            const tabRegister = document.getElementById('tabRegister');
-            const loginBox = document.getElementById('loginBox');
-            const registerBox = document.getElementById('registerBox');
-            const msgSuccess = document.getElementById('msgSuccess');
-            const msgError = document.getElementById('msgError');
 
-            function showSuccess(txt){ msgSuccess.textContent = txt; msgSuccess.style.display = 'block'; setTimeout(()=>msgSuccess.style.display='none',6000); }
-            function showError(txt){ msgError.textContent = txt; msgError.style.display = 'block'; setTimeout(()=>msgError.style.display='none',8000); }
 
-            tabLogin.addEventListener('click', ()=>{ tabLogin.classList.add('active'); tabRegister.classList.remove('active'); loginBox.style.display='block'; registerBox.style.display='none'; });
-            tabRegister.addEventListener('click', ()=>{ tabRegister.classList.add('active'); tabLogin.classList.remove('active'); registerBox.style.display='block'; loginBox.style.display='none'; });
+        // Sistema de Login y Registro
+        document.addEventListener('DOMContentLoaded', function () {
+            // Base de datos para usuarios (PouchDB)
+            const usersDB = new PouchDB('rem-users');
 
-            // init PouchDB for users
-            let db = null;
-            if (window.PouchDB) db = new PouchDB('rem-users');
+            // Usuario admin por defecto (solo se crea si no existe)
+            const defaultAdmin = {
+                _id: 'user_admin',
+                username: 'admin',
+                password: 'admin123',
+                email: '',
+                createdAt: new Date().toISOString(),
+                role: 'admin'
+            };
 
-            const loginForm = document.getElementById('loginForm');
-            const registerForm = document.getElementById('registerForm');
-
-            loginForm.addEventListener('submit', async function(e){
-                e.preventDefault();
-                const email = document.getElementById('loginEmail').value.trim().toLowerCase();
-                const password = document.getElementById('loginPassword').value;
-                if (!email || !password) return showError('Completa email y contraseña.');
-                if (!db) return showError('Base de datos no disponible.');
-                try{
-                    const id = 'user_' + encodeURIComponent(email);
-                    const doc = await db.get(id);
-                    const hash = await sha256Hex(password);
-                    if (doc.passwordHash === hash){
-                        // success: set session key and redirect to admin
-                        localStorage.setItem('rem-user', id);
-                        showSuccess('Acceso correcto. Redirigiendo...');
-                        setTimeout(()=>{ window.location.href = './admin.html'; }, 800);
-                    } else {
-                        showError('Credenciales incorrectas.');
-                    }
-                }catch(err){
-                    showError('Usuario no encontrado. Por favor regístrate.');
+            // Verificar y crear usuario admin por defecto
+            usersDB.get('user_admin').catch(function (err) {
+                if (err.status === 404) {
+                    // El usuario admin no existe, crearlo
+                    usersDB.put(defaultAdmin).then(function () {
+                        console.log('Usuario admin creado por defecto');
+                    }).catch(function (err) {
+                        console.error('Error al crear usuario admin:', err);
+                    });
                 }
             });
 
-            registerForm.addEventListener('submit', async function(e){
-                e.preventDefault();
-                const name = document.getElementById('regName').value.trim();
-                const email = document.getElementById('regEmail').value.trim().toLowerCase();
-                const pw = document.getElementById('regPassword').value;
-                const pw2 = document.getElementById('regPassword2').value;
-                if (!name || !email || !pw) return showError('Completa todos los campos.');
-                if (pw !== pw2) return showError('Las contraseñas no coinciden.');
-                if (!db) return showError('Base de datos no disponible.');
-                try{
-                    const id = 'user_' + encodeURIComponent(email);
-                    // check exists
-                    const existing = await db.get(id).catch(()=>null);
-                    if (existing) return showError('Ya existe una cuenta con ese correo.');
-                    const hash = await sha256Hex(pw);
-                    const doc = { _id: id, name: name, email: email, passwordHash: hash, createdAt: new Date().toISOString() };
-                    await db.put(doc);
-                    showSuccess('Cuenta creada. Ya puedes iniciar sesión.');
-                    registerForm.reset();
-                    tabLogin.click();
-                }catch(err){
-                    console.error(err);
-                    showError('Error al crear la cuenta.');
+            // Elementos del login/registro
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const loginTab = document.getElementById('loginTab');
+            const registerTab = document.getElementById('registerTab');
+            const loginError = document.getElementById('loginError');
+            const registerSuccess = document.getElementById('registerSuccess');
+            const loginContainer = document.querySelector('.login-container');
+            // const adminPanel = document.getElementById('adminPanel');
+
+            // Funciones para mostrar/ocultar pestañas
+            function showLoginForm() {
+                loginTab.classList.add('active');
+                registerTab.classList.remove('active');
+                loginForm.classList.add('active');
+                registerForm.classList.remove('active');
+                loginError.classList.remove('show');
+                registerSuccess.classList.remove('show');
+                document.getElementById('username').focus();
+            }
+
+            function showRegisterForm() {
+                registerTab.classList.add('active');
+                loginTab.classList.remove('active');
+                registerForm.classList.add('active');
+                loginForm.classList.remove('active');
+                loginError.classList.remove('show');
+                registerSuccess.classList.remove('show');
+                document.getElementById('regUsername').focus();
+            }
+
+            // Event listeners para pestañas
+            loginTab.addEventListener('click', showLoginForm);
+            registerTab.addEventListener('click', showRegisterForm);
+
+            // Funciones para mostrar/ocultar contraseña
+            function setupPasswordToggle(inputId, buttonId) {
+                const input = document.getElementById(inputId);
+                const button = document.getElementById(buttonId);
+
+                if (input && button) {
+                    button.addEventListener('click', function () {
+                        const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                        input.setAttribute('type', type);
+
+                        const icon = this.querySelector('i');
+                        if (type === 'text') {
+                            icon.className = 'fas fa-eye-slash';
+                            this.setAttribute('aria-label', 'Ocultar contraseña');
+                        } else {
+                            icon.className = 'fas fa-eye';
+                            this.setAttribute('aria-label', 'Mostrar contraseña');
+                        }
+                    });
                 }
+            }
+
+            // Configurar todos los botones de mostrar contraseña
+            setupPasswordToggle('password', 'togglePassword');
+            setupPasswordToggle('regPassword', 'toggleRegPassword');
+            setupPasswordToggle('confirmPassword', 'toggleConfirmPassword');
+
+            // Manejar envío del formulario de login
+            // Manejar envío del formulario de login
+            loginForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                const username = document.getElementById('username').value.trim();
+                const password = document.getElementById('password').value.trim();
+
+                try {
+                    // 1. Buscar usuario en la base de datos
+                    let result = await usersDB.query('users/byUsername', {
+                        key: username,
+                        include_docs: true
+                    }).catch(async function () {
+                        // Si la vista no existe, buscamos directamente
+                        const allDocs = await usersDB.allDocs({ include_docs: true });
+                        return {
+                            rows: allDocs.rows.filter(row =>
+                                row.doc && row.doc.username === username
+                            )
+                        };
+                    });
+
+                    // 2. Verificar si se encontró el usuario
+                    if (result.rows.length > 0) {
+                        const user = result.rows[0].doc;
+
+                        // 3. Validar contraseña
+                        if (user.password === password) {
+                            // LOGIN EXITOSO
+                            loginError.classList.remove('show');
+
+                            // Guardar sesión
+                            localStorage.setItem('adminLoggedIn', 'true');
+                            localStorage.setItem('adminUser', user.username);
+
+                            // REDIRECCIÓN REAL: Aquí se detiene el código y cambia de página
+                            window.location.href = './admin.html';
+                            return; // Importante para detener la ejecución
+                        } else {
+                            // Contraseña incorrecta
+                            showLoginError();
+                        }
+                    } else {
+                        // Usuario no encontrado
+                        showLoginError();
+                    }
+                } catch (error) {
+                    console.error('Error en login:', error);
+                    showLoginError();
+                }
+            });
+
+            function showLoginError() {
+                loginError.classList.add('show');
+                document.getElementById('password').value = '';
+                document.getElementById('password').focus();
+            }
+
+            // Manejar envío del formulario de registro
+            registerForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                const username = document.getElementById('regUsername').value.trim();
+                const password = document.getElementById('regPassword').value.trim();
+                const confirmPassword = document.getElementById('confirmPassword').value.trim();
+                const email = document.getElementById('regEmail').value.trim();
+
+                // Validaciones
+                if (!username || !password) {
+                    alert('Por favor complete todos los campos obligatorios');
+                    return;
+                }
+
+                if (password !== confirmPassword) {
+                    alert('Las contraseñas no coinciden');
+                    return;
+                }
+
+                if (password.length < 6) {
+                    alert('La contraseña debe tener al menos 6 caracteres');
+                    return;
+                }
+
+                try {
+                    // Verificar si el usuario ya existe
+                    const result = await usersDB.query('users/byUsername', {
+                        key: username,
+                        include_docs: true
+                    }).catch(async function () {
+                        const allDocs = await usersDB.allDocs({ include_docs: true });
+                        return {
+                            rows: allDocs.rows.filter(row =>
+                                row.doc && row.doc.username === username
+                            )
+                        };
+                    });
+
+                    if (result.rows.length > 0) {
+                        alert('El nombre de usuario ya está en uso');
+                        return;
+                    }
+
+                    // Crear nuevo usuario
+                    const newUser = {
+                        _id: 'user_' + Date.now(),
+                        username: username,
+                        password: password,
+                        email: email,
+                        createdAt: new Date().toISOString(),
+                        role: 'user'
+                    };
+
+                    await usersDB.put(newUser);
+
+                    // Mostrar mensaje de éxito
+                    registerSuccess.classList.add('show');
+                    registerSuccess.textContent = '¡Usuario registrado exitosamente! Ahora puede iniciar sesión.';
+
+                    // Limpiar formulario
+                    registerForm.reset();
+
+                    // Cambiar a pestaña de login después de 2 segundos
+                    setTimeout(() => {
+                        showLoginForm();
+                        document.getElementById('username').value = username;
+                        document.getElementById('password').focus();
+                    }, 2000);
+
+                } catch (error) {
+                    console.error('Error en registro:', error);
+                    alert('Error al registrar usuario. Por favor intente nuevamente.');
+                }
+            });
+
+            // Botón de cerrar sesión
+            document.getElementById('logoutBtn').addEventListener('click', function (e) {
+                e.preventDefault();
+                if (confirm('¿Está seguro de que desea cerrar sesión?')) {
+                    localStorage.removeItem('adminLoggedIn');
+                    localStorage.removeItem('currentUser');
+                    adminPanel.style.display = 'none';
+                    loginContainer.style.display = 'flex';
+                    loginForm.reset();
+                    showLoginForm();
+                }
+            });
+
+            // Verificar si ya está logueado
+            if (localStorage.getItem('adminLoggedIn') === 'true') {
+                loginContainer.style.display = 'none';
+                adminPanel.style.display = 'block';
+                initTheme();
+                initAdminPanel();
+            } else {
+                // Enfocar el campo de usuario al cargar
+                document.getElementById('username').focus();
+            }
+
+            // Función para inicializar el panel de administración
+            function initAdminPanel() {
+                const db = new PouchDB('rem-contactos');
+                const tbody = document.querySelector('#recordsTable tbody');
+                const docsCache = new Map();
+                const glossary = {
+                    'inscripción': 'Consultas relacionadas con inscripción o procesos de admisión.',
+                    'inscripcion': 'Consultas relacionadas con inscripción o procesos de admisión.',
+                    'consulta': 'Preguntas generales sobre programas, temarios o horarios.',
+                    'soporte': 'Reportes técnicos o solicitud de ayuda para acceso/sistemas.',
+                    'reclamo': 'Quejas formales sobre servicios o procesos.',
+                    'sugerencia': 'Propuestas de mejora o retroalimentación.',
+                    'servicio': 'Solicitudes relacionadas con la contratación, contratación o información de servicios (asesoría, evaluación).',
+                    'ruta286': 'Consultas relacionadas con la Ruta 286 / Acuerdo 286: homologación y trámites asociados.',
+                    'ruta 286': 'Consultas relacionadas con la Ruta 286 / Acuerdo 286: homologación y trámites asociados.',
+                    'ruta-286': 'Consultas relacionadas con la Ruta 286 / Acuerdo 286: homologación y trámites asociados.',
+                    'información': 'Peticiones de información general sobre programas y requisitos.',
+                    'informacion': 'Peticiones de información general sobre programas y requisitos.',
+                    'info': 'Peticiones de información general sobre programas y requisitos.'
+                };
+                const tabs = Array.from(document.querySelectorAll('#statusTabs .tab'));
+                const refreshBtn = document.getElementById('refreshBtn');
+                let currentFilter = 'all';
+
+                function renderRow(doc) {
+                    const tr = document.createElement('tr');
+                    const idCell = doc._id || '';
+                    const created = doc.createdAt ? new Date(doc.createdAt).toLocaleString() : '';
+                    const nombre = doc.nombre || '';
+                    const email = doc.email || '';
+                    const telefono = doc.telefono || '';
+                    const asunto = doc.asunto || '';
+                    const mensajeFull = doc.mensaje || '';
+                    const mensaje = mensajeFull.length > 180 ? mensajeFull.slice(0, 180) + '…' : mensajeFull;
+                    const status = doc.status || 'pendiente';
+                    tr.dataset.id = idCell || '';
+                    tr.dataset.asunto = asunto;
+
+                    tr.innerHTML = `
+                        <td class="small">${idCell}</td>
+                        <td>${created}</td>
+                        <td>${escapeHtml(nombre)}</td>
+                        <td>${escapeHtml(email)}</td>
+                        <td>${escapeHtml(telefono)}</td>
+                        <td>${escapeHtml(asunto)}</td>
+                        <td class="message" title="${escapeHtml(mensajeFull)}">${escapeHtml(mensaje)}</td>
+                        <td class="status">${status}</td>
+                        <td class="actions"></td>
+                    `;
+
+                    const actionsTd = tr.querySelector('.actions');
+                    const btnVer = document.createElement('button');
+                    btnVer.className = 'btn revisar';
+                    btnVer.textContent = 'Ver';
+                    btnVer.addEventListener('click', (e) => { e.stopPropagation(); showMessageModal(doc); });
+                    actionsTd.appendChild(btnVer);
+
+                    if (status !== 'revisada') {
+                        const btnRev = document.createElement('button');
+                        btnRev.className = 'btn revisar';
+                        btnRev.textContent = 'Marcar revisada';
+                        btnRev.addEventListener('click', (e) => { e.stopPropagation(); changeStatus(doc, 'revisada'); });
+                        actionsTd.appendChild(btnRev);
+                    }
+                    if (status === 'revisada') {
+                        const btnPend = document.createElement('button');
+                        btnPend.className = 'btn deshabilitar';
+                        btnPend.textContent = 'Marcar pendiente';
+                        btnPend.addEventListener('click', () => changeStatus(doc, 'pendiente'));
+                        actionsTd.appendChild(btnPend);
+                    }
+                    if (status !== 'deshabilitada') {
+                        const btnDes = document.createElement('button');
+                        btnDes.className = 'btn deshabilitar';
+                        btnDes.textContent = 'Deshabilitar';
+                        btnDes.addEventListener('click', (e) => { e.stopPropagation(); changeStatus(doc, 'deshabilitada'); });
+                        actionsTd.appendChild(btnDes);
+                    }
+
+                    return tr;
+                }
+
+                function escapeHtml(s) {
+                    return String(s || '').replace(/[&<>\"']/g, function (m) {
+                        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;', "'": "&#39;" }[m];
+                    });
+                }
+
+                const exportBtn = document.getElementById('exportBtn');
+
+                function exportToCSV() {
+                    db.allDocs({ include_docs: true }).then(res => {
+                        const docs = res.rows
+                            .map(r => r.doc)
+                            .filter(d => d && d._id && d._id.indexOf('contact_') === 0);
+
+                        if (docs.length === 0) {
+                            alert("No hay datos para exportar");
+                            return;
+                        }
+
+                        const headers = ["ID", "FECHA", "NOMBRE", "EMAIL", "TELEFONO", "ASUNTO", "MENSAJE", "ESTADO"];
+
+                        const csvRows = [
+                            headers.join(','),
+                            ...docs.map(doc => {
+                                const created = doc.createdAt ? new Date(doc.createdAt).toLocaleString() : '';
+
+                                const clean = (text) => {
+                                    if (!text) return '""';
+                                    let t = String(text);
+                                    t = t.replace(/(\r\n|\n|\r)/gm, " ");
+                                    t = t.replace(/"/g, '""');
+                                    return `"${t}"`;
+                                };
+
+                                return [
+                                    clean(doc._id),
+                                    clean(created),
+                                    clean(doc.nombre),
+                                    clean(doc.email),
+                                    clean(doc.telefono),
+                                    clean(doc.asunto),
+                                    clean(doc.mensaje),
+                                    clean(doc.status || 'pendiente')
+                                ].join(',');
+                            })
+                        ];
+
+                        const csvContent = "\uFEFF" + csvRows.join("\n");
+                        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                        const url = URL.createObjectURL(blob);
+
+                        const link = document.createElement("a");
+                        const nombreArchivo = `Reporte_Contactos_REM_${new Date().toISOString().slice(0, 10)}.csv`;
+
+                        link.setAttribute("href", url);
+                        link.setAttribute("download", nombreArchivo);
+                        link.style.visibility = 'hidden';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+
+                    }).catch(err => {
+                        console.error("Error al exportar:", err);
+                        alert("Ocurrió un error al generar el archivo.");
+                    });
+                }
+
+                if (exportBtn) exportBtn.addEventListener('click', exportToCSV);
+
+                function loadAll() {
+                    tbody.innerHTML = '<tr><td colspan="9" class="small">Cargando...</td></tr>';
+                    db.allDocs({ include_docs: true, descending: true }).then(res => {
+                        const rows = res.rows.map(r => r.doc).filter(d => d && d._id && d._id.indexOf('contact_') === 0);
+                        docsCache.clear();
+                        rows.forEach(d => { if (d && d._id) docsCache.set(d._id, d); });
+                        renderList(rows);
+                    }).catch(err => {
+                        tbody.innerHTML = '<tr><td colspan="9" class="small">Error al leer la base local.</td></tr>';
+                        console.error(err);
+                    });
+                }
+
+                function renderList(docs) {
+                    const filtered = docs.filter(d => {
+                        const s = d.status || 'pendiente';
+                        if (currentFilter === 'all') return true;
+                        return s === currentFilter;
+                    });
+                    if (!filtered.length) {
+                        tbody.innerHTML = '<tr><td colspan="9" class="small">No hay registros.</td></tr>';
+                        return;
+                    }
+                    tbody.innerHTML = '';
+                    filtered.forEach(doc => {
+                        tbody.appendChild(renderRow(doc));
+                    });
+                }
+
+                function changeStatus(doc, newStatus) {
+                    const copy = Object.assign({}, doc);
+                    copy.status = newStatus;
+                    db.put(copy).then(() => {
+                        loadAll();
+                    }).catch(err => {
+                        console.error('Error updating', err);
+                        alert('Error al actualizar el estado.');
+                    });
+                }
+
+                tbody.addEventListener('click', function (e) {
+                    const tr = e.target.closest('tr');
+                    if (!tr) return;
+                    const id = tr.dataset.id;
+                    if (!id) return;
+                    const doc = docsCache.get(id);
+                    if (!doc) return;
+                    showSidebarFor(doc);
+                });
+
+                function showSidebarFor(doc) {
+                    const asunto = (doc.asunto || '').toString();
+                    const asuntoNorm = asunto.toLowerCase();
+                    const defKey = Object.keys(glossary).find(k => asuntoNorm.includes(k));
+                    const defin = defKey ? glossary[defKey] : 'No hay una definición predefinida para este asunto. Puedes añadirla al glosario.';
+                    document.getElementById('g-asunto').textContent = asunto || '(sin asunto)';
+                    document.getElementById('g-def').textContent = defin;
+                    document.getElementById('g-msg').textContent = doc.mensaje || '';
+                    document.getElementById('g-contact').textContent = (doc.nombre ? doc.nombre + ' — ' : '') + (doc.email ? doc.email : '');
+
+                    const revBtn = document.getElementById('g-mark-reviewed');
+                    const disBtn = document.getElementById('g-disable');
+                    revBtn.onclick = function () { changeStatus(doc, 'revisada'); };
+                    disBtn.onclick = function () { changeStatus(doc, 'deshabilitada'); };
+                }
+
+                tabs.forEach(t => t.addEventListener('click', () => {
+                    tabs.forEach(x => x.classList.remove('active'));
+                    t.classList.add('active');
+                    currentFilter = t.dataset.status || 'all';
+                    loadAll();
+                }));
+
+                refreshBtn.addEventListener('click', loadAll);
+
+                loadAll();
+
+                db.changes({ live: true, since: 'now', include_docs: true }).on('change', loadAll);
+
+                const modal = document.getElementById('msgModal');
+                const modalTitle = document.getElementById('modalTitle');
+                const modalMsg = document.getElementById('modalMsg');
+                const modalClose = document.getElementById('modalClose');
+                const modalCopy = document.getElementById('modalCopy');
+
+                function showMessageModal(doc) {
+                    modalTitle.textContent = doc.asunto || 'Mensaje completo';
+                    modalMsg.textContent = doc.mensaje || '';
+                    modal.style.display = 'flex';
+                }
+                window.showMessageModal = showMessageModal;
+
+                function closeModal() { modal.style.display = 'none'; }
+                modalClose.addEventListener('click', closeModal);
+                modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
+                modalCopy.addEventListener('click', function () { navigator.clipboard.writeText(modalMsg.textContent || '').then(() => { alert('Mensaje copiado'); }).catch(() => alert('No se pudo copiar')); });
+            }
+
+            // Función para inicializar el tema
+            function initTheme() {
+                const themeToggle = document.getElementById('themeToggle');
+                const bodyEl = document.body;
+
+                function updateTheme(isDark) {
+                    const icon = themeToggle.querySelector('i');
+                    if (isDark) {
+                        bodyEl.classList.add('dark-theme');
+                        icon.className = 'fas fa-sun';
+                    } else {
+                        bodyEl.classList.remove('dark-theme');
+                        icon.className = 'fas fa-moon';
+                    }
+                }
+
+                const currentTheme = localStorage.getItem('admin-theme') === 'dark';
+                updateTheme(currentTheme);
+
+                themeToggle.addEventListener('click', () => {
+                    const isDarkNow = !bodyEl.classList.contains('dark-theme');
+                    localStorage.setItem('admin-theme', isDarkNow ? 'dark' : 'light');
+                    updateTheme(isDarkNow);
+                });
+            }
+
+            // Crear vista para búsqueda de usuarios por nombre de usuario
+            usersDB.put({
+                _id: '_design/users',
+                views: {
+                    byUsername: {
+                        map: function (doc) {
+                            if (doc.username) {
+                                emit(doc.username, null);
+                            }
+                        }.toString()
+                    }
+                }
+            }).catch(function (err) {
+                // Ignorar error si ya existe
             });
         });
     </script>
 </body>
+
 </html>
