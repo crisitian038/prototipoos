@@ -2698,6 +2698,15 @@ body.dark-theme .modal .btn-naranja {
 
     <script src="https://cdn.jsdelivr.net/npm/pouchdb@7.3.0/dist/pouchdb.min.js"></script>
     <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .then(reg => console.log('Service Worker registrado', reg))
+        .catch(err => console.error('Error al registrar', err));
+    });
+  }
+</script>
+    <script>
         // Datos de las carreras
         const carrerasData = [
             {
