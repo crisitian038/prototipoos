@@ -23,7 +23,7 @@
             --muted-2: #94a3b8;
             --header-bg: var(--azul-oscuro);
         }
-        
+
 
 
         * {
@@ -47,11 +47,11 @@
         /* layout: main + sidebar */
         .admin-grid {
             display: grid;
-            grid-template-columns: 1fr 320px;
+            grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
             gap: 20px;
             align-items: start;
-            min-height: calc(100vh - 200px)
         }
+
 
         .panel {
             background: var(--panel);
@@ -503,11 +503,13 @@
             border-radius: 10px;
             padding: 18px;
             box-shadow: 0 12px 30px rgba(2, 24, 63, 0.05);
-            height: fit-content;
-            max-height: 80vh;
-            overflow-y: auto;
+
             position: sticky;
-            top: 20px;
+            top: 90px;
+            /* altura real del header */
+
+            max-height: calc(100vh - 110px);
+            overflow-y: auto;
         }
 
         /* Contenedor del contenido del glosario con scroll */
@@ -935,6 +937,34 @@
                 min-width: 0;
             }
         }
+
+        /* ===== TABLAS RESPONSIVAS ===== */
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            min-width: 900px;
+        }
+
+        @media (max-width: 1024px) {
+            table {
+                min-width: 1100px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .admin-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar-panel {
+                position: relative;
+                top: 0;
+                max-height: none;
+                margin-top: 20px;
+            }
+        }
     </style>
 </head>
 
@@ -1234,140 +1264,140 @@
 
     <script src="https://cdn.jsdelivr.net/npm/pouchdb@7.3.0/dist/pouchdb.min.js"></script>
     <script>
-    (function () {
-        // Bases de datos
-        const contactsDB = new PouchDB('rem-contactos');
-        const usersDB = new PouchDB('rem-users');
-        const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{"username": "admin", "role": "admin"}');
-        
-        // Elementos del DOM
-        const tbodyContacts = document.querySelector('#recordsTable tbody');
-        const tbodyUsers = document.querySelector('#usersTable tbody');
-        const docsCache = new Map();
-        const usersCache = new Map();
-        
-        // Variables de paginación
-        let currentContactsPage = 1;
-        let currentUsersPage = 1;
-        let contactsPerPage = 10;
-        let usersPerPage = 10;
-        let totalContacts = 0;
-        let totalUsers = 0;
-        
-        // ========== VARIABLES PARA FILTROS ==========
-        let contactsSearchTerm = '';
-        let contactsDateFilter = 'all';
-        let contactsSortOrder = 'newest';
-        
-        let usersSearchTerm = '';
-        let usersDateFilter = 'all';
-        let usersSortOrder = 'newest';
-                // Pestañas principales
-        const tabContactos = document.getElementById('tabContactos');
-        const tabUsuarios = document.getElementById('tabUsuarios');
-        const seccionContactos = document.getElementById('seccionContactos');
-        const seccionUsuarios = document.getElementById('seccionUsuarios');
-        
-        // Elementos del sidebar
-        const sidebarTitle = document.getElementById('sidebarTitle');
-        const sidebarSubtitle = document.getElementById('sidebarSubtitle');
-        const sidebarActions = document.getElementById('sidebarActions');
-        
-        // Selectores de items por página
-        document.getElementById('contactsPerPage').addEventListener('change', function (e) {
-            contactsPerPage = parseInt(e.target.value);
-            currentContactsPage = 1;
-            loadAllContacts();
-        });
-        
-        document.getElementById('usersPerPage').addEventListener('change', function (e) {
-            usersPerPage = parseInt(e.target.value);
-            currentUsersPage = 1;
-            loadAllUsers();
-        });
-        
-        // Funciones para cambiar entre secciones
-        function showContactos() {
-            tabContactos.classList.add('active');
-            tabUsuarios.classList.remove('active');
-            seccionContactos.style.display = 'block';
-            seccionUsuarios.style.display = 'none';
-            
-            // Actualizar sidebar para contactos
-            sidebarTitle.textContent = 'Glosario / Detalle';
-            sidebarSubtitle.textContent = 'Selecciona un registro para ver el glosario y detalles del asunto.';
-            sidebarActions.innerHTML = `
+        (function () {
+            // Bases de datos
+            const contactsDB = new PouchDB('rem-contactos');
+            const usersDB = new PouchDB('rem-users');
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{"username": "admin", "role": "admin"}');
+
+            // Elementos del DOM
+            const tbodyContacts = document.querySelector('#recordsTable tbody');
+            const tbodyUsers = document.querySelector('#usersTable tbody');
+            const docsCache = new Map();
+            const usersCache = new Map();
+
+            // Variables de paginación
+            let currentContactsPage = 1;
+            let currentUsersPage = 1;
+            let contactsPerPage = 10;
+            let usersPerPage = 10;
+            let totalContacts = 0;
+            let totalUsers = 0;
+
+            // ========== VARIABLES PARA FILTROS ==========
+            let contactsSearchTerm = '';
+            let contactsDateFilter = 'all';
+            let contactsSortOrder = 'newest';
+
+            let usersSearchTerm = '';
+            let usersDateFilter = 'all';
+            let usersSortOrder = 'newest';
+            // Pestañas principales
+            const tabContactos = document.getElementById('tabContactos');
+            const tabUsuarios = document.getElementById('tabUsuarios');
+            const seccionContactos = document.getElementById('seccionContactos');
+            const seccionUsuarios = document.getElementById('seccionUsuarios');
+
+            // Elementos del sidebar
+            const sidebarTitle = document.getElementById('sidebarTitle');
+            const sidebarSubtitle = document.getElementById('sidebarSubtitle');
+            const sidebarActions = document.getElementById('sidebarActions');
+
+            // Selectores de items por página
+            document.getElementById('contactsPerPage').addEventListener('change', function (e) {
+                contactsPerPage = parseInt(e.target.value);
+                currentContactsPage = 1;
+                loadAllContacts();
+            });
+
+            document.getElementById('usersPerPage').addEventListener('change', function (e) {
+                usersPerPage = parseInt(e.target.value);
+                currentUsersPage = 1;
+                loadAllUsers();
+            });
+
+            // Funciones para cambiar entre secciones
+            function showContactos() {
+                tabContactos.classList.add('active');
+                tabUsuarios.classList.remove('active');
+                seccionContactos.style.display = 'block';
+                seccionUsuarios.style.display = 'none';
+
+                // Actualizar sidebar para contactos
+                sidebarTitle.textContent = 'Glosario / Detalle';
+                sidebarSubtitle.textContent = 'Selecciona un registro para ver el glosario y detalles del asunto.';
+                sidebarActions.innerHTML = `
                 <button id="g-mark-reviewed" class="btn revisar">Marcar revisada</button>
                 <button id="g-disable" class="btn deshabilitar">Deshabilitar</button>
             `;
-            
-            // Recargar contactos
-            loadAllContacts();
-        }
-        
-        function showUsuarios() {
-            tabContactos.classList.remove('active');
-            tabUsuarios.classList.add('active');
-            seccionContactos.style.display = 'none';
-            seccionUsuarios.style.display = 'block';
-            
-            // Actualizar sidebar para usuarios
-            sidebarTitle.textContent = 'Detalles del Usuario';
-            sidebarSubtitle.textContent = 'Selecciona un usuario para ver sus detalles.';
-            sidebarActions.innerHTML = `
+
+                // Recargar contactos
+                loadAllContacts();
+            }
+
+            function showUsuarios() {
+                tabContactos.classList.remove('active');
+                tabUsuarios.classList.add('active');
+                seccionContactos.style.display = 'none';
+                seccionUsuarios.style.display = 'block';
+
+                // Actualizar sidebar para usuarios
+                sidebarTitle.textContent = 'Detalles del Usuario';
+                sidebarSubtitle.textContent = 'Selecciona un usuario para ver sus detalles.';
+                sidebarActions.innerHTML = `
                 <button id="g-activate-user" class="btn btn-activar">Activar Usuario</button>
                 <button id="g-deactivate-user" class="btn btn-desactivar">Desactivar Usuario</button>
                 <button id="g-edit-user" class="btn btn-editar">Editar Usuario</button>
             `;
-            
-            // Recargar usuarios
-            loadAllUsers();
-        }
-        
-        // Event listeners para pestañas principales
-        tabContactos.addEventListener('click', showContactos);
-        tabUsuarios.addEventListener('click', showUsuarios);
-        
-        // Botón para agregar nuevo usuario
-        document.getElementById('addUserBtn').addEventListener('click', function () {
-            openUserModal(null, 'Nuevo Usuario');
-        });
-                // ========== FUNCIONES PARA CONTACTOS ==========
-        const glossary = {
-            'inscripción': 'Consultas relacionadas con inscripción o procesos de admisión.',
-            'inscripcion': 'Consultas relacionadas con inscripción o procesos de admisión.',
-            'consulta': 'Preguntas generales sobre programas, temarios o horarios.',
-            'soporte': 'Reportes técnicos o solicitud de ayuda para acceso/sistemas.',
-            'reclamo': 'Quejas formales sobre servicios o procesos.',
-            'sugerencia': 'Propuestas de mejora o retroalimentación.',
-            'servicio': 'Solicitudes relacionadas con la contratación, contratación o información de servicios (asesoría, evaluación).',
-            'ruta286': 'Consultas relacionadas con la Ruta 286 / Acuerdo 286: homologación y trámites asociados.',
-            'ruta 286': 'Consultas relacionadas con la Ruta 286 / Acuerdo 286: homologación y trámites asociados.',
-            'ruta-286': 'Consultas relacionadas con la Ruta 286 / Acuerdo 286: homologación y trámites asociados.',
-            'información': 'Peticiones de información general sobre programas y requisitos.',
-            'informacion': 'Peticiones de información general sobre programas y requisitos.',
-            'info': 'Peticiones de información general sobre programas y requisitos.'
-        };
-        
-        const tabs = Array.from(document.querySelectorAll('#statusTabs .tab'));
-        const refreshBtn = document.getElementById('refreshBtn');
-        let currentFilter = 'all';
-        
-        function renderContactRow(doc) {
-            const tr = document.createElement('tr');
-            const idCell = doc._id || '';
-            const created = doc.createdAt ? new Date(doc.createdAt).toLocaleString() : '';
-            const nombre = doc.nombre || '';
-            const email = doc.email || '';
-            const telefono = doc.telefono || '';
-            const asunto = doc.asunto || '';
-            const mensajeFull = doc.mensaje || '';
-            const mensaje = mensajeFull.length > 180 ? mensajeFull.slice(0, 180) + '…' : mensajeFull;
-            const status = doc.status || 'pendiente';
-            tr.dataset.id = idCell || '';
-            tr.dataset.asunto = asunto;
-        
-            tr.innerHTML = `
+
+                // Recargar usuarios
+                loadAllUsers();
+            }
+
+            // Event listeners para pestañas principales
+            tabContactos.addEventListener('click', showContactos);
+            tabUsuarios.addEventListener('click', showUsuarios);
+
+            // Botón para agregar nuevo usuario
+            document.getElementById('addUserBtn').addEventListener('click', function () {
+                openUserModal(null, 'Nuevo Usuario');
+            });
+            // ========== FUNCIONES PARA CONTACTOS ==========
+            const glossary = {
+                'inscripción': 'Consultas relacionadas con inscripción o procesos de admisión.',
+                'inscripcion': 'Consultas relacionadas con inscripción o procesos de admisión.',
+                'consulta': 'Preguntas generales sobre programas, temarios o horarios.',
+                'soporte': 'Reportes técnicos o solicitud de ayuda para acceso/sistemas.',
+                'reclamo': 'Quejas formales sobre servicios o procesos.',
+                'sugerencia': 'Propuestas de mejora o retroalimentación.',
+                'servicio': 'Solicitudes relacionadas con la contratación, contratación o información de servicios (asesoría, evaluación).',
+                'ruta286': 'Consultas relacionadas con la Ruta 286 / Acuerdo 286: homologación y trámites asociados.',
+                'ruta 286': 'Consultas relacionadas con la Ruta 286 / Acuerdo 286: homologación y trámites asociados.',
+                'ruta-286': 'Consultas relacionadas con la Ruta 286 / Acuerdo 286: homologación y trámites asociados.',
+                'información': 'Peticiones de información general sobre programas y requisitos.',
+                'informacion': 'Peticiones de información general sobre programas y requisitos.',
+                'info': 'Peticiones de información general sobre programas y requisitos.'
+            };
+
+            const tabs = Array.from(document.querySelectorAll('#statusTabs .tab'));
+            const refreshBtn = document.getElementById('refreshBtn');
+            let currentFilter = 'all';
+
+            function renderContactRow(doc) {
+                const tr = document.createElement('tr');
+                const idCell = doc._id || '';
+                const created = doc.createdAt ? new Date(doc.createdAt).toLocaleString() : '';
+                const nombre = doc.nombre || '';
+                const email = doc.email || '';
+                const telefono = doc.telefono || '';
+                const asunto = doc.asunto || '';
+                const mensajeFull = doc.mensaje || '';
+                const mensaje = mensajeFull.length > 180 ? mensajeFull.slice(0, 180) + '…' : mensajeFull;
+                const status = doc.status || 'pendiente';
+                tr.dataset.id = idCell || '';
+                tr.dataset.asunto = asunto;
+
+                tr.innerHTML = `
                 <td class="small">${idCell}</td>
                 <td>${escapeHtml(created)}</td>
                 <td>${escapeHtml(nombre)}</td>
@@ -1378,319 +1408,319 @@
                 <td class="status">${status}</td>
                 <td class="actions"></td>
             `;
-        
-            const actionsTd = tr.querySelector('.actions');
-            // Ver completo
-            const btnVer = document.createElement('button');
-            btnVer.className = 'btn revisar';
-            btnVer.textContent = 'Ver';
-            btnVer.addEventListener('click', (e) => { e.stopPropagation(); showMessageModal(doc); });
-            actionsTd.appendChild(btnVer);
-        
-            if (status !== 'revisada') {
-                const btnRev = document.createElement('button');
-                btnRev.className = 'btn revisar';
-                btnRev.textContent = 'Marcar revisada';
-                btnRev.addEventListener('click', (e) => { e.stopPropagation(); changeContactStatus(doc, 'revisada'); });
-                actionsTd.appendChild(btnRev);
+
+                const actionsTd = tr.querySelector('.actions');
+                // Ver completo
+                const btnVer = document.createElement('button');
+                btnVer.className = 'btn revisar';
+                btnVer.textContent = 'Ver';
+                btnVer.addEventListener('click', (e) => { e.stopPropagation(); showMessageModal(doc); });
+                actionsTd.appendChild(btnVer);
+
+                if (status !== 'revisada') {
+                    const btnRev = document.createElement('button');
+                    btnRev.className = 'btn revisar';
+                    btnRev.textContent = 'Marcar revisada';
+                    btnRev.addEventListener('click', (e) => { e.stopPropagation(); changeContactStatus(doc, 'revisada'); });
+                    actionsTd.appendChild(btnRev);
+                }
+                if (status === 'revisada') {
+                    const btnPend = document.createElement('button');
+                    btnPend.className = 'btn deshabilitar';
+                    btnPend.textContent = 'Marcar pendiente';
+                    btnPend.addEventListener('click', () => changeContactStatus(doc, 'pendiente'));
+                    actionsTd.appendChild(btnPend);
+                }
+                if (status !== 'deshabilitada') {
+                    const btnDes = document.createElement('button');
+                    btnDes.className = 'btn deshabilitar';
+                    btnDes.textContent = 'Deshabilitar';
+                    btnDes.addEventListener('click', (e) => { e.stopPropagation(); changeContactStatus(doc, 'deshabilitada'); });
+                    actionsTd.appendChild(btnDes);
+                }
+
+                return tr;
             }
-            if (status === 'revisada') {
-                const btnPend = document.createElement('button');
-                btnPend.className = 'btn deshabilitar';
-                btnPend.textContent = 'Marcar pendiente';
-                btnPend.addEventListener('click', () => changeContactStatus(doc, 'pendiente'));
-                actionsTd.appendChild(btnPend);
+
+            function escapeHtml(s) {
+                return String(s || '').replace(/[&<>\"']/g, function (m) {
+                    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;', "'": "&#39;" }[m];
+                });
             }
-            if (status !== 'deshabilitada') {
-                const btnDes = document.createElement('button');
-                btnDes.className = 'btn deshabilitar';
-                btnDes.textContent = 'Deshabilitar';
-                btnDes.addEventListener('click', (e) => { e.stopPropagation(); changeContactStatus(doc, 'deshabilitada'); });
-                actionsTd.appendChild(btnDes);
+
+            // Exportar CSV de contactos
+            const exportBtn = document.getElementById('exportBtn');
+
+            function exportContactsToCSV() {
+                contactsDB.allDocs({ include_docs: true }).then(res => {
+                    const docs = res.rows
+                        .map(r => r.doc)
+                        .filter(d => d && d._id && d._id.indexOf('contact_') === 0);
+
+                    if (docs.length === 0) {
+                        alert("No hay datos para exportar");
+                        return;
+                    }
+
+                    const headers = ["ID", "FECHA", "NOMBRE", "EMAIL", "TELEFONO", "ASUNTO", "MENSAJE", "ESTADO"];
+
+                    const csvRows = [
+                        headers.join(','),
+                        ...docs.map(doc => {
+                            const created = doc.createdAt ? new Date(doc.createdAt).toLocaleString() : '';
+
+                            const clean = (text) => {
+                                if (!text) return '""';
+                                let t = String(text);
+                                t = t.replace(/(\r\n|\n|\r)/gm, " ");
+                                t = t.replace(/"/g, '""');
+                                return `"${t}"`;
+                            };
+
+                            return [
+                                clean(doc._id),
+                                clean(created),
+                                clean(doc.nombre),
+                                clean(doc.email),
+                                clean(doc.telefono),
+                                clean(doc.asunto),
+                                clean(doc.mensaje),
+                                clean(doc.status || 'pendiente')
+                            ].join(',');
+                        })
+                    ];
+
+                    const csvContent = "\uFEFF" + csvRows.join("\n");
+                    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                    const url = URL.createObjectURL(blob);
+
+                    const link = document.createElement("a");
+                    const nombreArchivo = `Reporte_Contactos_REM_${new Date().toISOString().slice(0, 10)}.csv`;
+
+                    link.setAttribute("href", url);
+                    link.setAttribute("download", nombreArchivo);
+                    link.style.visibility = 'hidden';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+
+                }).catch(err => {
+                    console.error("Error al exportar:", err);
+                    alert("Ocurrió un error al generar el archivo.");
+                });
             }
-        
-            return tr;
-        }
-        
-        function escapeHtml(s) {
-            return String(s || '').replace(/[&<>\"']/g, function (m) {
-                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;', "'": "&#39;" }[m];
-            });
-        }
-        
-        // Exportar CSV de contactos
-        const exportBtn = document.getElementById('exportBtn');
-        
-        function exportContactsToCSV() {
-            contactsDB.allDocs({ include_docs: true }).then(res => {
-                const docs = res.rows
-                    .map(r => r.doc)
-                    .filter(d => d && d._id && d._id.indexOf('contact_') === 0);
-        
-                if (docs.length === 0) {
-                    alert("No hay datos para exportar");
+
+            if (exportBtn) exportBtn.addEventListener('click', exportContactsToCSV);
+            function loadAllContacts() {
+                tbodyContacts.innerHTML = '<tr><td colspan="9" class="small">Cargando...</td></tr>';
+                contactsDB.allDocs({ include_docs: true, descending: true }).then(res => {
+                    const rows = res.rows.map(r => r.doc).filter(d => d && d._id && d._id.indexOf('contact_') === 0);
+                    docsCache.clear();
+                    rows.forEach(d => { if (d && d._id) docsCache.set(d._id, d); });
+
+                    // Aplicar filtros múltiples
+                    let filteredRows = rows.filter(d => {
+                        // Filtro por estado
+                        const s = d.status || 'pendiente';
+                        if (currentFilter !== 'all' && s !== currentFilter) return false;
+
+                        // Filtro por búsqueda de texto
+                        if (contactsSearchTerm) {
+                            const searchLower = contactsSearchTerm.toLowerCase();
+                            const matches =
+                                (d.nombre && d.nombre.toLowerCase().includes(searchLower)) ||
+                                (d.email && d.email.toLowerCase().includes(searchLower)) ||
+                                (d.telefono && d.telefono.toLowerCase().includes(searchLower)) ||
+                                (d.asunto && d.asunto.toLowerCase().includes(searchLower)) ||
+                                (d.mensaje && d.mensaje.toLowerCase().includes(searchLower));
+
+                            if (!matches) return false;
+                        }
+
+                        // Filtro por fecha
+                        if (contactsDateFilter !== 'all' && d.createdAt) {
+                            const docDate = new Date(d.createdAt);
+                            const now = new Date();
+                            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+                            switch (contactsDateFilter) {
+                                case 'today':
+                                    const docDay = new Date(docDate.getFullYear(), docDate.getMonth(), docDate.getDate());
+                                    if (docDay.getTime() !== today.getTime()) return false;
+                                    break;
+                                case 'week':
+                                    const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+                                    if (docDate < weekAgo) return false;
+                                    break;
+                                case 'month':
+                                    const monthAgo = new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000);
+                                    if (docDate < monthAgo) return false;
+                                    break;
+                                case 'year':
+                                    const yearAgo = new Date(today.getTime() - 365 * 24 * 60 * 60 * 1000);
+                                    if (docDate < yearAgo) return false;
+                                    break;
+                            }
+                        }
+
+                        return true;
+                    });
+
+                    // Aplicar ordenamiento
+                    filteredRows.sort((a, b) => {
+                        const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+                        const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+
+                        if (contactsSortOrder === 'newest') {
+                            return dateB - dateA;
+                        } else {
+                            return dateA - dateB;
+                        }
+                    });
+
+                    totalContacts = filteredRows.length;
+
+                    // Calcular paginación
+                    const totalPages = Math.ceil(totalContacts / contactsPerPage);
+                    const startIndex = (currentContactsPage - 1) * contactsPerPage;
+                    const endIndex = startIndex + contactsPerPage;
+                    const paginatedRows = filteredRows.slice(startIndex, endIndex);
+
+                    renderContactList(paginatedRows);
+                    updateContactsPagination(totalPages);
+                    updateContactsFilterInfo();
+
+                }).catch(err => {
+                    tbodyContacts.innerHTML = '<tr><td colspan="9" class="small">Error al leer la base local.</td></tr>';
+                    console.error(err);
+                });
+            }
+
+            function renderContactList(docs) {
+                if (!docs.length) {
+                    tbodyContacts.innerHTML = '<tr><td colspan="9" class="small">No hay registros.</td></tr>';
                     return;
                 }
-        
-                const headers = ["ID", "FECHA", "NOMBRE", "EMAIL", "TELEFONO", "ASUNTO", "MENSAJE", "ESTADO"];
-        
-                const csvRows = [
-                    headers.join(','),
-                    ...docs.map(doc => {
-                        const created = doc.createdAt ? new Date(doc.createdAt).toLocaleString() : '';
-        
-                        const clean = (text) => {
-                            if (!text) return '""';
-                            let t = String(text);
-                            t = t.replace(/(\r\n|\n|\r)/gm, " ");
-                            t = t.replace(/"/g, '""');
-                            return `"${t}"`;
-                        };
-        
-                        return [
-                            clean(doc._id),
-                            clean(created),
-                            clean(doc.nombre),
-                            clean(doc.email),
-                            clean(doc.telefono),
-                            clean(doc.asunto),
-                            clean(doc.mensaje),
-                            clean(doc.status || 'pendiente')
-                        ].join(',');
-                    })
-                ];
-        
-                const csvContent = "\uFEFF" + csvRows.join("\n");
-                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-                const url = URL.createObjectURL(blob);
-        
-                const link = document.createElement("a");
-                const nombreArchivo = `Reporte_Contactos_REM_${new Date().toISOString().slice(0, 10)}.csv`;
-        
-                link.setAttribute("href", url);
-                link.setAttribute("download", nombreArchivo);
-                link.style.visibility = 'hidden';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-        
-            }).catch(err => {
-                console.error("Error al exportar:", err);
-                alert("Ocurrió un error al generar el archivo.");
-            });
-        }
-        
-        if (exportBtn) exportBtn.addEventListener('click', exportContactsToCSV);
-                function loadAllContacts() {
-            tbodyContacts.innerHTML = '<tr><td colspan="9" class="small">Cargando...</td></tr>';
-            contactsDB.allDocs({ include_docs: true, descending: true }).then(res => {
-                const rows = res.rows.map(r => r.doc).filter(d => d && d._id && d._id.indexOf('contact_') === 0);
-                docsCache.clear();
-                rows.forEach(d => { if (d && d._id) docsCache.set(d._id, d); });
-                
-                // Aplicar filtros múltiples
-                let filteredRows = rows.filter(d => {
-                    // Filtro por estado
-                    const s = d.status || 'pendiente';
-                    if (currentFilter !== 'all' && s !== currentFilter) return false;
-                    
-                    // Filtro por búsqueda de texto
-                    if (contactsSearchTerm) {
-                        const searchLower = contactsSearchTerm.toLowerCase();
-                        const matches = 
-                            (d.nombre && d.nombre.toLowerCase().includes(searchLower)) ||
-                            (d.email && d.email.toLowerCase().includes(searchLower)) ||
-                            (d.telefono && d.telefono.toLowerCase().includes(searchLower)) ||
-                            (d.asunto && d.asunto.toLowerCase().includes(searchLower)) ||
-                            (d.mensaje && d.mensaje.toLowerCase().includes(searchLower));
-                        
-                        if (!matches) return false;
-                    }
-                    
-                    // Filtro por fecha
-                    if (contactsDateFilter !== 'all' && d.createdAt) {
-                        const docDate = new Date(d.createdAt);
-                        const now = new Date();
-                        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-                        
-                        switch (contactsDateFilter) {
-                            case 'today':
-                                const docDay = new Date(docDate.getFullYear(), docDate.getMonth(), docDate.getDate());
-                                if (docDay.getTime() !== today.getTime()) return false;
-                                break;
-                            case 'week':
-                                const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
-                                if (docDate < weekAgo) return false;
-                                break;
-                            case 'month':
-                                const monthAgo = new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000);
-                                if (docDate < monthAgo) return false;
-                                break;
-                            case 'year':
-                                const yearAgo = new Date(today.getTime() - 365 * 24 * 60 * 60 * 1000);
-                                if (docDate < yearAgo) return false;
-                                break;
-                        }
-                    }
-                    
-                    return true;
+                tbodyContacts.innerHTML = '';
+                docs.forEach(doc => {
+                    tbodyContacts.appendChild(renderContactRow(doc));
                 });
-                
-                // Aplicar ordenamiento
-                filteredRows.sort((a, b) => {
-                    const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
-                    const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
-                    
-                    if (contactsSortOrder === 'newest') {
-                        return dateB - dateA;
-                    } else {
-                        return dateA - dateB;
+            }
+
+            function changeContactStatus(doc, newStatus) {
+                const copy = Object.assign({}, doc);
+                copy.status = newStatus;
+                contactsDB.put(copy).then(() => {
+                    loadAllContacts();
+                }).catch(err => {
+                    console.error('Error updating', err);
+                    alert('Error al actualizar el estado.');
+                });
+            }
+            // Funciones de paginación para contactos
+            function updateContactsPagination(totalPages) {
+                const prevBtn = document.getElementById('contactsPrevBtn');
+                const nextBtn = document.getElementById('contactsNextBtn');
+                const pageNumbers = document.getElementById('contactsPageNumbers');
+                const pageInfo = document.getElementById('contactsPageInfo');
+
+                // Actualizar botones
+                prevBtn.disabled = currentContactsPage === 1;
+                nextBtn.disabled = currentContactsPage === totalPages || totalPages === 0;
+
+                // Actualizar números de página
+                pageNumbers.innerHTML = '';
+                const maxPagesToShow = 5;
+                let startPage = Math.max(1, currentContactsPage - Math.floor(maxPagesToShow / 2));
+                let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+
+                if (endPage - startPage + 1 < maxPagesToShow) {
+                    startPage = Math.max(1, endPage - maxPagesToShow + 1);
+                }
+
+                for (let i = startPage; i <= endPage; i++) {
+                    const pageBtn = document.createElement('button');
+                    pageBtn.className = 'page-number';
+                    if (i === currentContactsPage) {
+                        pageBtn.classList.add('active');
                     }
-                });
-                
-                totalContacts = filteredRows.length;
-                
-                // Calcular paginación
-                const totalPages = Math.ceil(totalContacts / contactsPerPage);
-                const startIndex = (currentContactsPage - 1) * contactsPerPage;
-                const endIndex = startIndex + contactsPerPage;
-                const paginatedRows = filteredRows.slice(startIndex, endIndex);
-                
-                renderContactList(paginatedRows);
-                updateContactsPagination(totalPages);
-                updateContactsFilterInfo();
-                
-            }).catch(err => {
-                tbodyContacts.innerHTML = '<tr><td colspan="9" class="small">Error al leer la base local.</td></tr>';
-                console.error(err);
-            });
-        }
-        
-        function renderContactList(docs) {
-            if (!docs.length) {
-                tbodyContacts.innerHTML = '<tr><td colspan="9" class="small">No hay registros.</td></tr>';
-                return;
-            }
-            tbodyContacts.innerHTML = '';
-            docs.forEach(doc => {
-                tbodyContacts.appendChild(renderContactRow(doc));
-            });
-        }
-        
-        function changeContactStatus(doc, newStatus) {
-            const copy = Object.assign({}, doc);
-            copy.status = newStatus;
-            contactsDB.put(copy).then(() => {
-                loadAllContacts();
-            }).catch(err => {
-                console.error('Error updating', err);
-                alert('Error al actualizar el estado.');
-            });
-        }
-                // Funciones de paginación para contactos
-        function updateContactsPagination(totalPages) {
-            const prevBtn = document.getElementById('contactsPrevBtn');
-            const nextBtn = document.getElementById('contactsNextBtn');
-            const pageNumbers = document.getElementById('contactsPageNumbers');
-            const pageInfo = document.getElementById('contactsPageInfo');
-            
-            // Actualizar botones
-            prevBtn.disabled = currentContactsPage === 1;
-            nextBtn.disabled = currentContactsPage === totalPages || totalPages === 0;
-            
-            // Actualizar números de página
-            pageNumbers.innerHTML = '';
-            const maxPagesToShow = 5;
-            let startPage = Math.max(1, currentContactsPage - Math.floor(maxPagesToShow / 2));
-            let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
-            
-            if (endPage - startPage + 1 < maxPagesToShow) {
-                startPage = Math.max(1, endPage - maxPagesToShow + 1);
-            }
-            
-            for (let i = startPage; i <= endPage; i++) {
-                const pageBtn = document.createElement('button');
-                pageBtn.className = 'page-number';
-                if (i === currentContactsPage) {
-                    pageBtn.classList.add('active');
+                    pageBtn.textContent = i;
+                    pageBtn.addEventListener('click', () => {
+                        currentContactsPage = i;
+                        loadAllContacts();
+                    });
+                    pageNumbers.appendChild(pageBtn);
                 }
-                pageBtn.textContent = i;
-                pageBtn.addEventListener('click', () => {
-                    currentContactsPage = i;
-                    loadAllContacts();
-                });
-                pageNumbers.appendChild(pageBtn);
+
+                // Actualizar información
+                const startItem = (currentContactsPage - 1) * contactsPerPage + 1;
+                const endItem = Math.min(currentContactsPage * contactsPerPage, totalContacts);
+                pageInfo.textContent = `Mostrando ${startItem}-${endItem} de ${totalContacts} registros`;
+
+                // Event listeners para botones de navegación
+                prevBtn.onclick = () => {
+                    if (currentContactsPage > 1) {
+                        currentContactsPage--;
+                        loadAllContacts();
+                    }
+                };
+
+                nextBtn.onclick = () => {
+                    if (currentContactsPage < totalPages) {
+                        currentContactsPage++;
+                        loadAllContacts();
+                    }
+                };
             }
-            
-            // Actualizar información
-            const startItem = (currentContactsPage - 1) * contactsPerPage + 1;
-            const endItem = Math.min(currentContactsPage * contactsPerPage, totalContacts);
-            pageInfo.textContent = `Mostrando ${startItem}-${endItem} de ${totalContacts} registros`;
-            
-            // Event listeners para botones de navegación
-            prevBtn.onclick = () => {
-                if (currentContactsPage > 1) {
-                    currentContactsPage--;
-                    loadAllContacts();
-                }
-            };
-            
-            nextBtn.onclick = () => {
-                if (currentContactsPage < totalPages) {
-                    currentContactsPage++;
-                    loadAllContacts();
-                }
-            };
-        }
-        
-        // Delegated click to show glossary in sidebar for contacts
-        tbodyContacts.addEventListener('click', function (e) {
-            const tr = e.target.closest('tr');
-            if (!tr) return;
-            const id = tr.dataset.id;
-            if (!id) return;
-            const doc = docsCache.get(id);
-            if (!doc) return;
-            showSidebarForContact(doc);
-        });
-        
-        function showSidebarForContact(doc) {
-            const asunto = (doc.asunto || '').toString();
-            const asuntoNorm = asunto.toLowerCase();
-            const defKey = Object.keys(glossary).find(k => asuntoNorm.includes(k));
-            const defin = defKey ? glossary[defKey] : 'No hay una definición predefinida para este asunto. Puedes añadirla al glosario.';
-            document.getElementById('g-asunto').textContent = asunto || '(sin asunto)';
-            document.getElementById('g-def').textContent = defin;
-            document.getElementById('g-msg').textContent = doc.mensaje || '';
-            document.getElementById('g-contact').textContent = (doc.nombre ? doc.nombre + ' — ' : '') + (doc.email ? doc.email : '');
-        
-            // attach actions
-            const revBtn = document.getElementById('g-mark-reviewed');
-            const disBtn = document.getElementById('g-disable');
-            if (revBtn) revBtn.onclick = function () { changeContactStatus(doc, 'revisada'); };
-            if (disBtn) disBtn.onclick = function () { changeContactStatus(doc, 'deshabilitada'); };
-        }
-                // ========== FUNCIONES PARA USUARIOS ==========
-        const userTabs = Array.from(document.querySelectorAll('#userStatusTabs .tab'));
-        const refreshUsersBtn = document.getElementById('refreshUsersBtn');
-        const exportUsersBtn = document.getElementById('exportUsersBtn');
-        let currentUserFilter = 'all';
-        
-        function renderUserRow(user) {
-            const tr = document.createElement('tr');
-            const idCell = user._id || '';
-            const username = user.username || '';
-            const email = user.email || '';
-            const created = user.createdAt ? new Date(user.createdAt).toLocaleString() : '';
-            const role = user.role || 'user';
-            const status = user.status || 'activo';
-            const isCurrentUser = username === currentUser.username;
-            
-            tr.dataset.id = idCell || '';
-            tr.dataset.username = username;
-            tr.dataset.isCurrent = isCurrentUser;
-        
-            tr.innerHTML = `
+
+            // Delegated click to show glossary in sidebar for contacts
+            tbodyContacts.addEventListener('click', function (e) {
+                const tr = e.target.closest('tr');
+                if (!tr) return;
+                const id = tr.dataset.id;
+                if (!id) return;
+                const doc = docsCache.get(id);
+                if (!doc) return;
+                showSidebarForContact(doc);
+            });
+
+            function showSidebarForContact(doc) {
+                const asunto = (doc.asunto || '').toString();
+                const asuntoNorm = asunto.toLowerCase();
+                const defKey = Object.keys(glossary).find(k => asuntoNorm.includes(k));
+                const defin = defKey ? glossary[defKey] : 'No hay una definición predefinida para este asunto. Puedes añadirla al glosario.';
+                document.getElementById('g-asunto').textContent = asunto || '(sin asunto)';
+                document.getElementById('g-def').textContent = defin;
+                document.getElementById('g-msg').textContent = doc.mensaje || '';
+                document.getElementById('g-contact').textContent = (doc.nombre ? doc.nombre + ' — ' : '') + (doc.email ? doc.email : '');
+
+                // attach actions
+                const revBtn = document.getElementById('g-mark-reviewed');
+                const disBtn = document.getElementById('g-disable');
+                if (revBtn) revBtn.onclick = function () { changeContactStatus(doc, 'revisada'); };
+                if (disBtn) disBtn.onclick = function () { changeContactStatus(doc, 'deshabilitada'); };
+            }
+            // ========== FUNCIONES PARA USUARIOS ==========
+            const userTabs = Array.from(document.querySelectorAll('#userStatusTabs .tab'));
+            const refreshUsersBtn = document.getElementById('refreshUsersBtn');
+            const exportUsersBtn = document.getElementById('exportUsersBtn');
+            let currentUserFilter = 'all';
+
+            function renderUserRow(user) {
+                const tr = document.createElement('tr');
+                const idCell = user._id || '';
+                const username = user.username || '';
+                const email = user.email || '';
+                const created = user.createdAt ? new Date(user.createdAt).toLocaleString() : '';
+                const role = user.role || 'user';
+                const status = user.status || 'activo';
+                const isCurrentUser = username === currentUser.username;
+
+                tr.dataset.id = idCell || '';
+                tr.dataset.username = username;
+                tr.dataset.isCurrent = isCurrentUser;
+
+                tr.innerHTML = `
                 <td class="small">${idCell}</td>
                 <td>${escapeHtml(username)} ${isCurrentUser ? '<span class="small">(Tú)</span>' : ''}</td>
                 <td>${escapeHtml(email)}</td>
@@ -1699,1027 +1729,1027 @@
                 <td class="${status === 'activo' ? 'status-activo' : 'status-inactivo'}">${status === 'activo' ? 'Activo' : 'Inactivo'}</td>
                 <td class="actions"></td>
             `;
-        
-            const actionsTd = tr.querySelector('.actions');
-            
-            // Botón Ver/Editar
-            const btnEditar = document.createElement('button');
-            btnEditar.className = 'btn btn-editar';
-            btnEditar.textContent = 'Editar';
-            btnEditar.addEventListener('click', (e) => {
-                e.stopPropagation();
-                openUserModal(user, 'Editar Usuario');
-            });
-            actionsTd.appendChild(btnEditar);
-            
-            // Si no es el usuario actual, mostrar botones de activar/desactivar
-            if (!isCurrentUser) {
-                if (status === 'activo') {
-                    const btnDesactivar = document.createElement('button');
-                    btnDesactivar.className = 'btn btn-desactivar';
-                    btnDesactivar.textContent = 'Desactivar';
-                    btnDesactivar.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        changeUserStatus(user, 'inactivo');
-                    });
-                    actionsTd.appendChild(btnDesactivar);
-                } else {
-                    const btnActivar = document.createElement('button');
-                    btnActivar.className = 'btn btn-activar';
-                    btnActivar.textContent = 'Activar';
-                    btnActivar.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        changeUserStatus(user, 'activo');
-                    });
-                    actionsTd.appendChild(btnActivar);
-                }
-                
-                // Botón Eliminar (solo admin puede eliminar)
-                if (currentUser.role === 'admin') {
-                    const btnEliminar = document.createElement('button');
-                    btnEliminar.className = 'btn btn-eliminar';
-                    btnEliminar.textContent = 'Eliminar';
-                    btnEliminar.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        deleteUser(user);
-                    });
-                    actionsTd.appendChild(btnEliminar);
-                }
-            } else {
-                // Para el usuario actual, mostrar mensaje
-                const span = document.createElement('span');
-                span.className = 'small';
-                span.textContent = 'Usuario actual';
-                span.style.color = 'var(--muted)';
-                actionsTd.appendChild(span);
-            }
-        
-            return tr;
-        }        function loadAllUsers() {
-            tbodyUsers.innerHTML = '<tr><td colspan="7" class="small">Cargando...</td></tr>';
-            usersDB.allDocs({ include_docs: true, descending: true }).then(res => {
-                const rows = res.rows.map(r => r.doc).filter(d => d && d._id && d._id.indexOf('user_') === 0);
-                usersCache.clear();
-                rows.forEach(d => { if (d && d._id) usersCache.set(d._id, d); });
-                
-                // Aplicar filtros múltiples
-                let filteredRows = rows.filter(user => {
-                    // Filtro por estado/rol
-                    if (currentUserFilter !== 'all') {
-                        if (currentUserFilter === 'activo' && user.status !== 'activo') return false;
-                        if (currentUserFilter === 'inactivo' && user.status !== 'inactivo') return false;
-                        if (currentUserFilter === 'admin' && user.role !== 'admin') return false;
-                        if (currentUserFilter === 'user' && user.role !== 'user') return false;
-                    }
-                    
-                    // Filtro por búsqueda de texto
-                    if (usersSearchTerm) {
-                        const searchLower = usersSearchTerm.toLowerCase();
-                        const matches = 
-                            (user.username && user.username.toLowerCase().includes(searchLower)) ||
-                            (user.email && user.email.toLowerCase().includes(searchLower)) ||
-                            (user.role && user.role.toLowerCase().includes(searchLower));
-                        
-                        if (!matches) return false;
-                    }
-                    
-                    // Filtro por fecha
-                    if (usersDateFilter !== 'all' && user.createdAt) {
-                        const docDate = new Date(user.createdAt);
-                        const now = new Date();
-                        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-                        
-                        switch (usersDateFilter) {
-                            case 'today':
-                                const docDay = new Date(docDate.getFullYear(), docDate.getMonth(), docDate.getDate());
-                                if (docDay.getTime() !== today.getTime()) return false;
-                                break;
-                            case 'week':
-                                const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
-                                if (docDate < weekAgo) return false;
-                                break;
-                            case 'month':
-                                const monthAgo = new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000);
-                                if (docDate < monthAgo) return false;
-                                break;
-                            case 'year':
-                                const yearAgo = new Date(today.getTime() - 365 * 24 * 60 * 60 * 1000);
-                                if (docDate < yearAgo) return false;
-                                break;
-                        }
-                    }
-                    
-                    return true;
+
+                const actionsTd = tr.querySelector('.actions');
+
+                // Botón Ver/Editar
+                const btnEditar = document.createElement('button');
+                btnEditar.className = 'btn btn-editar';
+                btnEditar.textContent = 'Editar';
+                btnEditar.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openUserModal(user, 'Editar Usuario');
                 });
-                
-                // Aplicar ordenamiento
-                filteredRows.sort((a, b) => {
-                    const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
-                    const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
-                    
-                    if (usersSortOrder === 'newest') {
-                        return dateB - dateA;
+                actionsTd.appendChild(btnEditar);
+
+                // Si no es el usuario actual, mostrar botones de activar/desactivar
+                if (!isCurrentUser) {
+                    if (status === 'activo') {
+                        const btnDesactivar = document.createElement('button');
+                        btnDesactivar.className = 'btn btn-desactivar';
+                        btnDesactivar.textContent = 'Desactivar';
+                        btnDesactivar.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            changeUserStatus(user, 'inactivo');
+                        });
+                        actionsTd.appendChild(btnDesactivar);
                     } else {
-                        return dateA - dateB;
+                        const btnActivar = document.createElement('button');
+                        btnActivar.className = 'btn btn-activar';
+                        btnActivar.textContent = 'Activar';
+                        btnActivar.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            changeUserStatus(user, 'activo');
+                        });
+                        actionsTd.appendChild(btnActivar);
                     }
-                });
-                
-                totalUsers = filteredRows.length;
-                
-                // Calcular paginación
-                const totalPages = Math.ceil(totalUsers / usersPerPage);
-                const startIndex = (currentUsersPage - 1) * usersPerPage;
-                const endIndex = startIndex + usersPerPage;
-                const paginatedRows = filteredRows.slice(startIndex, endIndex);
-                
-                renderUserList(paginatedRows);
-                updateUsersPagination(totalPages);
-                updateUsersFilterInfo();
-                
-            }).catch(err => {
-                tbodyUsers.innerHTML = '<tr><td colspan="7" class="small">Error al leer la base de usuarios.</td></tr>';
-                console.error(err);
-            });
-        }
-        
-        function renderUserList(users) {
-            if (!users.length) {
-                tbodyUsers.innerHTML = '<tr><td colspan="7" class="small">No hay usuarios registrados.</td></tr>';
-                return;
-            }
-            tbodyUsers.innerHTML = '';
-            users.forEach(user => {
-                tbodyUsers.appendChild(renderUserRow(user));
-            });
-        }
-        
-        function changeUserStatus(user, newStatus) {
-            if (user.username === currentUser.username) {
-                alert('No puedes deshabilitar tu propia cuenta.');
-                return;
-            }
-            
-            if (!confirm(`¿Estás seguro de que deseas ${newStatus === 'activo' ? 'activar' : 'desactivar'} la cuenta de ${user.username}?`)) {
-                return;
-            }
-            
-            const copy = Object.assign({}, user);
-            copy.status = newStatus;
-            
-            usersDB.put(copy).then(() => {
-                loadAllUsers();
-                alert(`Usuario ${user.username} ${newStatus === 'activo' ? 'activado' : 'desactivado'} correctamente.`);
-            }).catch(err => {
-                console.error('Error updating user status', err);
-                alert('Error al actualizar el estado del usuario.');
-            });
-        }
-        
-        function deleteUser(user) {
-            if (user.username === currentUser.username) {
-                alert('No puedes eliminar tu propia cuenta.');
-                return;
-            }
-            
-            if (!confirm(`¿Estás seguro de que deseas ELIMINAR permanentemente al usuario ${user.username}?\n\nEsta acción no se puede deshacer.`)) {
-                return;
-            }
-            
-            usersDB.remove(user).then(() => {
-                loadAllUsers();
-                alert(`Usuario ${user.username} eliminado correctamente.`);
-            }).catch(err => {
-                console.error('Error deleting user', err);
-                alert('Error al eliminar el usuario.');
-            });
-        }
-                // Funciones de paginación para usuarios
-        function updateUsersPagination(totalPages) {
-            const prevBtn = document.getElementById('usersPrevBtn');
-            const nextBtn = document.getElementById('usersNextBtn');
-            const pageNumbers = document.getElementById('usersPageNumbers');
-            const pageInfo = document.getElementById('usersPageInfo');
-            
-            // Actualizar botones
-            prevBtn.disabled = currentUsersPage === 1;
-            nextBtn.disabled = currentUsersPage === totalPages || totalPages === 0;
-            
-            // Actualizar números de página
-            pageNumbers.innerHTML = '';
-            const maxPagesToShow = 5;
-            let startPage = Math.max(1, currentUsersPage - Math.floor(maxPagesToShow / 2));
-            let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
-            
-            if (endPage - startPage + 1 < maxPagesToShow) {
-                startPage = Math.max(1, endPage - maxPagesToShow + 1);
-            }
-            
-            for (let i = startPage; i <= endPage; i++) {
-                const pageBtn = document.createElement('button');
-                pageBtn.className = 'page-number';
-                if (i === currentUsersPage) {
-                    pageBtn.classList.add('active');
-                }
-                pageBtn.textContent = i;
-                pageBtn.addEventListener('click', () => {
-                    currentUsersPage = i;
-                    loadAllUsers();
-                });
-                pageNumbers.appendChild(pageBtn);
-            }
-            
-            // Actualizar información
-            const startItem = (currentUsersPage - 1) * usersPerPage + 1;
-            const endItem = Math.min(currentUsersPage * usersPerPage, totalUsers);
-            pageInfo.textContent = `Mostrando ${startItem}-${endItem} de ${totalUsers} usuarios`;
-            
-            // Event listeners para botones de navegación
-            prevBtn.onclick = () => {
-                if (currentUsersPage > 1) {
-                    currentUsersPage--;
-                    loadAllUsers();
-                }
-            };
-            
-            nextBtn.onclick = () => {
-                if (currentUsersPage < totalPages) {
-                    currentUsersPage++;
-                    loadAllUsers();
-                }
-            };
-        }
-        
-        // Delegated click to show user details in sidebar
-        tbodyUsers.addEventListener('click', function (e) {
-            const tr = e.target.closest('tr');
-            if (!tr) return;
-            const id = tr.dataset.id;
-            if (!id) return;
-            const user = usersCache.get(id);
-            if (!user) return;
-            showSidebarForUser(user);
-        });
-        
-        function showSidebarForUser(user) {
-            const isCurrentUser = user.username === currentUser.username;
-            
-            document.getElementById('g-asunto').textContent = user.username;
-            document.getElementById('g-def').textContent = user.email || 'No tiene email registrado';
-            document.getElementById('g-msg').textContent = `Rol: ${user.role === 'admin' ? 'Administrador' : 'Usuario'}\nEstado: ${user.status === 'activo' ? 'Activo' : 'Inactivo'}\nFecha de registro: ${user.createdAt ? new Date(user.createdAt).toLocaleString() : 'No disponible'}`;
-            document.getElementById('g-contact').textContent = isCurrentUser ? '⚠️ Este es tu usuario actual' : 'Usuario del sistema';
-        
-            // Configurar botones del sidebar para usuarios
-            const activateBtn = document.getElementById('g-activate-user');
-            const deactivateBtn = document.getElementById('g-deactivate-user');
-            const editBtn = document.getElementById('g-edit-user');
-            
-            if (activateBtn && deactivateBtn && editBtn) {
-                if (isCurrentUser) {
-                    activateBtn.style.display = 'none';
-                    deactivateBtn.style.display = 'none';
-                    editBtn.style.display = 'none';
+
+                    // Botón Eliminar (solo admin puede eliminar)
+                    if (currentUser.role === 'admin') {
+                        const btnEliminar = document.createElement('button');
+                        btnEliminar.className = 'btn btn-eliminar';
+                        btnEliminar.textContent = 'Eliminar';
+                        btnEliminar.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            deleteUser(user);
+                        });
+                        actionsTd.appendChild(btnEliminar);
+                    }
                 } else {
-                    activateBtn.style.display = user.status === 'inactivo' ? 'inline-block' : 'none';
-                    deactivateBtn.style.display = user.status === 'activo' ? 'inline-block' : 'none';
-                    editBtn.style.display = 'inline-block';
-                    
-                    activateBtn.onclick = function () { changeUserStatus(user, 'activo'); };
-                    deactivateBtn.onclick = function () { changeUserStatus(user, 'inactivo'); };
-                    editBtn.onclick = function () { openUserModal(user, 'Editar Usuario'); };
+                    // Para el usuario actual, mostrar mensaje
+                    const span = document.createElement('span');
+                    span.className = 'small';
+                    span.textContent = 'Usuario actual';
+                    span.style.color = 'var(--muted)';
+                    actionsTd.appendChild(span);
                 }
+
+                return tr;
+            } function loadAllUsers() {
+                tbodyUsers.innerHTML = '<tr><td colspan="7" class="small">Cargando...</td></tr>';
+                usersDB.allDocs({ include_docs: true, descending: true }).then(res => {
+                    const rows = res.rows.map(r => r.doc).filter(d => d && d._id && d._id.indexOf('user_') === 0);
+                    usersCache.clear();
+                    rows.forEach(d => { if (d && d._id) usersCache.set(d._id, d); });
+
+                    // Aplicar filtros múltiples
+                    let filteredRows = rows.filter(user => {
+                        // Filtro por estado/rol
+                        if (currentUserFilter !== 'all') {
+                            if (currentUserFilter === 'activo' && user.status !== 'activo') return false;
+                            if (currentUserFilter === 'inactivo' && user.status !== 'inactivo') return false;
+                            if (currentUserFilter === 'admin' && user.role !== 'admin') return false;
+                            if (currentUserFilter === 'user' && user.role !== 'user') return false;
+                        }
+
+                        // Filtro por búsqueda de texto
+                        if (usersSearchTerm) {
+                            const searchLower = usersSearchTerm.toLowerCase();
+                            const matches =
+                                (user.username && user.username.toLowerCase().includes(searchLower)) ||
+                                (user.email && user.email.toLowerCase().includes(searchLower)) ||
+                                (user.role && user.role.toLowerCase().includes(searchLower));
+
+                            if (!matches) return false;
+                        }
+
+                        // Filtro por fecha
+                        if (usersDateFilter !== 'all' && user.createdAt) {
+                            const docDate = new Date(user.createdAt);
+                            const now = new Date();
+                            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+                            switch (usersDateFilter) {
+                                case 'today':
+                                    const docDay = new Date(docDate.getFullYear(), docDate.getMonth(), docDate.getDate());
+                                    if (docDay.getTime() !== today.getTime()) return false;
+                                    break;
+                                case 'week':
+                                    const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+                                    if (docDate < weekAgo) return false;
+                                    break;
+                                case 'month':
+                                    const monthAgo = new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000);
+                                    if (docDate < monthAgo) return false;
+                                    break;
+                                case 'year':
+                                    const yearAgo = new Date(today.getTime() - 365 * 24 * 60 * 60 * 1000);
+                                    if (docDate < yearAgo) return false;
+                                    break;
+                            }
+                        }
+
+                        return true;
+                    });
+
+                    // Aplicar ordenamiento
+                    filteredRows.sort((a, b) => {
+                        const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+                        const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+
+                        if (usersSortOrder === 'newest') {
+                            return dateB - dateA;
+                        } else {
+                            return dateA - dateB;
+                        }
+                    });
+
+                    totalUsers = filteredRows.length;
+
+                    // Calcular paginación
+                    const totalPages = Math.ceil(totalUsers / usersPerPage);
+                    const startIndex = (currentUsersPage - 1) * usersPerPage;
+                    const endIndex = startIndex + usersPerPage;
+                    const paginatedRows = filteredRows.slice(startIndex, endIndex);
+
+                    renderUserList(paginatedRows);
+                    updateUsersPagination(totalPages);
+                    updateUsersFilterInfo();
+
+                }).catch(err => {
+                    tbodyUsers.innerHTML = '<tr><td colspan="7" class="small">Error al leer la base de usuarios.</td></tr>';
+                    console.error(err);
+                });
             }
-        }
-                // ========== FUNCIONES PARA ACTUALIZAR INFO DE FILTROS ==========
-        function updateContactsFilterInfo() {
-            // Crear o actualizar elemento de información de filtros
-            let filterInfo = document.getElementById('contactsFilterInfo');
-            if (!filterInfo) {
-                filterInfo = document.createElement('div');
-                filterInfo.id = 'contactsFilterInfo';
-                filterInfo.className = 'filter-info';
-                
-                // Insertar después del filters-section
-                const filterSection = document.querySelector('#seccionContactos .filters-section');
-                if (filterSection) {
-                    filterSection.parentNode.insertBefore(filterInfo, filterSection.nextSibling);
+
+            function renderUserList(users) {
+                if (!users.length) {
+                    tbodyUsers.innerHTML = '<tr><td colspan="7" class="small">No hay usuarios registrados.</td></tr>';
+                    return;
                 }
+                tbodyUsers.innerHTML = '';
+                users.forEach(user => {
+                    tbodyUsers.appendChild(renderUserRow(user));
+                });
             }
-            
-            const filters = [];
-            if (currentFilter !== 'all') filters.push(`Estado: ${currentFilter}`);
-            if (contactsSearchTerm) filters.push(`Búsqueda: "${contactsSearchTerm}"`);
-            if (contactsDateFilter !== 'all') {
-                const dateLabels = {
-                    'today': 'Hoy',
-                    'week': 'Última semana',
-                    'month': 'Último mes',
-                    'year': 'Último año'
+
+            function changeUserStatus(user, newStatus) {
+                if (user.username === currentUser.username) {
+                    alert('No puedes deshabilitar tu propia cuenta.');
+                    return;
+                }
+
+                if (!confirm(`¿Estás seguro de que deseas ${newStatus === 'activo' ? 'activar' : 'desactivar'} la cuenta de ${user.username}?`)) {
+                    return;
+                }
+
+                const copy = Object.assign({}, user);
+                copy.status = newStatus;
+
+                usersDB.put(copy).then(() => {
+                    loadAllUsers();
+                    alert(`Usuario ${user.username} ${newStatus === 'activo' ? 'activado' : 'desactivado'} correctamente.`);
+                }).catch(err => {
+                    console.error('Error updating user status', err);
+                    alert('Error al actualizar el estado del usuario.');
+                });
+            }
+
+            function deleteUser(user) {
+                if (user.username === currentUser.username) {
+                    alert('No puedes eliminar tu propia cuenta.');
+                    return;
+                }
+
+                if (!confirm(`¿Estás seguro de que deseas ELIMINAR permanentemente al usuario ${user.username}?\n\nEsta acción no se puede deshacer.`)) {
+                    return;
+                }
+
+                usersDB.remove(user).then(() => {
+                    loadAllUsers();
+                    alert(`Usuario ${user.username} eliminado correctamente.`);
+                }).catch(err => {
+                    console.error('Error deleting user', err);
+                    alert('Error al eliminar el usuario.');
+                });
+            }
+            // Funciones de paginación para usuarios
+            function updateUsersPagination(totalPages) {
+                const prevBtn = document.getElementById('usersPrevBtn');
+                const nextBtn = document.getElementById('usersNextBtn');
+                const pageNumbers = document.getElementById('usersPageNumbers');
+                const pageInfo = document.getElementById('usersPageInfo');
+
+                // Actualizar botones
+                prevBtn.disabled = currentUsersPage === 1;
+                nextBtn.disabled = currentUsersPage === totalPages || totalPages === 0;
+
+                // Actualizar números de página
+                pageNumbers.innerHTML = '';
+                const maxPagesToShow = 5;
+                let startPage = Math.max(1, currentUsersPage - Math.floor(maxPagesToShow / 2));
+                let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+
+                if (endPage - startPage + 1 < maxPagesToShow) {
+                    startPage = Math.max(1, endPage - maxPagesToShow + 1);
+                }
+
+                for (let i = startPage; i <= endPage; i++) {
+                    const pageBtn = document.createElement('button');
+                    pageBtn.className = 'page-number';
+                    if (i === currentUsersPage) {
+                        pageBtn.classList.add('active');
+                    }
+                    pageBtn.textContent = i;
+                    pageBtn.addEventListener('click', () => {
+                        currentUsersPage = i;
+                        loadAllUsers();
+                    });
+                    pageNumbers.appendChild(pageBtn);
+                }
+
+                // Actualizar información
+                const startItem = (currentUsersPage - 1) * usersPerPage + 1;
+                const endItem = Math.min(currentUsersPage * usersPerPage, totalUsers);
+                pageInfo.textContent = `Mostrando ${startItem}-${endItem} de ${totalUsers} usuarios`;
+
+                // Event listeners para botones de navegación
+                prevBtn.onclick = () => {
+                    if (currentUsersPage > 1) {
+                        currentUsersPage--;
+                        loadAllUsers();
+                    }
                 };
-                filters.push(`Fecha: ${dateLabels[contactsDateFilter]}`);
+
+                nextBtn.onclick = () => {
+                    if (currentUsersPage < totalPages) {
+                        currentUsersPage++;
+                        loadAllUsers();
+                    }
+                };
             }
-            
-            const sortLabels = {
-                'newest': 'Más reciente',
-                'oldest': 'Más antiguo'
-            };
-            filters.push(`Orden: ${sortLabels[contactsSortOrder]}`);
-            
-            if (filters.length > 0) {
-                filterInfo.innerHTML = `
+
+            // Delegated click to show user details in sidebar
+            tbodyUsers.addEventListener('click', function (e) {
+                const tr = e.target.closest('tr');
+                if (!tr) return;
+                const id = tr.dataset.id;
+                if (!id) return;
+                const user = usersCache.get(id);
+                if (!user) return;
+                showSidebarForUser(user);
+            });
+
+            function showSidebarForUser(user) {
+                const isCurrentUser = user.username === currentUser.username;
+
+                document.getElementById('g-asunto').textContent = user.username;
+                document.getElementById('g-def').textContent = user.email || 'No tiene email registrado';
+                document.getElementById('g-msg').textContent = `Rol: ${user.role === 'admin' ? 'Administrador' : 'Usuario'}\nEstado: ${user.status === 'activo' ? 'Activo' : 'Inactivo'}\nFecha de registro: ${user.createdAt ? new Date(user.createdAt).toLocaleString() : 'No disponible'}`;
+                document.getElementById('g-contact').textContent = isCurrentUser ? '⚠️ Este es tu usuario actual' : 'Usuario del sistema';
+
+                // Configurar botones del sidebar para usuarios
+                const activateBtn = document.getElementById('g-activate-user');
+                const deactivateBtn = document.getElementById('g-deactivate-user');
+                const editBtn = document.getElementById('g-edit-user');
+
+                if (activateBtn && deactivateBtn && editBtn) {
+                    if (isCurrentUser) {
+                        activateBtn.style.display = 'none';
+                        deactivateBtn.style.display = 'none';
+                        editBtn.style.display = 'none';
+                    } else {
+                        activateBtn.style.display = user.status === 'inactivo' ? 'inline-block' : 'none';
+                        deactivateBtn.style.display = user.status === 'activo' ? 'inline-block' : 'none';
+                        editBtn.style.display = 'inline-block';
+
+                        activateBtn.onclick = function () { changeUserStatus(user, 'activo'); };
+                        deactivateBtn.onclick = function () { changeUserStatus(user, 'inactivo'); };
+                        editBtn.onclick = function () { openUserModal(user, 'Editar Usuario'); };
+                    }
+                }
+            }
+            // ========== FUNCIONES PARA ACTUALIZAR INFO DE FILTROS ==========
+            function updateContactsFilterInfo() {
+                // Crear o actualizar elemento de información de filtros
+                let filterInfo = document.getElementById('contactsFilterInfo');
+                if (!filterInfo) {
+                    filterInfo = document.createElement('div');
+                    filterInfo.id = 'contactsFilterInfo';
+                    filterInfo.className = 'filter-info';
+
+                    // Insertar después del filters-section
+                    const filterSection = document.querySelector('#seccionContactos .filters-section');
+                    if (filterSection) {
+                        filterSection.parentNode.insertBefore(filterInfo, filterSection.nextSibling);
+                    }
+                }
+
+                const filters = [];
+                if (currentFilter !== 'all') filters.push(`Estado: ${currentFilter}`);
+                if (contactsSearchTerm) filters.push(`Búsqueda: "${contactsSearchTerm}"`);
+                if (contactsDateFilter !== 'all') {
+                    const dateLabels = {
+                        'today': 'Hoy',
+                        'week': 'Última semana',
+                        'month': 'Último mes',
+                        'year': 'Último año'
+                    };
+                    filters.push(`Fecha: ${dateLabels[contactsDateFilter]}`);
+                }
+
+                const sortLabels = {
+                    'newest': 'Más reciente',
+                    'oldest': 'Más antiguo'
+                };
+                filters.push(`Orden: ${sortLabels[contactsSortOrder]}`);
+
+                if (filters.length > 0) {
+                    filterInfo.innerHTML = `
                     <span>Filtros aplicados:</span>
                     <strong>${filters.join(' • ')}</strong>
                     <button id="clearContactsFilters" class="btn-clear-filters">
                         <i class="fas fa-times"></i> Limpiar filtros
                     </button>
                 `;
-                
-                // Agregar evento al botón de limpiar
-                document.getElementById('clearContactsFilters').addEventListener('click', clearContactsFilters);
-            } else {
-                filterInfo.innerHTML = '<span>Sin filtros aplicados</span>';
-            }
-        }
 
-        function updateUsersFilterInfo() {
-            let filterInfo = document.getElementById('usersFilterInfo');
-            if (!filterInfo) {
-                filterInfo = document.createElement('div');
-                filterInfo.id = 'usersFilterInfo';
-                filterInfo.className = 'filter-info';
-                
-                const filterSection = document.querySelector('#seccionUsuarios .filters-section');
-                if (filterSection) {
-                    filterSection.parentNode.insertBefore(filterInfo, filterSection.nextSibling);
+                    // Agregar evento al botón de limpiar
+                    document.getElementById('clearContactsFilters').addEventListener('click', clearContactsFilters);
+                } else {
+                    filterInfo.innerHTML = '<span>Sin filtros aplicados</span>';
                 }
             }
-            
-            const filters = [];
-            if (currentUserFilter !== 'all') filters.push(`Filtro: ${currentUserFilter}`);
-            if (usersSearchTerm) filters.push(`Búsqueda: "${usersSearchTerm}"`);
-            if (usersDateFilter !== 'all') {
-                const dateLabels = {
-                    'today': 'Hoy',
-                    'week': 'Última semana',
-                    'month': 'Último mes',
-                    'year': 'Último año'
+
+            function updateUsersFilterInfo() {
+                let filterInfo = document.getElementById('usersFilterInfo');
+                if (!filterInfo) {
+                    filterInfo = document.createElement('div');
+                    filterInfo.id = 'usersFilterInfo';
+                    filterInfo.className = 'filter-info';
+
+                    const filterSection = document.querySelector('#seccionUsuarios .filters-section');
+                    if (filterSection) {
+                        filterSection.parentNode.insertBefore(filterInfo, filterSection.nextSibling);
+                    }
+                }
+
+                const filters = [];
+                if (currentUserFilter !== 'all') filters.push(`Filtro: ${currentUserFilter}`);
+                if (usersSearchTerm) filters.push(`Búsqueda: "${usersSearchTerm}"`);
+                if (usersDateFilter !== 'all') {
+                    const dateLabels = {
+                        'today': 'Hoy',
+                        'week': 'Última semana',
+                        'month': 'Último mes',
+                        'year': 'Último año'
+                    };
+                    filters.push(`Fecha: ${dateLabels[usersDateFilter]}`);
+                }
+
+                const sortLabels = {
+                    'newest': 'Más reciente',
+                    'oldest': 'Más antiguo'
                 };
-                filters.push(`Fecha: ${dateLabels[usersDateFilter]}`);
-            }
-            
-            const sortLabels = {
-                'newest': 'Más reciente',
-                'oldest': 'Más antiguo'
-            };
-            filters.push(`Orden: ${sortLabels[usersSortOrder]}`);
-            
-            if (filters.length > 0) {
-                filterInfo.innerHTML = `
+                filters.push(`Orden: ${sortLabels[usersSortOrder]}`);
+
+                if (filters.length > 0) {
+                    filterInfo.innerHTML = `
                     <span>Filtros aplicados:</span>
                     <strong>${filters.join(' • ')}</strong>
                     <button id="clearUsersFilters" class="btn-clear-filters">
                         <i class="fas fa-times"></i> Limpiar filtros
                     </button>
                 `;
-                
-                document.getElementById('clearUsersFilters').addEventListener('click', clearUsersFilters);
-            } else {
-                filterInfo.innerHTML = '<span>Sin filtros aplicados</span>';
-            }
-        }
 
-        // ========== FUNCIONES PARA LIMPIAR FILTROS ==========
-        function clearContactsFilters() {
-            contactsSearchTerm = '';
-            contactsDateFilter = 'all';
-            contactsSortOrder = 'newest';
-            
-            // Resetear controles UI
-            document.getElementById('contactsSearch').value = '';
-            document.getElementById('contactsDateFilter').value = 'all';
-            document.getElementById('contactsSort').value = 'newest';
-            
-            // Resetear pestañas de estado a "Todos"
-            const allTab = document.querySelector('#statusTabs .tab[data-status="all"]');
-            if (allTab) {
-                tabs.forEach(x => x.classList.remove('active'));
-                allTab.classList.add('active');
-                currentFilter = 'all';
-            }
-            
-            // Recargar datos
-            currentContactsPage = 1;
-            loadAllContacts();
-        }
-
-        function clearUsersFilters() {
-            usersSearchTerm = '';
-            usersDateFilter = 'all';
-            usersSortOrder = 'newest';
-            
-            // Resetear controles UI
-            document.getElementById('usersSearch').value = '';
-            document.getElementById('usersDateFilter').value = 'all';
-            document.getElementById('usersSort').value = 'newest';
-            
-            // Resetear pestañas de estado a "Todos"
-            const allTab = document.querySelector('#userStatusTabs .tab[data-status="all"]');
-            if (allTab) {
-                userTabs.forEach(x => x.classList.remove('active'));
-                allTab.classList.add('active');
-                currentUserFilter = 'all';
-            }
-            
-            // Recargar datos
-            currentUsersPage = 1;
-            loadAllUsers();
-        }
-                // ========== EVENT LISTENERS PARA FILTROS DE CONTACTOS ==========
-        document.getElementById('contactsSearch').addEventListener('input', function(e) {
-            contactsSearchTerm = e.target.value.trim();
-            currentContactsPage = 1;
-            loadAllContacts();
-        });
-        
-        document.getElementById('clearContactsSearch').addEventListener('click', function() {
-            document.getElementById('contactsSearch').value = '';
-            contactsSearchTerm = '';
-            currentContactsPage = 1;
-            loadAllContacts();
-        });
-        
-        document.getElementById('contactsDateFilter').addEventListener('change', function(e) {
-            contactsDateFilter = e.target.value;
-            currentContactsPage = 1;
-            loadAllContacts();
-        });
-        
-        document.getElementById('contactsSort').addEventListener('change', function(e) {
-            contactsSortOrder = e.target.value;
-            currentContactsPage = 1;
-            loadAllContacts();
-        });
-        
-        // ========== EVENT LISTENERS PARA FILTROS DE USUARIOS ==========
-        document.getElementById('usersSearch').addEventListener('input', function(e) {
-            usersSearchTerm = e.target.value.trim();
-            currentUsersPage = 1;
-            loadAllUsers();
-        });
-        
-        document.getElementById('clearUsersSearch').addEventListener('click', function() {
-            document.getElementById('usersSearch').value = '';
-            usersSearchTerm = '';
-            currentUsersPage = 1;
-            loadAllUsers();
-        });
-        
-        document.getElementById('usersDateFilter').addEventListener('change', function(e) {
-            usersDateFilter = e.target.value;
-            currentUsersPage = 1;
-            loadAllUsers();
-        });
-        
-        document.getElementById('usersSort').addEventListener('change', function(e) {
-            usersSortOrder = e.target.value;
-            currentUsersPage = 1;
-            loadAllUsers();
-        });
-        
-        // ========== ACTUALIZAR TAB CLICK HANDLERS PARA CONTACTOS ==========
-        tabs.forEach(t => t.addEventListener('click', () => {
-            tabs.forEach(x => x.classList.remove('active'));
-            t.classList.add('active');
-            currentFilter = t.dataset.status || 'all';
-            currentContactsPage = 1;
-            loadAllContacts();
-        }));
-        
-        // ========== ACTUALIZAR TAB CLICK HANDLERS PARA USUARIOS ==========
-        userTabs.forEach(t => t.addEventListener('click', () => {
-            userTabs.forEach(x => x.classList.remove('active'));
-            t.classList.add('active');
-            currentUserFilter = t.dataset.status || 'all';
-            currentUsersPage = 1;
-            loadAllUsers();
-        }));
-                // Event listeners existentes
-        refreshBtn.addEventListener('click', loadAllContacts);
-        if (refreshUsersBtn) refreshUsersBtn.addEventListener('click', loadAllUsers);
-        
-        // Exportar CSV de usuarios
-        function exportUsersToCSV() {
-            usersDB.allDocs({ include_docs: true }).then(res => {
-                const users = res.rows
-                    .map(r => r.doc)
-                    .filter(d => d && d._id && d._id.indexOf('user_') === 0);
-        
-                if (users.length === 0) {
-                    alert("No hay usuarios para exportar");
-                    return;
+                    document.getElementById('clearUsersFilters').addEventListener('click', clearUsersFilters);
+                } else {
+                    filterInfo.innerHTML = '<span>Sin filtros aplicados</span>';
                 }
-        
-                const headers = ["ID", "USUARIO", "EMAIL", "FECHA_REGISTRO", "ROL", "ESTADO"];
-        
-                const csvRows = [
-                    headers.join(','),
-                    ...users.map(user => {
-                        const created = user.createdAt ? new Date(user.createdAt).toLocaleString() : '';
-        
-                        const clean = (text) => {
-                            if (!text) return '""';
-                            let t = String(text);
-                            t = t.replace(/(\r\n|\n|\r)/gm, " ");
-                            t = t.replace(/"/g, '""');
-                            return `"${t}"`;
-                        };
-        
-                        return [
-                            clean(user._id),
-                            clean(user.username),
-                            clean(user.email || ''),
-                            clean(created),
-                            clean(user.role || 'user'),
-                            clean(user.status || 'activo')
-                        ].join(',');
-                    })
-                ];
-        
-                const csvContent = "\uFEFF" + csvRows.join("\n");
-                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-                const url = URL.createObjectURL(blob);
-        
-                const link = document.createElement("a");
-                const nombreArchivo = `Reporte_Usuarios_REM_${new Date().toISOString().slice(0, 10)}.csv`;
-        
-                link.setAttribute("href", url);
-                link.setAttribute("download", nombreArchivo);
-                link.style.visibility = 'hidden';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-        
-            }).catch(err => {
-                console.error("Error al exportar usuarios:", err);
-                alert("Ocurrió un error al generar el archivo.");
+            }
+
+            // ========== FUNCIONES PARA LIMPIAR FILTROS ==========
+            function clearContactsFilters() {
+                contactsSearchTerm = '';
+                contactsDateFilter = 'all';
+                contactsSortOrder = 'newest';
+
+                // Resetear controles UI
+                document.getElementById('contactsSearch').value = '';
+                document.getElementById('contactsDateFilter').value = 'all';
+                document.getElementById('contactsSort').value = 'newest';
+
+                // Resetear pestañas de estado a "Todos"
+                const allTab = document.querySelector('#statusTabs .tab[data-status="all"]');
+                if (allTab) {
+                    tabs.forEach(x => x.classList.remove('active'));
+                    allTab.classList.add('active');
+                    currentFilter = 'all';
+                }
+
+                // Recargar datos
+                currentContactsPage = 1;
+                loadAllContacts();
+            }
+
+            function clearUsersFilters() {
+                usersSearchTerm = '';
+                usersDateFilter = 'all';
+                usersSortOrder = 'newest';
+
+                // Resetear controles UI
+                document.getElementById('usersSearch').value = '';
+                document.getElementById('usersDateFilter').value = 'all';
+                document.getElementById('usersSort').value = 'newest';
+
+                // Resetear pestañas de estado a "Todos"
+                const allTab = document.querySelector('#userStatusTabs .tab[data-status="all"]');
+                if (allTab) {
+                    userTabs.forEach(x => x.classList.remove('active'));
+                    allTab.classList.add('active');
+                    currentUserFilter = 'all';
+                }
+
+                // Recargar datos
+                currentUsersPage = 1;
+                loadAllUsers();
+            }
+            // ========== EVENT LISTENERS PARA FILTROS DE CONTACTOS ==========
+            document.getElementById('contactsSearch').addEventListener('input', function (e) {
+                contactsSearchTerm = e.target.value.trim();
+                currentContactsPage = 1;
+                loadAllContacts();
             });
-        }
-        
-        if (exportUsersBtn) exportUsersBtn.addEventListener('click', exportUsersToCSV);
-        
-        // Modal para edición/creación de usuarios
-        function openUserModal(user, title) {
-            document.getElementById('userModalTitle').textContent = title;
-            const form = document.getElementById('userForm');
-            const deleteBtn = document.getElementById('userModalDelete');
-            const saveBtn = document.getElementById('userModalSave');
-        
-            if (user) {
-                // Modo edición
-                document.getElementById('editUserId').value = user._id;
-                document.getElementById('editUsername').value = user.username;
-                document.getElementById('editEmail').value = user.email || '';
-                document.getElementById('editPassword').value = '';
-                document.getElementById('editPassword').placeholder = 'Dejar en blanco para no cambiar';
-                document.getElementById('editRole').value = user.role || 'user';
-                document.getElementById('editStatus').value = user.status || 'activo';
-                
-                // Mostrar botón eliminar solo si no es el usuario actual y es admin
-                const isCurrentUser = user.username === currentUser.username;
-                deleteBtn.style.display = (currentUser.role === 'admin' && !isCurrentUser) ? 'inline-block' : 'none';
-                deleteBtn.onclick = function () { deleteUser(user); closeUserModal(); };
-        
-                saveBtn.textContent = 'Guardar Cambios';
-            } else {
-                // Modo creación
-                form.reset();
-                document.getElementById('editUserId').value = '';
-                document.getElementById('editPassword').placeholder = 'Contraseña obligatoria';
-                document.getElementById('editPassword').required = true;
-                deleteBtn.style.display = 'none';
-                saveBtn.textContent = 'Crear Usuario';
-            }
-        
-            document.getElementById('userModal').style.display = 'flex';
-        }
-        
-        // Manejar envío del formulario de usuario
-        document.getElementById('userForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-        
-            const userId = document.getElementById('editUserId').value;
-            const username = document.getElementById('editUsername').value.trim();
-            const email = document.getElementById('editEmail').value.trim();
-            const password = document.getElementById('editPassword').value;
-            const role = document.getElementById('editRole').value;
-            const status = document.getElementById('editStatus').value;
-        
-            // Validaciones
-            if (!username) {
-                alert('El nombre de usuario es obligatorio');
-                return;
-            }
-        
-            if (!userId && !password) {
-                alert('La contraseña es obligatoria para nuevos usuarios');
-                return;
-            }
-        
-            // Verificar si es un nuevo usuario o edición
-            if (userId) {
-                // Edición de usuario existente
-                usersDB.get(userId).then(function (user) {
-                    const isCurrentUser = user.username === currentUser.username;
-        
-                    // Si es el usuario actual y está intentando cambiar su propio rol
-                    if (isCurrentUser && user.role !== role) {
-                        alert('No puedes cambiar tu propio rol.');
+
+            document.getElementById('clearContactsSearch').addEventListener('click', function () {
+                document.getElementById('contactsSearch').value = '';
+                contactsSearchTerm = '';
+                currentContactsPage = 1;
+                loadAllContacts();
+            });
+
+            document.getElementById('contactsDateFilter').addEventListener('change', function (e) {
+                contactsDateFilter = e.target.value;
+                currentContactsPage = 1;
+                loadAllContacts();
+            });
+
+            document.getElementById('contactsSort').addEventListener('change', function (e) {
+                contactsSortOrder = e.target.value;
+                currentContactsPage = 1;
+                loadAllContacts();
+            });
+
+            // ========== EVENT LISTENERS PARA FILTROS DE USUARIOS ==========
+            document.getElementById('usersSearch').addEventListener('input', function (e) {
+                usersSearchTerm = e.target.value.trim();
+                currentUsersPage = 1;
+                loadAllUsers();
+            });
+
+            document.getElementById('clearUsersSearch').addEventListener('click', function () {
+                document.getElementById('usersSearch').value = '';
+                usersSearchTerm = '';
+                currentUsersPage = 1;
+                loadAllUsers();
+            });
+
+            document.getElementById('usersDateFilter').addEventListener('change', function (e) {
+                usersDateFilter = e.target.value;
+                currentUsersPage = 1;
+                loadAllUsers();
+            });
+
+            document.getElementById('usersSort').addEventListener('change', function (e) {
+                usersSortOrder = e.target.value;
+                currentUsersPage = 1;
+                loadAllUsers();
+            });
+
+            // ========== ACTUALIZAR TAB CLICK HANDLERS PARA CONTACTOS ==========
+            tabs.forEach(t => t.addEventListener('click', () => {
+                tabs.forEach(x => x.classList.remove('active'));
+                t.classList.add('active');
+                currentFilter = t.dataset.status || 'all';
+                currentContactsPage = 1;
+                loadAllContacts();
+            }));
+
+            // ========== ACTUALIZAR TAB CLICK HANDLERS PARA USUARIOS ==========
+            userTabs.forEach(t => t.addEventListener('click', () => {
+                userTabs.forEach(x => x.classList.remove('active'));
+                t.classList.add('active');
+                currentUserFilter = t.dataset.status || 'all';
+                currentUsersPage = 1;
+                loadAllUsers();
+            }));
+            // Event listeners existentes
+            refreshBtn.addEventListener('click', loadAllContacts);
+            if (refreshUsersBtn) refreshUsersBtn.addEventListener('click', loadAllUsers);
+
+            // Exportar CSV de usuarios
+            function exportUsersToCSV() {
+                usersDB.allDocs({ include_docs: true }).then(res => {
+                    const users = res.rows
+                        .map(r => r.doc)
+                        .filter(d => d && d._id && d._id.indexOf('user_') === 0);
+
+                    if (users.length === 0) {
+                        alert("No hay usuarios para exportar");
                         return;
                     }
-        
-                    // Actualizar usuario
-                    user.username = username;
-                    if (email) user.email = email;
-                    if (password) user.password = password;
-                    user.role = role;
-                    user.status = status;
-        
-                    return usersDB.put(user);
-                }).then(function () {
-                    alert('Usuario actualizado correctamente');
-                    closeUserModal();
-                    loadAllUsers();
-                }).catch(function (err) {
-                    console.error('Error updating user:', err);
-                    alert('Error al actualizar el usuario');
-                });
-            } else {
-                // Creación de nuevo usuario
-                // Verificar si el usuario ya existe
-                usersDB.allDocs({ include_docs: true }).then(function (res) {
-                    const existingUser = res.rows.find(row =>
-                        row.doc && row.doc.username === username
-                    );
-        
-                    if (existingUser) {
-                        alert('El nombre de usuario ya existe');
-                        return Promise.reject('Usuario duplicado');
-                    }
-        
-                    // Crear nuevo usuario
-                    const newUser = {
-                        _id: 'user_' + Date.now(),
-                        username: username,
-                        password: password,
-                        email: email,
-                        role: role,
-                        status: status,
-                        createdAt: new Date().toISOString()
-                    };
-        
-                    return usersDB.put(newUser);
-                }).then(function () {
-                    alert('Usuario creado correctamente');
-                    closeUserModal();
-                    loadAllUsers();
-                }).catch(function (err) {
-                    if (err !== 'Usuario duplicado') {
-                        console.error('Error creating user:', err);
-                        alert('Error al crear el usuario');
-                    }
-                });
-            }
-        });
-        
-        function closeUserModal() {
-            document.getElementById('userModal').style.display = 'none';
-            document.getElementById('editPassword').required = false;
-        }
-        
-        // Cerrar modales
-        document.getElementById('userModalClose').addEventListener('click', closeUserModal);
-        document.getElementById('userModalCancel').addEventListener('click', closeUserModal);
-        
-        document.getElementById('userModal').addEventListener('click', function (e) {
-            if (e.target === this) closeUserModal();
-        });
-                // ========== TEMA Y MODALES EXISTENTES ==========
-        const themeToggle = document.getElementById('themeToggle');
-        const bodyEl = document.body;
-        
-        function updateTheme(isDark) {
-            const icon = themeToggle.querySelector('i');
-            if (isDark) {
-                bodyEl.classList.add('dark-theme');
-                icon.className = 'fas fa-sun';
-            } else {
-                bodyEl.classList.remove('dark-theme');
-                icon.className = 'fas fa-moon';
-            }
-        }
-        
-        const currentTheme = localStorage.getItem('admin-theme') === 'dark';
-        updateTheme(currentTheme);
-        
-        themeToggle.addEventListener('click', () => {
-            const isDarkNow = !bodyEl.classList.contains('dark-theme');
-            localStorage.setItem('admin-theme', isDarkNow ? 'dark' : 'light');
-            updateTheme(isDarkNow);
-        });
-        
-        // Cargar datos iniciales
-        loadAllContacts();
-        
-        // Suscripción a cambios en tiempo real
-        contactsDB.changes({ live: true, since: 'now', include_docs: true }).on('change', loadAllContacts);
-        usersDB.changes({ live: true, since: 'now', include_docs: true }).on('change', loadAllUsers);
-        
-        // Modal behavior (para contactos)
-        const modal = document.getElementById('msgModal');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalMsg = document.getElementById('modalMsg');
-        const modalClose = document.getElementById('modalClose');
-        const modalCopy = document.getElementById('modalCopy');
-        
-        function showMessageModal(doc) {
-            modalTitle.textContent = doc.asunto || 'Mensaje completo';
-            modalMsg.textContent = doc.mensaje || '';
-            modal.style.display = 'flex';
-        }
-        window.showMessageModal = showMessageModal;
-        
-        function closeMessageModal() { modal.style.display = 'none'; }
-        modalClose.addEventListener('click', closeMessageModal);
-        modal.addEventListener('click', function (e) { if (e.target === modal) closeMessageModal(); });
-        modalCopy.addEventListener('click', function () {
-            navigator.clipboard.writeText(modalMsg.textContent || '').then(() => {
-                alert('Mensaje copiado');
-            }).catch(() => alert('No se pudo copiar'));
-        });
-        
-        // Crear usuario admin por defecto si no existe
-                // Crear datos de prueba si no existen
-        function initializeTestData() {
-            // 1. Crear usuario admin por defecto si no existe
-            usersDB.get('user_admin').catch(function (err) {
-                if (err.status === 404) {
-                    const defaultAdmin = {
-                        _id: 'user_admin',
-                        username: 'admin',
-                        password: 'admin123',
-                        email: 'admin@rededucativamexico.org',
-                        createdAt: new Date().toISOString(),
-                        role: 'admin',
-                        status: 'activo'
-                    };
 
-                    usersDB.put(defaultAdmin).then(function () {
-                        console.log('Usuario admin creado por defecto');
+                    const headers = ["ID", "USUARIO", "EMAIL", "FECHA_REGISTRO", "ROL", "ESTADO"];
+
+                    const csvRows = [
+                        headers.join(','),
+                        ...users.map(user => {
+                            const created = user.createdAt ? new Date(user.createdAt).toLocaleString() : '';
+
+                            const clean = (text) => {
+                                if (!text) return '""';
+                                let t = String(text);
+                                t = t.replace(/(\r\n|\n|\r)/gm, " ");
+                                t = t.replace(/"/g, '""');
+                                return `"${t}"`;
+                            };
+
+                            return [
+                                clean(user._id),
+                                clean(user.username),
+                                clean(user.email || ''),
+                                clean(created),
+                                clean(user.role || 'user'),
+                                clean(user.status || 'activo')
+                            ].join(',');
+                        })
+                    ];
+
+                    const csvContent = "\uFEFF" + csvRows.join("\n");
+                    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                    const url = URL.createObjectURL(blob);
+
+                    const link = document.createElement("a");
+                    const nombreArchivo = `Reporte_Usuarios_REM_${new Date().toISOString().slice(0, 10)}.csv`;
+
+                    link.setAttribute("href", url);
+                    link.setAttribute("download", nombreArchivo);
+                    link.style.visibility = 'hidden';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+
+                }).catch(err => {
+                    console.error("Error al exportar usuarios:", err);
+                    alert("Ocurrió un error al generar el archivo.");
+                });
+            }
+
+            if (exportUsersBtn) exportUsersBtn.addEventListener('click', exportUsersToCSV);
+
+            // Modal para edición/creación de usuarios
+            function openUserModal(user, title) {
+                document.getElementById('userModalTitle').textContent = title;
+                const form = document.getElementById('userForm');
+                const deleteBtn = document.getElementById('userModalDelete');
+                const saveBtn = document.getElementById('userModalSave');
+
+                if (user) {
+                    // Modo edición
+                    document.getElementById('editUserId').value = user._id;
+                    document.getElementById('editUsername').value = user.username;
+                    document.getElementById('editEmail').value = user.email || '';
+                    document.getElementById('editPassword').value = '';
+                    document.getElementById('editPassword').placeholder = 'Dejar en blanco para no cambiar';
+                    document.getElementById('editRole').value = user.role || 'user';
+                    document.getElementById('editStatus').value = user.status || 'activo';
+
+                    // Mostrar botón eliminar solo si no es el usuario actual y es admin
+                    const isCurrentUser = user.username === currentUser.username;
+                    deleteBtn.style.display = (currentUser.role === 'admin' && !isCurrentUser) ? 'inline-block' : 'none';
+                    deleteBtn.onclick = function () { deleteUser(user); closeUserModal(); };
+
+                    saveBtn.textContent = 'Guardar Cambios';
+                } else {
+                    // Modo creación
+                    form.reset();
+                    document.getElementById('editUserId').value = '';
+                    document.getElementById('editPassword').placeholder = 'Contraseña obligatoria';
+                    document.getElementById('editPassword').required = true;
+                    deleteBtn.style.display = 'none';
+                    saveBtn.textContent = 'Crear Usuario';
+                }
+
+                document.getElementById('userModal').style.display = 'flex';
+            }
+
+            // Manejar envío del formulario de usuario
+            document.getElementById('userForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const userId = document.getElementById('editUserId').value;
+                const username = document.getElementById('editUsername').value.trim();
+                const email = document.getElementById('editEmail').value.trim();
+                const password = document.getElementById('editPassword').value;
+                const role = document.getElementById('editRole').value;
+                const status = document.getElementById('editStatus').value;
+
+                // Validaciones
+                if (!username) {
+                    alert('El nombre de usuario es obligatorio');
+                    return;
+                }
+
+                if (!userId && !password) {
+                    alert('La contraseña es obligatoria para nuevos usuarios');
+                    return;
+                }
+
+                // Verificar si es un nuevo usuario o edición
+                if (userId) {
+                    // Edición de usuario existente
+                    usersDB.get(userId).then(function (user) {
+                        const isCurrentUser = user.username === currentUser.username;
+
+                        // Si es el usuario actual y está intentando cambiar su propio rol
+                        if (isCurrentUser && user.role !== role) {
+                            alert('No puedes cambiar tu propio rol.');
+                            return;
+                        }
+
+                        // Actualizar usuario
+                        user.username = username;
+                        if (email) user.email = email;
+                        if (password) user.password = password;
+                        user.role = role;
+                        user.status = status;
+
+                        return usersDB.put(user);
+                    }).then(function () {
+                        alert('Usuario actualizado correctamente');
+                        closeUserModal();
+                        loadAllUsers();
                     }).catch(function (err) {
-                        console.error('Error al crear usuario admin:', err);
+                        console.error('Error updating user:', err);
+                        alert('Error al actualizar el usuario');
+                    });
+                } else {
+                    // Creación de nuevo usuario
+                    // Verificar si el usuario ya existe
+                    usersDB.allDocs({ include_docs: true }).then(function (res) {
+                        const existingUser = res.rows.find(row =>
+                            row.doc && row.doc.username === username
+                        );
+
+                        if (existingUser) {
+                            alert('El nombre de usuario ya existe');
+                            return Promise.reject('Usuario duplicado');
+                        }
+
+                        // Crear nuevo usuario
+                        const newUser = {
+                            _id: 'user_' + Date.now(),
+                            username: username,
+                            password: password,
+                            email: email,
+                            role: role,
+                            status: status,
+                            createdAt: new Date().toISOString()
+                        };
+
+                        return usersDB.put(newUser);
+                    }).then(function () {
+                        alert('Usuario creado correctamente');
+                        closeUserModal();
+                        loadAllUsers();
+                    }).catch(function (err) {
+                        if (err !== 'Usuario duplicado') {
+                            console.error('Error creating user:', err);
+                            alert('Error al crear el usuario');
+                        }
                     });
                 }
             });
 
-            // 2. Crear usuarios de prueba
-            const testUsers = [
-                {
-                    _id: 'user_juanperez',
-                    username: 'juanperez',
-                    password: 'test123',
-                    email: 'juan.perez@example.com',
-                    createdAt: new Date('2024-01-15').toISOString(),
-                    role: 'user',
-                    status: 'activo'
-                },
-                {
-                    _id: 'user_mariagarcia',
-                    username: 'mariagarcia',
-                    password: 'test123',
-                    email: 'maria.garcia@example.com',
-                    createdAt: new Date('2024-02-20').toISOString(),
-                    role: 'user',
-                    status: 'inactivo'
-                },
-                {
-                    _id: 'user_carloslopez',
-                    username: 'carloslopez',
-                    password: 'test123',
-                    email: 'carlos.lopez@example.com',
-                    createdAt: new Date('2024-03-10').toISOString(),
-                    role: 'admin',
-                    status: 'activo'
-                },
-                {
-                    _id: 'user_anatorres',
-                    username: 'anatorres',
-                    password: 'test123',
-                    email: 'ana.torres@example.com',
-                    createdAt: new Date('2024-04-05').toISOString(),
-                    role: 'user',
-                    status: 'activo'
-                },
-                {
-                    _id: 'user_robertomendez',
-                    username: 'robertomendez',
-                    password: 'test123',
-                    email: 'roberto.mendez@example.com',
-                    createdAt: new Date('2024-05-12').toISOString(),
-                    role: 'user',
-                    status: 'inactivo'
-                }
-            ];
+            function closeUserModal() {
+                document.getElementById('userModal').style.display = 'none';
+                document.getElementById('editPassword').required = false;
+            }
 
-            // Insertar usuarios de prueba uno por uno
-            testUsers.forEach(user => {
-                usersDB.get(user._id).catch(function(err) {
-                    if (err.status === 404) {
-                        usersDB.put(user).then(function() {
-                            console.log(`Usuario ${user.username} creado`);
-                        }).catch(function(err) {
-                            console.error(`Error al crear usuario ${user.username}:`, err);
-                        });
-                    }
-                });
+            // Cerrar modales
+            document.getElementById('userModalClose').addEventListener('click', closeUserModal);
+            document.getElementById('userModalCancel').addEventListener('click', closeUserModal);
+
+            document.getElementById('userModal').addEventListener('click', function (e) {
+                if (e.target === this) closeUserModal();
+            });
+            // ========== TEMA Y MODALES EXISTENTES ==========
+            const themeToggle = document.getElementById('themeToggle');
+            const bodyEl = document.body;
+
+            function updateTheme(isDark) {
+                const icon = themeToggle.querySelector('i');
+                if (isDark) {
+                    bodyEl.classList.add('dark-theme');
+                    icon.className = 'fas fa-sun';
+                } else {
+                    bodyEl.classList.remove('dark-theme');
+                    icon.className = 'fas fa-moon';
+                }
+            }
+
+            const currentTheme = localStorage.getItem('admin-theme') === 'dark';
+            updateTheme(currentTheme);
+
+            themeToggle.addEventListener('click', () => {
+                const isDarkNow = !bodyEl.classList.contains('dark-theme');
+                localStorage.setItem('admin-theme', isDarkNow ? 'dark' : 'light');
+                updateTheme(isDarkNow);
             });
 
-            // 3. Crear contactos de prueba
-            const testContacts = [
-                {
-                    _id: 'contact_001',
-                    nombre: 'Juan Pérez',
-                    email: 'juan.perez@gmail.com',
-                    telefono: '555-123-4567',
-                    asunto: 'Inscripción a programas',
-                    mensaje: 'Buen día, me interesa información sobre los programas de licenciatura disponibles para el próximo semestre. ¿Podrían enviarme los requisitos de inscripción y las fechas límite?',
-                    status: 'pendiente',
-                    createdAt: new Date('2024-06-01T10:30:00').toISOString()
-                },
-                {
-                    _id: 'contact_002',
-                    nombre: 'María García',
-                    email: 'maria.garcia@empresa.com',
-                    telefono: '555-987-6543',
-                    asunto: 'Consulta sobre Ruta 286',
-                    mensaje: 'Quisiera saber los requisitos para homologar mis estudios mediante el Acuerdo 286. ¿Cuál es el proceso y qué documentos necesito presentar?',
-                    status: 'revisada',
-                    createdAt: new Date('2024-06-02T14:15:00').toISOString()
-                },
-                {
-                    _id: 'contact_003',
-                    nombre: 'Carlos López',
-                    email: 'carlos.lopez@universidad.edu',
-                    telefono: '555-456-7890',
-                    asunto: 'Soporte técnico',
-                    mensaje: 'No puedo acceder a mi cuenta en la plataforma. He intentado restablecer mi contraseña pero no recibo el correo de recuperación. ¿Podrían ayudarme?',
-                    status: 'pendiente',
-                    createdAt: new Date('2024-06-03T09:45:00').toISOString()
-                },
-                {
-                    _id: 'contact_004',
-                    nombre: 'Ana Torres',
-                    email: 'ana.torres@hotmail.com',
-                    telefono: '555-321-0987',
-                    asunto: 'Solicitud de información',
-                    mensaje: 'Me gustaría recibir información sobre los programas de maestría en educación que ofrecen. Especialmente me interesan los que tienen modalidad en línea.',
-                    status: 'deshabilitada',
-                    createdAt: new Date('2024-06-04T16:20:00').toISOString()
-                },
-                {
-                    _id: 'contact_005',
-                    nombre: 'Roberto Méndez',
-                    email: 'roberto.mendez@yahoo.com',
-                    telefono: '555-654-3210',
-                    asunto: 'Reclamo sobre proceso',
-                    mensaje: 'Hace dos semanas envié mi documentación para inscripción y aún no he recibido respuesta. El proceso ha sido muy lento y necesito una pronta solución.',
-                    status: 'pendiente',
-                    createdAt: new Date('2024-06-05T11:10:00').toISOString()
-                },
-                {
-                    _id: 'contact_006',
-                    nombre: 'Laura Ramírez',
-                    email: 'laura.ramirez@empresa.org',
-                    telefono: '555-789-0123',
-                    asunto: 'Sugerencia de mejora',
-                    mensaje: 'Sugiero implementar un sistema de seguimiento en línea para los trámites de inscripción. Esto ayudaría mucho a los aspirantes a conocer el estado de su proceso.',
-                    status: 'revisada',
-                    createdAt: new Date('2024-06-06T13:25:00').toISOString()
-                },
-                {
-                    _id: 'contact_007',
-                    nombre: 'Pedro Sánchez',
-                    email: 'pedro.sanchez@gmail.com',
-                    telefono: '555-012-3456',
-                    asunto: 'Ruta-286 preguntas específicas',
-                    mensaje: 'Tengo dudas sobre la equivalencia de mis estudios del extranjero bajo el Acuerdo 286. ¿Pueden orientarme sobre el proceso de validación?',
-                    status: 'pendiente',
-                    createdAt: new Date('2024-06-07T15:40:00').toISOString()
-                },
-                {
-                    _id: 'contact_008',
-                    nombre: 'Sofía Hernández',
-                    email: 'sofia.hernandez@universidad.mx',
-                    telefono: '555-234-5678',
-                    asunto: 'Servicio de asesoría',
-                    mensaje: 'Necesito información sobre los servicios de asesoría académica que ofrecen para estudiantes de nuevo ingreso. ¿Cuál es el proceso para solicitar una cita?',
-                    status: 'revisada',
-                    createdAt: new Date('2024-06-08T10:05:00').toISOString()
-                },
-                {
-                    _id: 'contact_009',
-                    nombre: 'Miguel Ángel Ruiz',
-                    email: 'miguel.ruiz@empresa.com',
-                    telefono: '555-876-5432',
-                    asunto: 'Información general',
-                    mensaje: 'Solicito información sobre los programas de educación continua y los costos asociados. También me interesa conocer las fechas de inicio.',
-                    status: 'pendiente',
-                    createdAt: new Date().toISOString() // Hoy
-                },
-                {
-                    _id: 'contact_010',
-                    nombre: 'Isabel Castro',
-                    email: 'isabel.castro@hotmail.com',
-                    telefono: '555-345-6789',
-                    asunto: 'Consulta sobre programas',
-                    mensaje: 'Quisiera saber si ofrecen programas de especialización en tecnología educativa y cuáles son los requisitos de admisión.',
-                    status: 'pendiente',
-                    createdAt: new Date().toISOString() // Hoy
-                },
-                {
-                    _id: 'contact_011',
-                    nombre: 'Fernando Morales',
-                    email: 'fernando.morales@gmail.com',
-                    telefono: '555-567-8901',
-                    asunto: 'Problema con plataforma',
-                    mensaje: 'La plataforma de cursos en línea no carga correctamente en mi navegador. He intentado con Chrome y Firefox pero el problema persiste.',
-                    status: 'pendiente',
-                    createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString() // Hace 3 días
-                },
-                {
-                    _id: 'contact_012',
-                    nombre: 'Gabriela Ríos',
-                    email: 'gabriela.rios@yahoo.com',
-                    telefono: '555-890-1234',
-                    asunto: 'Ruta 286 dudas',
-                    mensaje: 'Tengo preguntas específicas sobre la documentación necesaria para el proceso de homologación. ¿Pueden enviarme una lista detallada?',
-                    status: 'revisada',
-                    createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString() // Hace 1 semana
-                },
-                {
-                    _id: 'contact_013',
-                    nombre: 'Jorge Domínguez',
-                    email: 'jorge.dominguez@empresa.mx',
-                    telefono: '555-432-1098',
-                    asunto: 'Solicitud de servicio',
-                    mensaje: 'Represento a una empresa interesada en capacitar a nuestro personal. ¿Ofrecen programas corporativos?',
-                    status: 'pendiente',
-                    createdAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString() // Hace 15 días
-                },
-                {
-                    _id: 'contact_014',
-                    nombre: 'Patricia Navarro',
-                    email: 'patricia.navarro@gmail.com',
-                    telefono: '555-109-8765',
-                    asunto: 'Información sobre inscripcion',
-                    mensaje: 'Necesito información sobre el proceso de inscripción para el próximo ciclo escolar. ¿Cuáles son las fechas límite?',
-                    status: 'deshabilitada',
-                    createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString() // Hace 1 mes
-                },
-                {
-                    _id: 'contact_015',
-                    nombre: 'Ricardo Vargas',
-                    email: 'ricardo.vargas@universidad.edu',
-                    telefono: '555-765-4321',
-                    asunto: 'Consulta sobre maestría',
-                    mensaje: 'Estoy interesado en el programa de maestría en administración educativa. ¿Podrían enviarme el plan de estudios?',
-                    status: 'pendiente',
-                    createdAt: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString() // Hace 2 meses
-                }
-            ];
-
-            // Insertar contactos de prueba
-            testContacts.forEach(contact => {
-                contactsDB.get(contact._id).catch(function(err) {
-                    if (err.status === 404) {
-                        contactsDB.put(contact).then(function() {
-                            console.log(`Contacto ${contact._id} creado`);
-                        }).catch(function(err) {
-                            console.error(`Error al crear contacto ${contact._id}:`, err);
-                        });
-                    }
-                });
-            });
-        }
-
-        // Llamar a la función para inicializar datos de prueba
-        initializeTestData();
-        
-        // Cargar datos iniciales después de un breve delay para asegurar que se crearon los datos de prueba
-        setTimeout(() => {
+            // Cargar datos iniciales
             loadAllContacts();
-            loadAllUsers();
-        }, 500);
-        
-    })();
+
+            // Suscripción a cambios en tiempo real
+            contactsDB.changes({ live: true, since: 'now', include_docs: true }).on('change', loadAllContacts);
+            usersDB.changes({ live: true, since: 'now', include_docs: true }).on('change', loadAllUsers);
+
+            // Modal behavior (para contactos)
+            const modal = document.getElementById('msgModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalMsg = document.getElementById('modalMsg');
+            const modalClose = document.getElementById('modalClose');
+            const modalCopy = document.getElementById('modalCopy');
+
+            function showMessageModal(doc) {
+                modalTitle.textContent = doc.asunto || 'Mensaje completo';
+                modalMsg.textContent = doc.mensaje || '';
+                modal.style.display = 'flex';
+            }
+            window.showMessageModal = showMessageModal;
+
+            function closeMessageModal() { modal.style.display = 'none'; }
+            modalClose.addEventListener('click', closeMessageModal);
+            modal.addEventListener('click', function (e) { if (e.target === modal) closeMessageModal(); });
+            modalCopy.addEventListener('click', function () {
+                navigator.clipboard.writeText(modalMsg.textContent || '').then(() => {
+                    alert('Mensaje copiado');
+                }).catch(() => alert('No se pudo copiar'));
+            });
+
+            // Crear usuario admin por defecto si no existe
+            // Crear datos de prueba si no existen
+            function initializeTestData() {
+                // 1. Crear usuario admin por defecto si no existe
+                usersDB.get('user_admin').catch(function (err) {
+                    if (err.status === 404) {
+                        const defaultAdmin = {
+                            _id: 'user_admin',
+                            username: 'admin',
+                            password: 'admin123',
+                            email: 'admin@rededucativamexico.org',
+                            createdAt: new Date().toISOString(),
+                            role: 'admin',
+                            status: 'activo'
+                        };
+
+                        usersDB.put(defaultAdmin).then(function () {
+                            console.log('Usuario admin creado por defecto');
+                        }).catch(function (err) {
+                            console.error('Error al crear usuario admin:', err);
+                        });
+                    }
+                });
+
+                // 2. Crear usuarios de prueba
+                const testUsers = [
+                    {
+                        _id: 'user_juanperez',
+                        username: 'juanperez',
+                        password: 'test123',
+                        email: 'juan.perez@example.com',
+                        createdAt: new Date('2024-01-15').toISOString(),
+                        role: 'user',
+                        status: 'activo'
+                    },
+                    {
+                        _id: 'user_mariagarcia',
+                        username: 'mariagarcia',
+                        password: 'test123',
+                        email: 'maria.garcia@example.com',
+                        createdAt: new Date('2024-02-20').toISOString(),
+                        role: 'user',
+                        status: 'inactivo'
+                    },
+                    {
+                        _id: 'user_carloslopez',
+                        username: 'carloslopez',
+                        password: 'test123',
+                        email: 'carlos.lopez@example.com',
+                        createdAt: new Date('2024-03-10').toISOString(),
+                        role: 'admin',
+                        status: 'activo'
+                    },
+                    {
+                        _id: 'user_anatorres',
+                        username: 'anatorres',
+                        password: 'test123',
+                        email: 'ana.torres@example.com',
+                        createdAt: new Date('2024-04-05').toISOString(),
+                        role: 'user',
+                        status: 'activo'
+                    },
+                    {
+                        _id: 'user_robertomendez',
+                        username: 'robertomendez',
+                        password: 'test123',
+                        email: 'roberto.mendez@example.com',
+                        createdAt: new Date('2024-05-12').toISOString(),
+                        role: 'user',
+                        status: 'inactivo'
+                    }
+                ];
+
+                // Insertar usuarios de prueba uno por uno
+                testUsers.forEach(user => {
+                    usersDB.get(user._id).catch(function (err) {
+                        if (err.status === 404) {
+                            usersDB.put(user).then(function () {
+                                console.log(`Usuario ${user.username} creado`);
+                            }).catch(function (err) {
+                                console.error(`Error al crear usuario ${user.username}:`, err);
+                            });
+                        }
+                    });
+                });
+
+                // 3. Crear contactos de prueba
+                const testContacts = [
+                    {
+                        _id: 'contact_001',
+                        nombre: 'Juan Pérez',
+                        email: 'juan.perez@gmail.com',
+                        telefono: '555-123-4567',
+                        asunto: 'Inscripción a programas',
+                        mensaje: 'Buen día, me interesa información sobre los programas de licenciatura disponibles para el próximo semestre. ¿Podrían enviarme los requisitos de inscripción y las fechas límite?',
+                        status: 'pendiente',
+                        createdAt: new Date('2024-06-01T10:30:00').toISOString()
+                    },
+                    {
+                        _id: 'contact_002',
+                        nombre: 'María García',
+                        email: 'maria.garcia@empresa.com',
+                        telefono: '555-987-6543',
+                        asunto: 'Consulta sobre Ruta 286',
+                        mensaje: 'Quisiera saber los requisitos para homologar mis estudios mediante el Acuerdo 286. ¿Cuál es el proceso y qué documentos necesito presentar?',
+                        status: 'revisada',
+                        createdAt: new Date('2024-06-02T14:15:00').toISOString()
+                    },
+                    {
+                        _id: 'contact_003',
+                        nombre: 'Carlos López',
+                        email: 'carlos.lopez@universidad.edu',
+                        telefono: '555-456-7890',
+                        asunto: 'Soporte técnico',
+                        mensaje: 'No puedo acceder a mi cuenta en la plataforma. He intentado restablecer mi contraseña pero no recibo el correo de recuperación. ¿Podrían ayudarme?',
+                        status: 'pendiente',
+                        createdAt: new Date('2024-06-03T09:45:00').toISOString()
+                    },
+                    {
+                        _id: 'contact_004',
+                        nombre: 'Ana Torres',
+                        email: 'ana.torres@hotmail.com',
+                        telefono: '555-321-0987',
+                        asunto: 'Solicitud de información',
+                        mensaje: 'Me gustaría recibir información sobre los programas de maestría en educación que ofrecen. Especialmente me interesan los que tienen modalidad en línea.',
+                        status: 'deshabilitada',
+                        createdAt: new Date('2024-06-04T16:20:00').toISOString()
+                    },
+                    {
+                        _id: 'contact_005',
+                        nombre: 'Roberto Méndez',
+                        email: 'roberto.mendez@yahoo.com',
+                        telefono: '555-654-3210',
+                        asunto: 'Reclamo sobre proceso',
+                        mensaje: 'Hace dos semanas envié mi documentación para inscripción y aún no he recibido respuesta. El proceso ha sido muy lento y necesito una pronta solución.',
+                        status: 'pendiente',
+                        createdAt: new Date('2024-06-05T11:10:00').toISOString()
+                    },
+                    {
+                        _id: 'contact_006',
+                        nombre: 'Laura Ramírez',
+                        email: 'laura.ramirez@empresa.org',
+                        telefono: '555-789-0123',
+                        asunto: 'Sugerencia de mejora',
+                        mensaje: 'Sugiero implementar un sistema de seguimiento en línea para los trámites de inscripción. Esto ayudaría mucho a los aspirantes a conocer el estado de su proceso.',
+                        status: 'revisada',
+                        createdAt: new Date('2024-06-06T13:25:00').toISOString()
+                    },
+                    {
+                        _id: 'contact_007',
+                        nombre: 'Pedro Sánchez',
+                        email: 'pedro.sanchez@gmail.com',
+                        telefono: '555-012-3456',
+                        asunto: 'Ruta-286 preguntas específicas',
+                        mensaje: 'Tengo dudas sobre la equivalencia de mis estudios del extranjero bajo el Acuerdo 286. ¿Pueden orientarme sobre el proceso de validación?',
+                        status: 'pendiente',
+                        createdAt: new Date('2024-06-07T15:40:00').toISOString()
+                    },
+                    {
+                        _id: 'contact_008',
+                        nombre: 'Sofía Hernández',
+                        email: 'sofia.hernandez@universidad.mx',
+                        telefono: '555-234-5678',
+                        asunto: 'Servicio de asesoría',
+                        mensaje: 'Necesito información sobre los servicios de asesoría académica que ofrecen para estudiantes de nuevo ingreso. ¿Cuál es el proceso para solicitar una cita?',
+                        status: 'revisada',
+                        createdAt: new Date('2024-06-08T10:05:00').toISOString()
+                    },
+                    {
+                        _id: 'contact_009',
+                        nombre: 'Miguel Ángel Ruiz',
+                        email: 'miguel.ruiz@empresa.com',
+                        telefono: '555-876-5432',
+                        asunto: 'Información general',
+                        mensaje: 'Solicito información sobre los programas de educación continua y los costos asociados. También me interesa conocer las fechas de inicio.',
+                        status: 'pendiente',
+                        createdAt: new Date().toISOString() // Hoy
+                    },
+                    {
+                        _id: 'contact_010',
+                        nombre: 'Isabel Castro',
+                        email: 'isabel.castro@hotmail.com',
+                        telefono: '555-345-6789',
+                        asunto: 'Consulta sobre programas',
+                        mensaje: 'Quisiera saber si ofrecen programas de especialización en tecnología educativa y cuáles son los requisitos de admisión.',
+                        status: 'pendiente',
+                        createdAt: new Date().toISOString() // Hoy
+                    },
+                    {
+                        _id: 'contact_011',
+                        nombre: 'Fernando Morales',
+                        email: 'fernando.morales@gmail.com',
+                        telefono: '555-567-8901',
+                        asunto: 'Problema con plataforma',
+                        mensaje: 'La plataforma de cursos en línea no carga correctamente en mi navegador. He intentado con Chrome y Firefox pero el problema persiste.',
+                        status: 'pendiente',
+                        createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString() // Hace 3 días
+                    },
+                    {
+                        _id: 'contact_012',
+                        nombre: 'Gabriela Ríos',
+                        email: 'gabriela.rios@yahoo.com',
+                        telefono: '555-890-1234',
+                        asunto: 'Ruta 286 dudas',
+                        mensaje: 'Tengo preguntas específicas sobre la documentación necesaria para el proceso de homologación. ¿Pueden enviarme una lista detallada?',
+                        status: 'revisada',
+                        createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString() // Hace 1 semana
+                    },
+                    {
+                        _id: 'contact_013',
+                        nombre: 'Jorge Domínguez',
+                        email: 'jorge.dominguez@empresa.mx',
+                        telefono: '555-432-1098',
+                        asunto: 'Solicitud de servicio',
+                        mensaje: 'Represento a una empresa interesada en capacitar a nuestro personal. ¿Ofrecen programas corporativos?',
+                        status: 'pendiente',
+                        createdAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString() // Hace 15 días
+                    },
+                    {
+                        _id: 'contact_014',
+                        nombre: 'Patricia Navarro',
+                        email: 'patricia.navarro@gmail.com',
+                        telefono: '555-109-8765',
+                        asunto: 'Información sobre inscripcion',
+                        mensaje: 'Necesito información sobre el proceso de inscripción para el próximo ciclo escolar. ¿Cuáles son las fechas límite?',
+                        status: 'deshabilitada',
+                        createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString() // Hace 1 mes
+                    },
+                    {
+                        _id: 'contact_015',
+                        nombre: 'Ricardo Vargas',
+                        email: 'ricardo.vargas@universidad.edu',
+                        telefono: '555-765-4321',
+                        asunto: 'Consulta sobre maestría',
+                        mensaje: 'Estoy interesado en el programa de maestría en administración educativa. ¿Podrían enviarme el plan de estudios?',
+                        status: 'pendiente',
+                        createdAt: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString() // Hace 2 meses
+                    }
+                ];
+
+                // Insertar contactos de prueba
+                testContacts.forEach(contact => {
+                    contactsDB.get(contact._id).catch(function (err) {
+                        if (err.status === 404) {
+                            contactsDB.put(contact).then(function () {
+                                console.log(`Contacto ${contact._id} creado`);
+                            }).catch(function (err) {
+                                console.error(`Error al crear contacto ${contact._id}:`, err);
+                            });
+                        }
+                    });
+                });
+            }
+
+            // Llamar a la función para inicializar datos de prueba
+            initializeTestData();
+
+            // Cargar datos iniciales después de un breve delay para asegurar que se crearon los datos de prueba
+            setTimeout(() => {
+                loadAllContacts();
+                loadAllUsers();
+            }, 500);
+
+        })();
     </script>
 </body>
 

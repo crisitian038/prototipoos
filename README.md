@@ -1,136 +1,137 @@
-# Prototipos
-<h1 align="center">VERSION1.1</h1>
-<p align="center">prototipos en html para el desarrollo de la Web de Red Educativa Mexico 
-.</p>
+<h1 align="center">
+  <ins><b>Prototipos</b></ins>
+</p>
+<h1 align="center">VERSION 1.1</h1>
+<p align="center">Prototipos en html para el desarrollo de la Web de Red Educativa Mexico.</p>
 
-# Descripcion del proyecto 
+# Descripcion del proyecto. 
 Red Educativa Mexico es una plataforma web integral para servicos educativos, especificamente enfocada en la evaluacion ycertificacion  de competencias bajo el acuerdo 286
-de la sep, el sistema permite explorar carreras, solicitar informacion, gestionar contactos/dudas mientras que el administrador gestiona los registros desdeun panel
-# Caracteristicas prncipales 
-## Para usuarios 
-> pagina principal(index.html)
-- sitio web responsivo con diseño moderno y tema claro y oscuro
-- navegacion de pagina unica con tranciciones suaves, entre secciones
-- oferta educativa completa con 10 carreras 
-- carrusel interactivo para mostrar las carreras destacadas 
-- sistema de busqueda y filtrado  de carreras 
-- modal de detalles con informacion sobre cada carrera 
-- gestion de sucursales
-- formulario de contacto con validacion
-- seccion de noticias
-- informacion detallada sobre el acuerdo 286
+de la sep, el sistema permite explorar carreras, solicitar informacion, gestionar contactos/dudas mientras que el administrador gestiona los registros desdeun panel.
+# Caracteristicas prncipales. 
+## Para usuarios. 
+> Pagina principal(index.html).
+- Sitio web responsivo con diseño moderno y tema claro y oscuro.
+- Navegacion de pagina unica con tranciciones suaves, entre secciones.
+- Oferta educativa completa con 10 carreras.
+- Carrusel interactivo para mostrar las carreras destacadas. 
+- Sistema de busqueda y filtrado  de carreras.
+- Modal de detalles con informacion sobre cada carrera. 
+- Gestion de sucursales.
+- Formulario de contacto con validacion.
+- Seccion de noticias.
+- Informacion detallada sobre el acuerdo 286.
 
-## Para administrador 
-> panel(admin.html)
-- panel de control 
-- gestion de contactos recibidos desde el formulario 
-- sistema de estados (pendiente, revisado y deshabiulitado)
-- glosario contextual 
-- exportacion 
+## Para administrador.
+> Panel(admin.html).
+- Panel de control.
+- Gestion de contactos recibidos desde el formulario. 
+- Sistema de estados (pendiente, revisado y deshabiulitado).
+- Glosario contextual.
+- Exportacion.
 
-## Sistema de authenticacion
-> login(login.html)
-- registro e inicio secion de usuarios 
-- redireccion autoamtica e el panel del administrador
+## Sistema de authenticacion.
+> Login(login.html).
+- Registro e inicio secion de usuarios.
+- Redireccion autoamtica e el panel del administrador.
 
-# Tecnologias utilizadas 
-## Frontend 
-- html5 estructura 
-- css estilos con variables css 
-- java script interactividad y logica 
-- pouchdb base de datos en el navegador local 
-- front awesome iconografia 
+# Tecnologias utilizadas.
+## Frontend.
+- Html5 estructura.
+- Css estilos con variables css. 
+- Java script interactividad y logica. 
+- Pouchdb base de datos en el navegador local. 
+- Front awesome iconografia.
 
-## caracterusticas tecnicas 
-- diseño responsivo
--  modo claro y oscuro 
-- validacion de formularios 
-- scroll suave 
-- optimizacion de rendimiento 
+## Caracterusticas tecnicas.
+- Diseño responsivo.
+- Modo claro y oscuro. 
+- Validacion de formularios.
+- Scroll suave.
+- Optimizacion de rendimiento. 
 
 
-# instalacion y uso 
-## requisitos 
-- navegador web actual 
-- conexion a internet 
+# Instalacion y uso.
+## Requisitos.
+- Navegador web actual. 
+- Conexion a internet.
 
-## credenciales de prueba 
+## Credenciales de prueba. 
 - Email: admin@gmail.com
-- contraseña: admin123
+- Contraseña: admin123
 
-# configuracion 
-## personalizacion 
-- logo de la empresa 
-- colores modificables en las variables en root: 
+# Configuracion.
+## Personalizacion. 
+- Logo de la empresa. 
+- Colores modificables en las variables en root: 
 
-## base de datos 
-### el prototipo utlliza pouch db como almavenamiento local 
-- rem-contactos: Almacena formularios de contacto 
-- rem-users: Almacena credenciales de administradores
+## Case de datos.
+### El prototipo utlliza pouch db como almavenamiento local.
+- rem-contactos: Almacena formularios de contacto.
+- rem-users: Almacena credenciales de administradores.
 
-# Seccione del sitio 
-## inicio
-- hero section 
-- carrusel con carreras destacadas 
-- grid de noticias recientes 
-- informacion sobre ruta286
+# Seccione del sitio.
+## Inicio.
+- Hero section.
+- Carrusel con carreras destacadas.
+- Grid de noticias recientes.
+- Informacion sobre ruta286.
 
-## noostros 
-- mision, vision y valores 
-- historia institucional
-- logros 
+## Nostros.
+- Mision, vision y valores.
+- Historia institucional.
+- Logros.
 
-## oferta Educativa 
-- 10 carreras categorizadas 
-- sistema de busqueda y filtrado 
-- modal con detalles 
+## Oferta Educativa.
+- 10 Carreras categorizadas.
+- Sistema de busqueda y filtrado.
+- Modal con detalles.
 
-## ruta 286/ acuerdo 286
-- explicacion mas detallada del acuerdo 
-- beneficios y requisitos 
-- proceso  de implementacion 
+## Ruta 286/ acuerdo 286.
+- Explicacion mas detallada del acuerdo.
+- Beneficios y requisitos.
+- Proceso  de implementacion. 
 
-## suscursales 
-- 4 ubicaciones 
-- informacionde contacto por cada sucursal 
-- horarios de atencion
+## Suscursales. 
+- 4 Ubicaciones. 
+- Informacionde contacto por cada sucursal. 
+- Horarios de atencion.
 
-## noticias 
-- listado de articulos 
-- diseño tipo tarjetas 
+## Noticias.
+- Listado de articulos. 
+- Diseño tipo tarjetas.
 
-## contacto 
-- formulario con validacion 
-- informacion de contacto 
-- enlaces a redes sociales 
+## Contacto.
+- Formulario con validacion. 
+- Informacion de contacto.
+- Enlaces a redes sociales. 
 
-# roles de usuario 
-## visitante 
-- explorar carreras 
-- leer noticias u articulos 
-- consultar informacion de contacto 
-- enviar solicitudes de informacion
+# Roles de usuario.
+## Visitante.
+- Explorar carreras. 
+- Leer noticias u articulos. 
+- Consultar informacion de contacto. 
+- Enviar solicitudes de informacion.
 
-## administrador 
-- gestionar contactos recibidos 
-- cambiar estados de solicitudes 
-- ver estadisticas de contacto
-- acceder a mensajes completos
+## Administrador.
+- Gestionar contactos recibidos. 
+- Cambiar estados de solicitudes. 
+- Ver estadisticas de contacto.
+- Acceder a mensajes completos.
 
-# base de datos local 
-## estructura de documentos 
-> contactos 
+# Base de datos local.
+## Estructura de documentos. 
+> **Contactos**
+```json
 {
-  _id: "contact_TIMESTAMP",
-  nombre: "Nombre completo",
-  email: "correo@ejemplo.com",
-  telefono: "5512345678",
-  asunto: "tipo_de_consulta",
-  mensaje: "Texto del mensaje",
-  status: "pendiente|revisada|deshabilitada",
-  createdAt: "ISO fecha"
+  "_id": "contact_TIMESTAMP",
+  "nombre": "Nombre completo",
+  "email": "correo@ejemplo.com",
+  "status": "pendiente|revisada|deshabilitada",
+  "createdAt": "ISO fecha"
 }
->usuarios 
+```
+> **Usuarios**
+```json
 {
   _id: "user_EMAIL",
   name: "Nombre completo",
@@ -138,61 +139,64 @@ de la sep, el sistema permite explorar carreras, solicitar informacion, gestiona
   passwordHash: "hash_sha256",
   createdAt: "ISO fecha"
 }
+```
+# Compatibilidad.
+- Chrome.
+- Firefox. 
+- Safari.
+- Edge.
+- Opera. 
+- Dispositivos moviles. 
 
-# compatibilidad 
-- chrome 
-- firefox 
-- safari 
-- edge 
-- opera 
-- dispositivos moviles 
+# Licencia.
+Este proyecto es de uso institucional para Red Educativa Mexico. todos los derechos reservados. 
 
-# licencia
-este proyecto es de uso institucional para Red Educativa Mexico. todos los derechos reservados. 
+# Soporte.
+Para soporte tecnico. 
+- Email: admin@rededucativamexico.org
+- Telefono: 800 0440 189
+- Horarios: lunes a sabados 9:00 a 18:00 hrs 
 
-# soporte 
-para soporte tecnico 
-- email: admin@rededucativamexico.org
-- telefono: 800 0440 189
-- horarios: lunes a sabados 9:00 a 18:00 hrs 
+<h1 align="center">VERSION 1.2</h1>
 
-<h1 align="center">VERSION1.2</h1>
+# Nuevas Caracteristicas.
+## Service worker.
+> He implementado un service worker que lo transforma en una pwa (progresive web app) con las siguientes capacidades. 
+- Pantalla offline personalizada: cuando los usuarios pierden conexion a internet,  ahhora ven una  pantalla personalizada diseñada especificamente para esta situacion, en lugar del mensaje generico del navegador.
+- Cache inteligente: los recursos encenciales de la aplicacion se almacenan en el cache para: 
+  - Cargas mas rapidas en vistas posteriores.
+  - Funcionalidades sin internet.
+  - Experiencia de usuario mejorada. 
 
-# Nuevas Caracteristicas
-## service worker 
-> he implementado un service worker que lo transforma en una pwa (progresive web app) con las siguientes capacidades 
-- pantalla offline personalizada: cuando los usuarios pierden conexion a internet,  ahhora ven una  pantalla personalizada diseñada especificamente para esta situacion, en lugar del mensaje generico del navegador 
-- cache inteligente: los recursos encenciales de la aplicacion se almacenan en el cache para: 
-  - Cargas mas rapidas en vistas posteriores 
-  - funcionalidades sin internet 
-  - experiencia de usuario mejorada 
+# Panel de administracion mejorado.
+> Mejor gestion  de usuarios.
+> El panel de administracion ha sido ampliado con: 
+- Vista completa de usuarios registrados: visualizacion tabular con paginacion.
+- Gestion granular de usuarios:
+  - Activacio/desactivacion de cuentas.
+  - Modificacion de roles.
+  - Reset de contraseñas.
+  - Eliminacion de usuarios. 
 
-# panel de administracion mejorado 
-> mejor gestion  de usuarios 
-> el panel de administracion ha sido ampliado con: 
-- vista completa de usuarios registrados: visualizacion tabular con paginacion
-- gestion granular de usuarios:
-  - activacio/desactivacion de cuentas 
-  - modificacion de roles
-  - reset de contraseñas 
-  - eliminacion de usuarios 
+> Sistema de exportacion de datos. 
+Nueva funcion de exportacion de datos. 
+- Exportacion de contactos.
+  - Formato csv.
+  - Listado completo de contactos registrados. 
+-Exportaciond de usuarios Registrados.
+  - Formato csv.
+  - Listado completo de usuarios registrados. 
+# Pantalla ofline  personalizada.
+Diseñe una interfaz especifica para el modo ofline esta incluye: 
+- Indicador visual del estado de la coneccion. 
+- Boton de accion para actualizar.
 
-> sistema de exportacion de datos 
-nuieva funcion de exportacion de datos 
-- exportacion de contactos 
-  - formato csv
-  - listado completo de contactos registrados 
--exportaciond de usuarios Registrados
-  - formato csv
-  - listado completo de usuarios registrados 
-# pantalla ofline  personalizada 
-diseñe una interfaz especifica para el modo ofline esta incluye: 
-- indicador visual del estado de la coneccion 
-- boton de accion para actualizar 
 
-# configuracion tecnica 
-## service worker 
+# Configuración Técnica.
 
+## Service Worker.
+
+```javascript
 // Estructura básica del Service Worker
 self.addEventListener('install', (event) => {
   // Instalación y caché de recursos
@@ -205,36 +209,43 @@ self.addEventListener('fetch', (event) => {
 self.addEventListener('activate', (event) => {
   // Limpieza de cachés antiguos
 });
+```
 
+## Endpoints de exportacion. 
 
-## endpoints de exportacion 
-
+```http
 GET /api/export/contacts?format=csv|json|pdf
 GET /api/export/users?format=csv|json&filter=active
 POST /api/export/schedule (exportaciones programadas)
-
-# como probar estas nuevas funciones 
-## experiencia offline 
+```
+# Como probar estas nuevas funciones. 
+## Experiencia offline.
 #### En Chrome DevTools:
-1. Ir a Application > Service Workers
-2. Marcar "Offline"
-3. Recargar la página para ver la pantalla personalizada
+1. Ir a Application > Service Workers.
+2. Marcar "Offline".
+3. Recargar la página para ver la pantalla personalizada.
 
-## exportacion de datos 
-### como administrador
-> ir al panel de administrsdor 
-1. ir a panel administrador > usuarios 
-2. hacer click en exportar 
-3. se descarga el archivo csv 
+## Exportacion de datos.
+### Como administrador.
+> Ir al panel de administrsdor. 
+1. Ir a panel administrador > usuarios. 
+2. Hacer click en exportar.
+3. Se descarga el archivo csv. 
 
-# metricas implementadas 
-| caracteristucas | beneficios | impacto |
-| service worker | 85% reduccion de tiempos de espera | alto|
-| pantalla ofline | 100% eliminacion de errores de conexion genericos | medio alto |
-| exportacion csv | 90% reduccion de reportes mensuales | alto |
-| gestion de usuarios | 60% gestion  | media |
+# Métricas Implementadas.
 
-# flujo de trabajo mejorado 
+| Características | Beneficios | Impacto |
+| :--- | :--- | :---: |
+| **Service Worker** | reducción de tiempos de espera | Alto |
+| **Pantalla Offline** | eliminación de errores de conexión | Medio Alto |
+| **Exportación CSV** | reducción de reportes mensuales | Alto |
+| **Gestión de Usuarios** | eficiencia en gestión | Medio |
+
+# Flujo de trabajo mejorado.
+
+
+
+```mermaid
 graph LR
     A[Usuario pierde conexión] --> B[Service Worker detecta offline]
     B --> C[Muestra pantalla personalizada]
@@ -243,15 +254,74 @@ graph LR
     E --> F[Selecciona formato y filtros]
     F --> G[Descarga archivo/listado]
     G --> H[Gestión de usuarios offline]
+```
 
-# solucion de problemas comunes 
-## service worker no se registra 
+# Solucion de problemas comunes.
+## Service worker no se registra.
 > Soluciones:
-1. Verificar HTTPS en producción
-2. Limpiar caché del navegador
-3. Verificar ruta del service worker
+1. Verificar HTTPS en producción.
+2. Limpiar caché del navegador.
+3. Verificar ruta del service worker.
 
-# soporte 
-para problemas relacionados con las nuevas funciones 
-1. verifica la conexion a internet para el service worker 
-2. revisa la consola de navegador para errores especificos 
+# Soporte.
+Para problemas relacionados con las nuevas funciones.
+1. Verifica la conexion a internet para el service worker. 
+2. Revisa la consola de navegador para errores especificos.
+
+
+<h1 aling="center">VERSION 1.3 </h1>
+
+# Nuevas caracteristicas y mejoras.
+## Sistema de inscripciones.
+> Ahora los usuarios no solo pueden consultar la oferta educativa si no iniciar su proceso directamente desde la plataforma. 
+- Flujo de inscripcion: se agrego un boton de "inscribirme" en cada una de las 10 carreras dentro dekl modal de detalles. 
+- Captura de datos: formulario integrado que vincula al usuario interesado con la carrera especifica seleccionada.
+- Persistencia en base de datos: Las inscripciones se almacenan en un nuevo almacen de pouchdb con su gestion posterior.
+
+## Seguridad y resticcion de roles.
+Hemos reforzado los datos sencibles del sistema.
+- Privacidad de usuario: se implemento un middleware de validacion sonde solo el usuario con rol administrador tiene acceso a la seccion de "usuarios Registrados". 
+
+## Panel de administracion 2.0.
+- Gestion de inscritos: nueva seccion para visualizar y dar seguimiento a las solicitudes de inscripcion a carreras.
+- Filtro por carrera: Capaciodad de filtrar inscritos segun la licenciatura o certificacion.
+
+# Configuracion tecnica actualizada.
+## Estructura de inscripciones (base de datos).
+```json
+{
+  "_id": "inscription_TIMESTAMP",
+  "user_id": "ID_DEL_USUARIO",
+  "carrera_id": "NOMBRE_O_ID_CARRERA",
+  "fecha_solicitud": "ISO fecha",
+  "estatus": "pendiente | en proceso | completado"
+}
+```
+# Control de acceso logica.
+
+```javascript
+// Lógica de restricción implementada
+if (user.role !== 'admin') {
+    hideUserManagementSection();
+    restrictAccessTo('/admin/users');
+}
+```
+# Flujo de inscripcion y gestion.
+```mermaid
+graph TD
+    A[Usuario en Oferta Educativa] --> B{Click en Inscribirme}
+    B --> C[Formulario de Inscripción]
+    C --> D[Guardado en PouchDB]
+    D --> E[Notificación en Panel Admin]
+    E --> F{¿Es Admin?}
+    F -- SÍ --> G[Ver Lista de Inscritos y Usuarios]
+    F -- NO --> H[Acceso Denegado a Datos Sensibles]
+```
+
+# Metricas de la version 1.3.
+
+| Características | Beneficios | Impacto |
+| :--- | :--- | :---: |
+| **Modulo de inscripcion** | Conversion directa a alumnos | Alto |
+| **Restruiiccion de roles** | Mayor seguridad  | Muy Alto |
+| **Gestion de inscritos** | reducción de reportes mensuales | Alto |

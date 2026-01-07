@@ -429,28 +429,26 @@
             cursor: default;
         }
 
-
         /* Estilos para las acciones del modal */
-.modal-actions {
-    justify-content: center;
-    flex-wrap: wrap;
-}
+        .modal-actions {
+            justify-content: center;
+            flex-wrap: wrap;
+        }
 
-.btn-info-extra {
-    background-color: var(--azul-oscuro);
-    border: 1px solid var(--logo-teal);
-}
+        .btn-info-extra {
+            background-color: var(--azul-oscuro);
+            border: 1px solid var(--logo-teal);
+        }
 
-/* Ajuste para Tema Oscuro */
-body.dark-theme .modal-actions {
-    border-top-color: rgba(255, 255, 255, 0.1);
-}
+        /* Ajuste para Tema Oscuro */
+        body.dark-theme .modal-actions {
+            border-top-color: rgba(255, 255, 255, 0.1);
+        }
 
-body.dark-theme .btn-info-extra {
-    background-color: rgba(39, 245, 218, 0.1);
-    color: var(--logo-teal);
-}
-
+        body.dark-theme .btn-info-extra {
+            background-color: rgba(39, 245, 218, 0.1);
+            color: var(--logo-teal);
+        }
 
         /* Modal detalles de carrera */
         .modal-overlay {
@@ -1551,43 +1549,41 @@ body.dark-theme .btn-info-extra {
             display: block;
         }
 
-
         /* Corrección para Modal de Oferta Educativa en Tema Oscuro */
-body.dark-theme .modal {
-    background: #1a2533; /* Un azul muy oscuro para el fondo del modal */
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
-}
+        body.dark-theme .modal {
+            background: #1a2533;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
+        }
 
-body.dark-theme .modal-header {
-    background-color: var(--azul-oscuro); /* Mantiene el encabezado oscuro */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
+        body.dark-theme .modal-header {
+            background-color: var(--azul-oscuro);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-body.dark-theme .modal-body {
-    color: #d7e6ef; /* Color de texto claro para legibilidad */
-    background: transparent;
-}
+        body.dark-theme .modal-body {
+            color: #d7e6ef;
+            background: transparent;
+        }
 
-body.dark-theme .modal-body h3, 
-body.dark-theme .modal-body h4 {
-    color: var(--logo-teal); /* Resalta los títulos con el color turquesa */
-}
+        body.dark-theme .modal-body h3,
+        body.dark-theme .modal-body h4 {
+            color: var(--logo-teal);
+        }
 
-body.dark-theme .modal-body ul li {
-    color: rgba(215, 230, 239, 0.9); /* Texto de las listas claro */
-}
+        body.dark-theme .modal-body ul li {
+            color: rgba(215, 230, 239, 0.9);
+        }
 
-body.dark-theme .modal img {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    filter: brightness(0.9); /* Opcional: reduce un poco el brillo de la imagen */
-}
+        body.dark-theme .modal img {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            filter: brightness(0.9);
+        }
 
-/* Si usas botones dentro del modal, aseguremos su contraste */
-body.dark-theme .modal .btn-naranja {
-    background-color: var(--naranja);
-    color: var(--azul-oscuro);
-}
+        body.dark-theme .modal .btn-naranja {
+            background-color: var(--naranja);
+            color: var(--azul-oscuro);
+        }
 
         /* Dark theme variables and overrides */
         body.dark-theme {
@@ -1905,6 +1901,58 @@ body.dark-theme .modal .btn-naranja {
             display: flex;
             align-items: stretch;
         }
+
+        /* Nuevos estilos para el formulario de inscripción */
+        .inscripcion-form {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: var(--gris-claro);
+            border-radius: 8px;
+        }
+
+        .inscripcion-form .form-group {
+            margin-bottom: 15px;
+        }
+
+        .inscripcion-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: var(--azul-oscuro);
+        }
+
+        .inscripcion-form input,
+        .inscripcion-form select,
+        .inscripcion-form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--gris-medio);
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .inscripcion-success {
+            display: none;
+            background-color: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        body.dark-theme .inscripcion-form {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+
+        body.dark-theme .inscripcion-form label {
+            color: #e6fbf9;
+        }
+
+        body.dark-theme .inscripcion-success {
+            background-color: rgba(39, 245, 218, 0.1);
+            color: var(--logo-teal);
+        }
     </style>
 </head>
 
@@ -2033,7 +2081,7 @@ body.dark-theme .modal .btn-naranja {
             </div>
         </section>
 
-        <!-- Modal para mostrar requisitos de carrera -->
+        <!-- Modal para mostrar requisitos de carrera y formulario de inscripción -->
         <div id="modalOverlay" class="modal-overlay" role="dialog" aria-modal="true">
             <div class="modal" role="document">
                 <div class="modal-header">
@@ -2045,6 +2093,48 @@ body.dark-theme .modal .btn-naranja {
                         src="https://blogs.unitec.mx/hubfs/c%C3%B3mo%20saber%20si%20soy%20un%20buen%20estudiante%20test.jpg"
                         alt="Imagen carrera">
                     <div id="modalContent"></div>
+                    <div id="modalInscripcionForm" style="display: none;">
+                        <h3>Formulario de Inscripción</h3>
+                        <form id="formInscripcion" class="inscripcion-form">
+                            <input type="hidden" id="carreraId" name="carreraId">
+                            <input type="hidden" id="carreraNombre" name="carreraNombre">
+                            
+                            <div class="form-group">
+                                <label for="nombreCompleto">Nombre completo *</label>
+                                <input type="text" id="nombreCompleto" name="nombreCompleto" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email">Correo electrónico *</label>
+                                <input type="email" id="emailInscripcion" name="email" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="telefono">Teléfono *</label>
+                                <input type="tel" id="telefonoInscripcion" name="telefono" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="fechaNacimiento">Fecha de nacimiento</label>
+                                <input type="date" id="fechaNacimiento" name="fechaNacimiento">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="comentarios">Comentarios adicionales</label>
+                                <textarea id="comentarios" name="comentarios" rows="3"></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-naranja">
+                                <i class="fas fa-paper-plane"></i> Enviar inscripción
+                            </button>
+                            <button type="button" id="btnCancelarInscripcion" class="btn" style="margin-left: 10px;">
+                                Cancelar
+                            </button>
+                        </form>
+                        <div id="inscripcionSuccess" class="inscripcion-success">
+                            <i class="fas fa-check-circle"></i> ¡Inscripción enviada con éxito! Nos pondremos en contacto contigo pronto.
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2821,6 +2911,9 @@ body.dark-theme .modal .btn-naranja {
             }
         ];
 
+        // Base de datos para inscripciones
+        let dbInscripciones = null;
+
         document.addEventListener('DOMContentLoaded', function () {
             const mobileMenuBtn = document.getElementById('mobileMenuBtn');
             const mainNav = document.getElementById('mainNav');
@@ -3042,6 +3135,17 @@ body.dark-theme .modal .btn-naranja {
                 }
             }
 
+            // Inicializar base de datos para inscripciones
+            if (window.PouchDB) {
+                try {
+                    dbInscripciones = new PouchDB('rem-inscripciones');
+                    inicializarBaseDatosInscripciones();
+                } catch (err) {
+                    console.error('Error al inicializar PouchDB para inscripciones', err);
+                    dbInscripciones = null;
+                }
+            }
+
             // ========== FUNCIONES PARA OFERTA EDUCATIVA ==========
 
             // Función para renderizar las tarjetas de carreras
@@ -3247,6 +3351,7 @@ body.dark-theme .modal .btn-naranja {
             function abrirModalCarrera(carrera) {
                 const modalTitle = document.getElementById('modalTitle');
                 const modalContent = document.getElementById('modalContent');
+                const modalInscripcionForm = document.getElementById('modalInscripcionForm');
 
                 if (!modalTitle || !modalContent) return;
 
@@ -3273,19 +3378,89 @@ body.dark-theme .modal .btn-naranja {
                     <ul style="margin-bottom: 25px;">
                         ${carrera.requisitos.map(req => `<li>${req}</li>`).join('')}
                     </ul>
-                    <div class="modal-body">
-    <div class="modal-actions" style="margin-top: 30px; display: flex; gap: 15px; border-top: 1px solid var(--gris-medio); padding-top: 20px;">
-        <button class="btn btn-info-extra" onclick="showMoreInfo()">
-            <i class="fas fa-info-circle"></i> Más Información
-        </button>
-        <button class="btn btn-naranja" onclick="goToInscripcion()">
-            <i class="fas fa-edit"></i> Inscribirme Ahora
-        </button>
-    </div>
-</div>
+                    <div class="modal-actions" style="margin-top: 30px; display: flex; gap: 15px; border-top: 1px solid var(--gris-medio); padding-top: 20px;">
+                        <button class="btn btn-naranja" id="btnInscribirmeModal">
+                            <i class="fas fa-edit"></i> Inscribirme Ahora
+                        </button>
+                    </div>
                 `;
 
+                // Ocultar formulario y mostrar detalles
+                modalInscripcionForm.style.display = 'none';
+                modalContent.style.display = 'block';
+                
+                // Establecer datos de la carrera en campos ocultos
+                document.getElementById('carreraId').value = carrera.id;
+                document.getElementById('carreraNombre').value = carrera.titulo;
+
                 document.getElementById('modalOverlay').style.display = 'flex';
+
+                // Añadir evento al botón de inscripción
+                document.getElementById('btnInscribirmeModal').addEventListener('click', function() {
+                    mostrarFormularioInscripcion(carrera);
+                });
+            }
+
+            // Función para mostrar formulario de inscripción
+            function mostrarFormularioInscripcion(carrera) {
+                const modalTitle = document.getElementById('modalTitle');
+                const modalContent = document.getElementById('modalContent');
+                const modalInscripcionForm = document.getElementById('modalInscripcionForm');
+                const inscripcionSuccess = document.getElementById('inscripcionSuccess');
+
+                modalTitle.textContent = `Inscripción: ${carrera.titulo}`;
+                modalContent.style.display = 'none';
+                modalInscripcionForm.style.display = 'block';
+                inscripcionSuccess.style.display = 'none';
+                
+                // Limpiar formulario
+                document.getElementById('formInscripcion').reset();
+                
+                // Establecer datos de la carrera
+                document.getElementById('carreraId').value = carrera.id;
+                document.getElementById('carreraNombre').value = carrera.titulo;
+            }
+
+            // Función para inicializar base de datos con registros por defecto
+            function inicializarBaseDatosInscripciones() {
+                if (!dbInscripciones) return;
+
+                // Verificar si ya hay registros
+                dbInscripciones.allDocs({limit: 1}).then(result => {
+                    if (result.total_rows === 0) {
+                        // Insertar registros por defecto
+                        const registrosPorDefecto = [
+                            {
+                                _id: 'inscripcion_1',
+                                nombreCompleto: 'Juan Pérez López',
+                                email: 'juan.perez@ejemplo.com',
+                                telefono: '5512345678',
+                                fechaNacimiento: '1985-05-15',
+                                carreraId: 2,
+                                carreraNombre: 'Ingeniería Industrial',
+                                comentarios: 'Interesado en la carrera de Ingeniería Industrial',
+                                fechaInscripcion: new Date().toISOString()
+                            },
+                            {
+                                _id: 'inscripcion_2',
+                                nombreCompleto: 'María García Hernández',
+                                email: 'maria.garcia@ejemplo.com',
+                                telefono: '5556789012',
+                                fechaNacimiento: '1990-08-22',
+                                carreraId: 4,
+                                carreraNombre: 'Derecho',
+                                comentarios: 'Quisiera información sobre el plan de estudios',
+                                fechaInscripcion: new Date().toISOString()
+                            }
+                        ];
+
+                        return dbInscripciones.bulkDocs(registrosPorDefecto);
+                    }
+                }).then(() => {
+                    console.log('Base de datos de inscripciones inicializada con registros por defecto');
+                }).catch(err => {
+                    console.error('Error al inicializar base de datos de inscripciones', err);
+                });
             }
 
             // Función para filtrar carreras
@@ -3339,6 +3514,70 @@ body.dark-theme .modal .btn-naranja {
                     btnContactoServicios.addEventListener('click', function (e) {
                         e.preventDefault();
                         mostrarPagina('contacto');
+                    });
+                }
+
+                // Event listener para formulario de inscripción
+                const formInscripcion = document.getElementById('formInscripcion');
+                if (formInscripcion) {
+                    formInscripcion.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        
+                        const inscripcionData = {
+                            _id: 'inscripcion_' + Date.now(),
+                            nombreCompleto: document.getElementById('nombreCompleto').value,
+                            email: document.getElementById('emailInscripcion').value,
+                            telefono: document.getElementById('telefonoInscripcion').value,
+                            fechaNacimiento: document.getElementById('fechaNacimiento').value,
+                            carreraId: document.getElementById('carreraId').value,
+                            carreraNombre: document.getElementById('carreraNombre').value,
+                            comentarios: document.getElementById('comentarios').value,
+                            fechaInscripcion: new Date().toISOString()
+                        };
+
+                        if (!inscripcionData.nombreCompleto || !inscripcionData.email || !inscripcionData.telefono) {
+                            alert('Por favor completa los campos obligatorios (*)');
+                            return;
+                        }
+
+                        if (dbInscripciones) {
+                            dbInscripciones.put(inscripcionData).then(() => {
+                                const inscripcionSuccess = document.getElementById('inscripcionSuccess');
+                                inscripcionSuccess.style.display = 'block';
+                                
+                                // Ocultar formulario después de 3 segundos
+                                setTimeout(() => {
+                                    document.getElementById('modalOverlay').style.display = 'none';
+                                    formInscripcion.reset();
+                                }, 3000);
+                            }).catch(err => {
+                                console.error('Error al guardar inscripción:', err);
+                                alert('Hubo un error al guardar tu inscripción. Por favor intenta nuevamente.');
+                            });
+                        } else {
+                            alert('Inscripción enviada correctamente. Nos pondremos en contacto contigo pronto.');
+                            document.getElementById('modalOverlay').style.display = 'none';
+                            formInscripcion.reset();
+                        }
+                    });
+                }
+
+                // Event listener para cancelar inscripción
+                const btnCancelarInscripcion = document.getElementById('btnCancelarInscripcion');
+                if (btnCancelarInscripcion) {
+                    btnCancelarInscripcion.addEventListener('click', function() {
+                        const modalContent = document.getElementById('modalContent');
+                        const modalInscripcionForm = document.getElementById('modalInscripcionForm');
+                        
+                        modalInscripcionForm.style.display = 'none';
+                        modalContent.style.display = 'block';
+                        
+                        // Restaurar título
+                        const carreraId = document.getElementById('carreraId').value;
+                        const carrera = carrerasData.find(c => c.id == carreraId);
+                        if (carrera) {
+                            document.getElementById('modalTitle').textContent = carrera.titulo;
+                        }
                     });
                 }
             }
