@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página no encontrada - Error 404</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .error-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .error-code {
+            font-size: 120px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #fff;
+            text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
+        }
+        
+        .error-title {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+        
+        .error-message {
+            font-size: 18px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+        
+        .home-button {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .home-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .home-button:active {
+            transform: translateY(-1px);
+        }
+        
+        .navigation-links {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        @media (max-width: 600px) {
+            .error-code {
+                font-size: 80px;
+            }
+            
+            .error-title {
+                font-size: 24px;
+            }
+            
+            .error-container {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-code">404</div>
+        <h1 class="error-title">¡Página no encontrada!</h1>
+        
+        <p class="error-message">
+            Lo sentimos, la página que estás buscando no existe o ha sido movida.
+            Puede que hayas escrito mal la URL o la página haya sido eliminada.
+        </p>
+        
+        <a href="/index.html" class="home-button">
+            🏠 Volver al inicio
+        </a>
+        
+        <div class="navigation-links">
+            <a href="/login.html" class="nav-link">Iniciar sesión</a>
+            <a href="/admin.html" class="nav-link">Panel de administración</a>
+        </div>
+    </div>
+    
+    <script>
+        // Si el usuario viene de una página específica, podemos mejorar el botón de regreso
+        document.addEventListener('DOMContentLoaded', function() {
+            const homeButton = document.querySelector('.home-button');
+            
+            // Si hay una página anterior y no es la misma página 404
+            if (document.referrer && !document.referrer.includes('404.html')) {
+                homeButton.textContent = '🔙 Volver a la página anterior';
+                homeButton.href = 'javascript:history.back()';
+                
+                // También agregamos el enlace al inicio
+                const backToHome = document.createElement('a');
+                backToHome.href = '/index.html';
+                backToHome.className = 'nav-link';
+                backToHome.textContent = 'Ir al inicio';
+                backToHome.style.marginTop = '15px';
+                backToHome.style.display = 'block';
+                
+                const navigationLinks = document.querySelector('.navigation-links');
+                navigationLinks.parentNode.insertBefore(backToHome, navigationLinks.nextSibling);
+            }
+        });
+    </script>
+</body>
+</html>
