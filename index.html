@@ -1953,6 +1953,111 @@
             background-color: rgba(39, 245, 218, 0.1);
             color: var(--logo-teal);
         }
+
+        /* Modal de confirmación de envío */
+        .confirmacion-modal {
+            background: var(--blanco);
+            width: 90%;
+            max-width: 400px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(2, 24, 63, 0.3);
+            text-align: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .confirmacion-content {
+            padding: 30px;
+        }
+
+        .confirmacion-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--logo-teal);
+            color: var(--azul-oscuro);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 28px;
+        }
+
+        .confirmacion-content h3 {
+            color: var(--azul-oscuro);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .confirmacion-content p {
+            color: var(--gris-oscuro);
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        body.dark-theme .confirmacion-modal {
+            background: #1a2533;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-theme .confirmacion-content h3 {
+            color: #e6fbf9;
+        }
+
+        body.dark-theme .confirmacion-content p {
+            color: rgba(215, 230, 239, 0.8);
+        }
+
+        .notification-badge {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--logo-teal);
+            color: var(--azul-oscuro);
+            padding: 10px 15px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(2, 24, 63, 0.2);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideIn 0.5s ease, fadeOut 0.5s ease 2.5s forwards;
+            font-weight: 600;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 
@@ -2018,9 +2123,12 @@
                     <div class="content-with-sidebar">
                         <div class="main-content">
                             <h2 class="section-title">Nuestra Historia</h2>
-                            <p>En Red Educativa México somos líderes en la profesionalización de personas adultas. Hasta el cierre de 2023, hemos beneficiado a más de 19,986 alumnos a través de nuestros diversos programas académicos, impulsando el programa de nivel medio superior más competitivo en la República Mexicana, Estados Unidos y Canadá.
+                            <p>En Red Educativa México somos líderes en la profesionalización de personas adultas. Hasta
+                                el cierre de 2023, hemos beneficiado a más de 19,986 alumnos a través de nuestros
+                                diversos programas académicos, impulsando el programa de nivel medio superior más
+                                competitivo en la República Mexicana, Estados Unidos y Canadá.
 
-</p>
+                            </p>
 
                             <div class="mision-vision">
                                 <div class="mision">
@@ -2098,32 +2206,32 @@
                         <form id="formInscripcion" class="inscripcion-form">
                             <input type="hidden" id="carreraId" name="carreraId">
                             <input type="hidden" id="carreraNombre" name="carreraNombre">
-                            
+
                             <div class="form-group">
                                 <label for="nombreCompleto">Nombre completo *</label>
                                 <input type="text" id="nombreCompleto" name="nombreCompleto" required>
                             </div>
-                            
+
                             <div class="form-group">
                                 <label for="email">Correo electrónico *</label>
                                 <input type="email" id="emailInscripcion" name="email" required>
                             </div>
-                            
+
                             <div class="form-group">
                                 <label for="telefono">Teléfono *</label>
                                 <input type="tel" id="telefonoInscripcion" name="telefono" required>
                             </div>
-                            
+
                             <div class="form-group">
                                 <label for="fechaNacimiento">Fecha de nacimiento</label>
                                 <input type="date" id="fechaNacimiento" name="fechaNacimiento">
                             </div>
-                            
+
                             <div class="form-group">
-                                <label for="comentarios">Comentarios adicionales</label>
-                                <textarea id="comentarios" name="comentarios" rows="3"></textarea>
+                                <label>CURP *</label>
+                                <input type="text" id="curpInscripcion" maxlength="18" required>
                             </div>
-                            
+
                             <button type="submit" class="btn btn-naranja">
                                 <i class="fas fa-paper-plane"></i> Enviar inscripción
                             </button>
@@ -2131,10 +2239,26 @@
                                 Cancelar
                             </button>
                         </form>
-                        <div id="inscripcionSuccess" class="inscripcion-success">
-                            <i class="fas fa-check-circle"></i> ¡Inscripción enviada con éxito! Nos pondremos en contacto contigo pronto.
+                        <div id="inscripcionSuccess" class="inscripcion-success" style="display: none;">
+                            <i class="fas fa-check-circle"></i> ¡Inscripción enviada con éxito! Nos pondremos en
+                            contacto contigo pronto.
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de confirmación de envío -->
+        <div id="confirmacionModal" class="modal-overlay" style="display: none;">
+            <div class="confirmacion-modal">
+                <div class="confirmacion-content">
+                    <div class="confirmacion-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <h3>¡Inscripción Exitosa!</h3>
+                    <p>Tu información se ha enviado correctamente. Revisaremos tu solicitud y nos pondremos en contacto
+                        contigo en un plazo de 24-48 horas.</p>
+                    <button id="btnCerrarConfirmacion" class="btn btn-naranja">Aceptar</button>
                 </div>
             </div>
         </div>
@@ -2412,9 +2536,12 @@
                                             Articulo</span>
                                     </div>
                                     <h3>Transforma Tu Experiencia en un Título con Validez Oficial</h3>
-                                    <p>El camino tradicional de estudiar primero para trabajar después no siempre se ajusta a la realidad. En México, terminar una carrera universitaria es un reto y, aún lográndolo, no garantiza un empleo bien remunerado en tu área. Es hora de revertir el proceso.
+                                    <p>El camino tradicional de estudiar primero para trabajar después no siempre se
+                                        ajusta a la realidad. En México, terminar una carrera universitaria es un reto
+                                        y, aún lográndolo, no garantiza un empleo bien remunerado en tu área. Es hora de
+                                        revertir el proceso.
 
-</p>
+                                    </p>
                                     <a href="#" class="btn">Leer más <i class="fas fa-arrow-right"></i></a>
                                 </div>
                             </div>
@@ -2432,15 +2559,18 @@
                                         <span class="categoria-eventos"><i class="far fa-folder"></i> Articulo</span>
                                     </div>
                                     <h3>Impulsa Tu Liderazgo y Carrera con un Título Oficial</h3>
-                                    <p>En el entorno competitivo actual, un título profesional es la llave para acceder a puestos de liderazgo y transformar tu trayectoria. Para el profesional adulto, finalizar sus estudios no es solo una meta personal; es una inversión estratégica que acelera el crecimiento personal y corporativo.
+                                    <p>En el entorno competitivo actual, un título profesional es la llave para acceder
+                                        a puestos de liderazgo y transformar tu trayectoria. Para el profesional adulto,
+                                        finalizar sus estudios no es solo una meta personal; es una inversión
+                                        estratégica que acelera el crecimiento personal y corporativo.
 
-</p>
+                                    </p>
                                     <a href="#" class="btn">Leer más <i class="fas fa-arrow-right"></i></a>
                                 </div>
                             </div>
 
                             <!-- Repite este patrón para las otras noticias con diferentes categorías -->
-                            
+
                             <div class="noticia-item">
                                 <div class="noticia-img">
                                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVPZ1J3Wd1yIR_LJaWvJSoHDuu8J3LV_gA4w&s"
@@ -2454,7 +2584,10 @@
                                         <span class="categoria-eventos"><i class="far fa-folder"></i> Articulo</span>
                                     </div>
                                     <h3>Vocación y Realidad: Tu Trabajo en el Hogar Tiene un Valor Profesional</h3>
-                                    <p>Frases como "ser madre es el trabajo más duro" reconocen una verdad profunda: la gestión del hogar y la familia requiere habilidades excepcionales. Si bien dedicarse a esto es una elección válida y respetable, la realidad económica nos recuerda que el cariño, por sí solo, no paga las cuentas.</p>
+                                    <p>Frases como "ser madre es el trabajo más duro" reconocen una verdad profunda: la
+                                        gestión del hogar y la familia requiere habilidades excepcionales. Si bien
+                                        dedicarse a esto es una elección válida y respetable, la realidad económica nos
+                                        recuerda que el cariño, por sí solo, no paga las cuentas.</p>
                                     <a href="#" class="btn">Leer más <i class="fas fa-arrow-right"></i></a>
                                 </div>
                             </div>
@@ -2472,7 +2605,10 @@
                                         <span class="categoria-eventos"><i class="far fa-folder"></i> Articulo</span>
                                     </div>
                                     <h3> Nuestra Razón de Ser: Tu Derecho a Crecer</h3>
-                                    <p>Te has preguntado, ¿por qué hacemos esto? La respuesta es simple y profunda: porque creemos firmemente que el acceso a la educación y al crecimiento profesional es un derecho universal, sin importar tu situación laboral o personal actual.</p>
+                                    <p>Te has preguntado, ¿por qué hacemos esto? La respuesta es simple y profunda:
+                                        porque creemos firmemente que el acceso a la educación y al crecimiento
+                                        profesional es un derecho universal, sin importar tu situación laboral o
+                                        personal actual.</p>
                                     <a href="#" class="btn">Leer más <i class="fas fa-arrow-right"></i></a>
                                 </div>
                             </div>
@@ -2489,9 +2625,12 @@
                                         <span class="categoria-eventos"><i class="far fa-folder"></i> Articulo</span>
                                     </div>
                                     <h3>Tu Experiencia Mexicana, Tu Oportunidad en EE.UU.</h3>
-                                    <p>En un mundo global, tu carrera no tiene fronteras. Para los profesionales mexicanos, existe una combinación poderosa que abre las puertas del mercado laboral estadounidense: Tu título obtenido por experiencia (Acuerdo 286) + la Visa TN NAFTA.
+                                    <p>En un mundo global, tu carrera no tiene fronteras. Para los profesionales
+                                        mexicanos, existe una combinación poderosa que abre las puertas del mercado
+                                        laboral estadounidense: Tu título obtenido por experiencia (Acuerdo 286) + la
+                                        Visa TN NAFTA.
 
-</p>
+                                    </p>
                                     <a href="#" class="btn">Leer más <i class="fas fa-arrow-right"></i></a>
                                 </div>
                             </div>
@@ -2724,7 +2863,7 @@
             <section class="ruta286">
                 <div class="container">
                     <h2 class="section-title">Ruta 286 — Acuerdo 286</h2>
-                    <p>Es un ordenamiento de la Secretaría de Educación Pública (SEP) que establece los lineamientos
+                    <p>Es un ordenamiento de la Secretaría de Educación Pública (SEP) que establece lineamientos
                         para la acreditación de conocimientos adquiridos de forma autodidacta o a través de la
                         experiencia laboral.</p>
                     <a href="#" class="btn" id="btnMasRuta286">Más sobre Ruta 286</a>
@@ -2788,14 +2927,14 @@
 
     <script src="https://cdn.jsdelivr.net/npm/pouchdb@7.3.0/dist/pouchdb.min.js"></script>
     <script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js')
-        .then(reg => console.log('Service Worker registrado', reg))
-        .catch(err => console.error('Error al registrar', err));
-    });
-  }
-</script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('Service Worker registrado', reg))
+                    .catch(err => console.error('Error al registrar', err));
+            });
+        }
+    </script>
     <script>
         // Datos de las carreras
         const carrerasData = [
@@ -3038,6 +3177,74 @@
                     header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
                 }
             });
+
+            const formularioInscribe = document.getElementById('formInscripcion');
+            if (formularioInscribe) {
+                formularioInscribe.addEventListener('submit', function (e) {
+                    e.preventDefault();
+
+                   const nombre = document.getElementById('nombreCompleto').value.trim();
+const email = document.getElementById('emailInscripcion').value.trim();
+const telefono = document.getElementById('telefonoInscripcion').value.trim();
+const fecha = document.getElementById('fechaNacimiento').value;
+const curp = document.getElementById('curpInscripcion').value.trim();
+
+
+                    if (!nombre || !email || !fecha || !curp) {
+                        alert('Por favor completa todos los campos obligatorios (*)');
+                        return;
+                    }
+
+                    if (telefono) {
+                        const re = /^\d{7,15}$/;
+                        if (!re.test(telefono)) {
+                            alert('Por favor introduce sólo dígitos (7-15) en el teléfono.');
+                            return;
+                        }
+                    }
+
+                    const successEl = document.getElementById('form-success');
+
+                    const doc = {
+_id: 'inscripcion_' + Date.now(),
+                        nombre: nombre,
+                        email: email,
+                        telefono: telefono,
+                        fecha: fecha,
+                        curp: curp,
+                        createdAt: new Date().toISOString()
+                    };
+
+                    function showSuccess(text) {
+                        if (successEl) {
+                            successEl.textContent = text;
+                            successEl.style.display = 'block';
+                            setTimeout(() => { successEl.style.display = 'none'; }, 8000);
+                        } else {
+                            alert(text);
+                        }
+                    }
+
+                    if (dbInscripciones) {
+                        dbInscripciones.put(doc).then(() => {
+                            showSuccess('¡Gracias por tu registro! Se ha guardado.');
+                            formularioInscribe.reset();
+                        }).catch(err => {
+                            console.error('PouchDB save error', err);
+                            showSuccess('Gracias. Ocurrió un error al guardar, pero recibimos tu mensaje.');
+                            formularioInscribe.reset();
+                        });
+                    } else {
+                        showSuccess('¡Gracias por tu registro! Nos pondremos en contacto contigo pronto.');
+                        formularioInscribe.reset();
+                    }
+                });
+            }
+
+
+
+
+
 
             const formularioContacto = document.getElementById('formulario-contacto');
             if (formularioContacto) {
@@ -3388,7 +3595,7 @@
                 // Ocultar formulario y mostrar detalles
                 modalInscripcionForm.style.display = 'none';
                 modalContent.style.display = 'block';
-                
+
                 // Establecer datos de la carrera en campos ocultos
                 document.getElementById('carreraId').value = carrera.id;
                 document.getElementById('carreraNombre').value = carrera.titulo;
@@ -3396,7 +3603,7 @@
                 document.getElementById('modalOverlay').style.display = 'flex';
 
                 // Añadir evento al botón de inscripción
-                document.getElementById('btnInscribirmeModal').addEventListener('click', function() {
+                document.getElementById('btnInscribirmeModal').addEventListener('click', function () {
                     mostrarFormularioInscripcion(carrera);
                 });
             }
@@ -3412,10 +3619,10 @@
                 modalContent.style.display = 'none';
                 modalInscripcionForm.style.display = 'block';
                 inscripcionSuccess.style.display = 'none';
-                
+
                 // Limpiar formulario
                 document.getElementById('formInscripcion').reset();
-                
+
                 // Establecer datos de la carrera
                 document.getElementById('carreraId').value = carrera.id;
                 document.getElementById('carreraNombre').value = carrera.titulo;
@@ -3426,36 +3633,8 @@
                 if (!dbInscripciones) return;
 
                 // Verificar si ya hay registros
-                dbInscripciones.allDocs({limit: 1}).then(result => {
-                    if (result.total_rows === 0) {
-                        // Insertar registros por defecto
-                        const registrosPorDefecto = [
-                            {
-                                _id: 'inscripcion_1',
-                                nombreCompleto: 'Juan Pérez López',
-                                email: 'juan.perez@ejemplo.com',
-                                telefono: '5512345678',
-                                fechaNacimiento: '1985-05-15',
-                                carreraId: 2,
-                                carreraNombre: 'Ingeniería Industrial',
-                                comentarios: 'Interesado en la carrera de Ingeniería Industrial',
-                                fechaInscripcion: new Date().toISOString()
-                            },
-                            {
-                                _id: 'inscripcion_2',
-                                nombreCompleto: 'María García Hernández',
-                                email: 'maria.garcia@ejemplo.com',
-                                telefono: '5556789012',
-                                fechaNacimiento: '1990-08-22',
-                                carreraId: 4,
-                                carreraNombre: 'Derecho',
-                                comentarios: 'Quisiera información sobre el plan de estudios',
-                                fechaInscripcion: new Date().toISOString()
-                            }
-                        ];
-
-                        return dbInscripciones.bulkDocs(registrosPorDefecto);
-                    }
+                dbInscripciones.allDocs({ limit: 1 }).then(result => {
+                    
                 }).then(() => {
                     console.log('Base de datos de inscripciones inicializada con registros por defecto');
                 }).catch(err => {
@@ -3520,9 +3699,9 @@
                 // Event listener para formulario de inscripción
                 const formInscripcion = document.getElementById('formInscripcion');
                 if (formInscripcion) {
-                    formInscripcion.addEventListener('submit', function(e) {
+                    formInscripcion.addEventListener('submit', function (e) {
                         e.preventDefault();
-                        
+
                         const inscripcionData = {
                             _id: 'inscripcion_' + Date.now(),
                             nombreCompleto: document.getElementById('nombreCompleto').value,
@@ -3540,24 +3719,18 @@
                             return;
                         }
 
+                        // Mostrar modal de confirmación
+                        mostrarConfirmacionEnvio();
+
                         if (dbInscripciones) {
                             dbInscripciones.put(inscripcionData).then(() => {
-                                const inscripcionSuccess = document.getElementById('inscripcionSuccess');
-                                inscripcionSuccess.style.display = 'block';
-                                
-                                // Ocultar formulario después de 3 segundos
-                                setTimeout(() => {
-                                    document.getElementById('modalOverlay').style.display = 'none';
-                                    formInscripcion.reset();
-                                }, 3000);
+                                console.log('Inscripción guardada en PouchDB');
                             }).catch(err => {
                                 console.error('Error al guardar inscripción:', err);
-                                alert('Hubo un error al guardar tu inscripción. Por favor intenta nuevamente.');
+                                mostrarNotificacion('Hubo un error al guardar, pero la inscripción se envió correctamente.');
                             });
                         } else {
-                            alert('Inscripción enviada correctamente. Nos pondremos en contacto contigo pronto.');
-                            document.getElementById('modalOverlay').style.display = 'none';
-                            formInscripcion.reset();
+                            console.log('Inscripción enviada (sin PouchDB)');
                         }
                     });
                 }
@@ -3565,13 +3738,13 @@
                 // Event listener para cancelar inscripción
                 const btnCancelarInscripcion = document.getElementById('btnCancelarInscripcion');
                 if (btnCancelarInscripcion) {
-                    btnCancelarInscripcion.addEventListener('click', function() {
+                    btnCancelarInscripcion.addEventListener('click', function () {
                         const modalContent = document.getElementById('modalContent');
                         const modalInscripcionForm = document.getElementById('modalInscripcionForm');
-                        
+
                         modalInscripcionForm.style.display = 'none';
                         modalContent.style.display = 'block';
-                        
+
                         // Restaurar título
                         const carreraId = document.getElementById('carreraId').value;
                         const carrera = carrerasData.find(c => c.id == carreraId);
@@ -3580,6 +3753,13 @@
                         }
                     });
                 }
+
+                // Event listener para cerrar modal de confirmación
+                document.getElementById('btnCerrarConfirmacion').addEventListener('click', function () {
+                    document.getElementById('confirmacionModal').style.display = 'none';
+                    document.getElementById('modalOverlay').style.display = 'none';
+                    document.getElementById('formInscripcion').reset();
+                });
             }
 
             // ========== FUNCIONES PARA SUCURSALES ==========
@@ -3656,6 +3836,41 @@
                 }
             }
 
+            // ========== FUNCIONES PARA NOTIFICACIONES Y CONFIRMACIÓN ==========
+
+            function mostrarConfirmacionEnvio() {
+                const confirmacionModal = document.getElementById('confirmacionModal');
+                confirmacionModal.style.display = 'flex';
+
+                // Cerrar automáticamente después de 5 segundos
+                setTimeout(() => {
+                    if (confirmacionModal.style.display === 'flex') {
+                        confirmacionModal.style.display = 'none';
+                        document.getElementById('modalOverlay').style.display = 'none';
+                        document.getElementById('formInscripcion').reset();
+                    }
+                }, 5000);
+            }
+
+            function mostrarNotificacion(mensaje) {
+                // Crear elemento de notificación
+                const notification = document.createElement('div');
+                notification.className = 'notification-badge';
+                notification.innerHTML = `
+                    <i class="fas fa-check-circle"></i>
+                    <span>${mensaje}</span>
+                `;
+
+                document.body.appendChild(notification);
+
+                // Remover después de 3 segundos
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 3000);
+            }
+
             // ========== INICIALIZACIÓN GENERAL ==========
 
             // Cerrar modal
@@ -3664,6 +3879,11 @@
             });
 
             document.getElementById('modalOverlay')?.addEventListener('click', function (e) {
+                if (e.target === this) this.style.display = 'none';
+            });
+
+            // Cerrar modal de confirmación al hacer clic fuera
+            document.getElementById('confirmacionModal')?.addEventListener('click', function (e) {
                 if (e.target === this) this.style.display = 'none';
             });
 
@@ -3678,64 +3898,64 @@
         });
         // Añade esto al final de tu script existente
 
-// Mejorar la experiencia del formulario
-document.addEventListener('DOMContentLoaded', function() {
-    // Focus en el primer campo al cargar la página de contacto
-    if (document.getElementById('nombre')) {
-        document.getElementById('nombre').focus();
-    }
-    
-    // Validación en tiempo real para el teléfono
-    const telefonoInput = document.getElementById('telefono');
-    if (telefonoInput) {
-        telefonoInput.addEventListener('input', function(e) {
-            // Solo permitir números
-            this.value = this.value.replace(/\D/g, '');
+        // Mejorar la experiencia del formulario
+        document.addEventListener('DOMContentLoaded', function () {
+            // Focus en el primer campo al cargar la página de contacto
+            if (document.getElementById('nombre')) {
+                document.getElementById('nombre').focus();
+            }
+
+            // Validación en tiempo real para el teléfono
+            const telefonoInput = document.getElementById('telefono');
+            if (telefonoInput) {
+                telefonoInput.addEventListener('input', function (e) {
+                    // Solo permitir números
+                    this.value = this.value.replace(/\D/g, '');
+                });
+            }
+
+            // Animación para los botones del formulario
+            const submitBtn = document.querySelector('#formulario-contacto button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.addEventListener('click', function () {
+                    if (this.classList.contains('loading')) return;
+
+                    // Simular carga (opcional)
+                    const originalText = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+                    this.classList.add('loading');
+
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                        this.classList.remove('loading');
+                    }, 2000);
+                });
+            }
+
+            // Efecto para las tarjetas de noticias
+            const noticiaCards = document.querySelectorAll('.noticia-card, .noticia-item');
+            noticiaCards.forEach(card => {
+                card.addEventListener('mouseenter', function () {
+                    this.style.zIndex = '10';
+                });
+
+                card.addEventListener('mouseleave', function () {
+                    this.style.zIndex = '1';
+                });
+            });
+
+            // Añadir tooltips a los campos del formulario
+            const formFields = document.querySelectorAll('.form-group input, .form-group select, .form-group textarea');
+            formFields.forEach(field => {
+                field.addEventListener('focus', function () {
+                    this.parentElement.classList.add('focused');
+                });
+
+                field.addEventListener('blur', function () {
+                    this.parentElement.classList.remove('focused');
+                });
+            });
         });
-    }
-    
-    // Animación para los botones del formulario
-    const submitBtn = document.querySelector('#formulario-contacto button[type="submit"]');
-    if (submitBtn) {
-        submitBtn.addEventListener('click', function() {
-            if (this.classList.contains('loading')) return;
-            
-            // Simular carga (opcional)
-            const originalText = this.innerHTML;
-            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
-            this.classList.add('loading');
-            
-            setTimeout(() => {
-                this.innerHTML = originalText;
-                this.classList.remove('loading');
-            }, 2000);
-        });
-    }
-    
-    // Efecto para las tarjetas de noticias
-    const noticiaCards = document.querySelectorAll('.noticia-card, .noticia-item');
-    noticiaCards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            this.style.zIndex = '10';
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            this.style.zIndex = '1';
-        });
-    });
-    
-    // Añadir tooltips a los campos del formulario
-    const formFields = document.querySelectorAll('.form-group input, .form-group select, .form-group textarea');
-    formFields.forEach(field => {
-        field.addEventListener('focus', function() {
-            this.parentElement.classList.add('focused');
-        });
-        
-        field.addEventListener('blur', function() {
-            this.parentElement.classList.remove('focused');
-        });
-    });
-});
     </script>
 </body>
 

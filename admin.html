@@ -965,6 +965,70 @@
                 margin-top: 20px;
             }
         }
+
+        /* Para inscripciones */
+        .inscripciones-table th:nth-child(1),
+        .inscripciones-table td:nth-child(1) {
+            width: 120px
+        }
+
+        .inscripciones-table th:nth-child(2),
+        .inscripciones-table td:nth-child(2) {
+            width: 160px
+        }
+
+        .inscripciones-table th:nth-child(6),
+        .inscripciones-table td:nth-child(6) {
+            width: 180px
+        }
+
+        .inscripciones-table th:nth-child(7),
+        .inscripciones-table td:nth-child(7) {
+            width: 150px
+        }
+
+        .inscripciones-table th:nth-child(8),
+        .inscripciones-table td:nth-child(8) {
+            width: 110px
+        }
+
+        .inscripciones-table th:nth-child(9),
+        .inscripciones-table td:nth-child(9) {
+            width: 260px;
+            min-width: 200px
+        }
+
+        /* Botones para inscripciones */
+        .btn-inscrito {
+            background: #10b981;
+            color: #fff;
+        }
+
+        .btn-proceso {
+            background: #3b82f6;
+            color: #fff;
+        }
+
+        .btn-cancelado {
+            background: #ef4444;
+            color: #fff;
+        }
+
+        /* Estados de inscripciones */
+        .status-inscrito {
+            color: #10b981;
+            font-weight: 700;
+        }
+
+        .status-proceso {
+            color: #3b82f6;
+            font-weight: 700;
+        }
+
+        .status-cancelado {
+            color: #ef4444;
+            font-weight: 700;
+        }
     </style>
 </head>
 
@@ -990,9 +1054,10 @@
             <div class="panel">
                 <!-- Pestañas principales -->
                 <div class="main-tabs">
-                    <button class="main-tab active" id="tabContactos">Contactos</button>
-                    <button class="main-tab" id="tabUsuarios">Usuarios</button>
-                </div>
+    <button class="main-tab active" id="tabContactos">Contactos</button>
+    <button class="main-tab" id="tabUsuarios">Usuarios</button>
+    <button class="main-tab" id="tabInscripciones">Inscripciones</button>
+</div>
 
                 <!-- Sección de Contactos -->
                 <div id="seccionContactos">
@@ -1162,6 +1227,89 @@
                         <span class="pagination-info" id="usersPageInfo"></span>
                     </div>
                 </div>
+
+                <!-- Sección de Inscripciones -->
+                <div id="seccionInscripciones" class="section-hidden">
+                    <div class="topline">
+                        <div>
+                            <h1>Panel de Administración — Gestión de Inscripciones</h1>
+                            <div class="note">Listado de inscripciones guardadas localmente (base `rem-inscripciones`).
+                                Gestiona el estado de las inscripciones.</div>
+                        </div>
+                        <div>
+                            <button id="exportInscripcionesBtn" class="tab"
+                                style="background: var(--azul-claro); color: white; border: none;">Exportar CSV</button>
+                            <button id="refreshInscripcionesBtn" class="tab">Actualizar</button>
+                        </div>
+                    </div>
+
+                    <div class="controls" id="inscripcionesStatusTabs">
+                        <button class="tab active" data-status="all">Todos</button>
+                        <button class="tab" data-status="pendiente">Pendientes</button>
+                        <button class="tab" data-status="inscrito">Inscritos</button>
+                        <button class="tab" data-status="proceso">En Proceso</button>
+                        <button class="tab" data-status="cancelado">Cancelados</button>
+                    </div>
+                    <div class="filters-section">
+                        <div class="search-box">
+                            <input type="text" id="inscripcionesSearch" placeholder="Buscar en inscripciones..."
+                                class="search-input">
+                            <button id="clearInscripcionesSearch" class="btn-clear-search" title="Limpiar búsqueda">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="filter-controls">
+                            <select id="inscripcionesDateFilter" class="filter-select">
+                                <option value="all">Todas las fechas</option>
+                                <option value="today">Hoy</option>
+                                <option value="week">Última semana</option>
+                                <option value="month">Último mes</option>
+                                <option value="year">Último año</option>
+                            </select>
+                            <select id="inscripcionesSort" class="filter-select">
+                                <option value="newest">Más reciente primero</option>
+                                <option value="oldest">Más antiguo primero</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- Selector de items por página para inscripciones -->
+                    <div class="items-per-page">
+                        <span class="small">Mostrar:</span>
+                        <select id="inscripcionesPerPage">
+                            <option value="10">10 registros</option>
+                            <option value="25">25 registros</option>
+                            <option value="50">50 registros</option>
+                            <option value="100">100 registros</option>
+                        </select>
+                    </div>
+
+                    <div class="table-wrap">
+                        <table id="inscripcionesTable" class="inscripciones-table" aria-live="polite">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Fecha</th>
+                                    <th>Nombre</th>
+                                    <th>Email</th>
+                                    <th>Teléfono</th>
+                                    <th>Fecha de Nacimiento</th>
+                                    <th>Curp</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+
+                    <!-- Paginación para inscripciones -->
+                    <div class="pagination" id="inscripcionesPagination">
+                        <button class="pagination-btn" id="inscripcionesPrevBtn" disabled>‹ Anterior</button>
+                        <div class="pagination-numbers" id="inscripcionesPageNumbers"></div>
+                        <button class="pagination-btn" id="inscripcionesNextBtn">Siguiente ›</button>
+                        <span class="pagination-info" id="inscripcionesPageInfo"></span>
+                    </div>
+                </div>
             </div>
 
             <aside class="sidebar-panel" id="glossarySidebar" aria-live="polite">
@@ -1265,6 +1413,27 @@
     <script src="https://cdn.jsdelivr.net/npm/pouchdb@7.3.0/dist/pouchdb.min.js"></script>
     <script>
         (function () {
+            // Base de datos de inscripciones
+            const inscripcionesDB = new PouchDB('rem-inscripciones');
+
+            // Elementos del DOM para inscripciones
+            const tbodyInscripciones = document.querySelector('#inscripcionesTable tbody');
+            const inscripcionesCache = new Map();
+
+// Agregar estas líneas
+const tabInscripciones = document.getElementById('tabInscripciones');
+const seccionInscripciones = document.getElementById('seccionInscripciones');
+
+// También asegúrate de que estas variables existan
+let currentInscripcionesPage = 1;
+let inscripcionesPerPage = 10;
+let totalInscripciones = 0;
+
+
+            // Variables para filtros de inscripciones
+            let inscripcionesSearchTerm = '';
+            let inscripcionesDateFilter = 'all';
+            let inscripcionesSortOrder = 'newest';
             // Bases de datos
             const contactsDB = new PouchDB('rem-contactos');
             const usersDB = new PouchDB('rem-users');
@@ -1315,6 +1484,26 @@
                 currentUsersPage = 1;
                 loadAllUsers();
             });
+            // Función para mostrar la sección de inscripciones
+                function showInscripciones() {
+                    tabContactos.classList.remove('active');
+                    tabUsuarios.classList.remove('active');
+                    tabInscripciones.classList.add('active');
+                    seccionContactos.style.display = 'none';
+                    seccionUsuarios.style.display = 'none';
+                    seccionInscripciones.style.display = 'block';
+
+                    // Actualizar sidebar para inscripciones
+                    sidebarTitle.textContent = 'Detalles de Inscripción';
+                    sidebarSubtitle.textContent = 'Selecciona una inscripción para ver sus detalles.';
+                    sidebarActions.innerHTML = `
+            <button id="g-inscribir" class="btn btn-inscrito">Marcar Inscrito</button>
+            <button id="g-proceso" class="btn btn-proceso">Marcar En Proceso</button>
+            <button id="g-cancelar" class="btn btn-cancelado">Cancelar Inscripción</button>
+        `;
+
+                loadAllInscripciones();
+            }
 
             // Funciones para cambiar entre secciones
             function showContactos() {
@@ -1356,6 +1545,8 @@
 
             // Event listeners para pestañas principales
             tabContactos.addEventListener('click', showContactos);
+            // Event listener para la pestaña de inscripciones
+            tabInscripciones.addEventListener('click', showInscripciones);
             tabUsuarios.addEventListener('click', showUsuarios);
 
             // Botón para agregar nuevo usuario
@@ -1785,7 +1976,356 @@
                 }
 
                 return tr;
-            } function loadAllUsers() {
+            }
+            // ========== FUNCIONES PARA INSCRIPCIONES ==========
+            function loadAllInscripciones() {
+                tbodyInscripciones.innerHTML = '<tr><td colspan="9" class="small">Cargando...</td></tr>';
+                inscripcionesDB.allDocs({ include_docs: true, descending: true }).then(res => {
+                    const rows = res.rows.map(r => r.doc).filter(d => d && d._id && d._id.indexOf('Inscripcion_') === 0);
+                    inscripcionesCache.clear();
+                    rows.forEach(d => { if (d && d._id) inscripcionesCache.set(d._id, d); });
+
+                    // Aplicar filtros
+                    let filteredRows = rows.filter(d => {
+                        // Filtro por estado
+                        const currentFilter = document.querySelector('#inscripcionesStatusTabs .tab.active')?.dataset.status || 'all';
+                        const s = d.status || 'pendiente';
+                        if (currentFilter !== 'all' && s !== currentFilter) return false;
+
+                        // Filtro por búsqueda
+                        if (inscripcionesSearchTerm) {
+                            const searchLower = inscripcionesSearchTerm.toLowerCase();
+                            const matches =
+                                (d.nombre && d.nombre.toLowerCase().includes(searchLower)) ||
+                                (d.email && d.email.toLowerCase().includes(searchLower)) ||
+                                (d.telefono && d.telefono.toLowerCase().includes(searchLower)) ||
+                                (d.fecha && d.fecha.toLowerCase().includes(searchLower)) ||
+                                (d.curp && d.curp.toLowerCase().includes(searchLower));
+
+                            if (!matches) return false;
+                        }
+
+                        // Filtro por fecha
+                        if (inscripcionesDateFilter !== 'all' && d.createdAt) {
+                            const docDate = new Date(d.createdAt);
+                            const now = new Date();
+                            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+                            switch (inscripcionesDateFilter) {
+                                case 'today':
+                                    const docDay = new Date(docDate.getFullYear(), docDate.getMonth(), docDate.getDate());
+                                    if (docDay.getTime() !== today.getTime()) return false;
+                                    break;
+                                case 'week':
+                                    const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+                                    if (docDate < weekAgo) return false;
+                                    break;
+                                case 'month':
+                                    const monthAgo = new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000);
+                                    if (docDate < monthAgo) return false;
+                                    break;
+                                case 'year':
+                                    const yearAgo = new Date(today.getTime() - 365 * 24 * 60 * 60 * 1000);
+                                    if (docDate < yearAgo) return false;
+                                    break;
+                            }
+                        }
+
+                        return true;
+                    });
+
+                    // Aplicar ordenamiento
+                    filteredRows.sort((a, b) => {
+                        const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+                        const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+
+                        if (inscripcionesSortOrder === 'newest') {
+                            return dateB - dateA;
+                        } else {
+                            return dateA - dateB;
+                        }
+                    });
+
+                    totalInscripciones = filteredRows.length;
+
+                    // Calcular paginación
+                    const totalPages = Math.ceil(totalInscripciones / inscripcionesPerPage);
+                    const startIndex = (currentInscripcionesPage - 1) * inscripcionesPerPage;
+                    const endIndex = startIndex + inscripcionesPerPage;
+                    const paginatedRows = filteredRows.slice(startIndex, endIndex);
+
+                    renderInscripcionList(paginatedRows);
+                    updateInscripcionesPagination(totalPages);
+
+                }).catch(err => {
+                    tbodyInscripciones.innerHTML = '<tr><td colspan="9" class="small">Error al leer la base local.</td></tr>';
+                    console.error(err);
+                });
+            }
+
+            function renderInscripcionList(rows) {
+    tbodyInscripciones.innerHTML = '';
+
+    if (!rows || !rows.length) {
+        tbodyInscripciones.innerHTML =
+            '<tr><td colspan="9" class="small">Sin registros</td></tr>';
+        return;
+    }
+
+    rows.forEach(doc => {
+        const tr = renderInscripcionRow(doc);
+        if (tr) {
+            tbodyInscripciones.appendChild(tr);
+        }
+    });
+}
+
+
+            function renderInscripcionRow(doc) {
+                const tr = document.createElement('tr');
+                const idCell = doc._id || '';
+                const created = doc.createdAt ? new Date(doc.createdAt).toLocaleString() : '';
+                const nombre = doc.nombre || '';
+                const email = doc.email || '';
+                const telefono = doc.telefono || '';
+                const fecha = doc.fecha || '';
+                const curp = doc.curp || '';
+                const status = doc.status || 'pendiente';
+                tr.dataset.id = idCell || '';
+
+                tr.innerHTML = `
+        <td class="small">${idCell}</td>
+        <td>${escapeHtml(created)}</td>
+        <td>${escapeHtml(nombre)}</td>
+        <td>${escapeHtml(email)}</td>
+        <td>${escapeHtml(telefono)}</td>
+        <td>${escapeHtml(fecha)}</td>
+        <td>${escapeHtml(curp)}</td>
+        <td class="${status === 'inscrito' ? 'status-inscrito' : status === 'proceso' ? 'status-proceso' : status === 'cancelado' ? 'status-cancelado' : 'status-pendiente'}">
+            ${status === 'inscrito' ? 'Inscrito' : status === 'proceso' ? 'En Proceso' : status === 'cancelado' ? 'Cancelado' : 'Pendiente'}
+        </td>
+        <td class="actions"></td>
+    `;
+
+                const actionsTd = tr.querySelector('.actions');
+
+                // Botón Ver Detalles
+                const btnVer = document.createElement('button');
+                btnVer.className = 'btn revisar';
+                btnVer.textContent = 'Ver';
+                btnVer.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    showMessageModal({
+                        asunto: `Inscripción: ${programa}`,
+                        mensaje: `Nombre: ${nombre}\nEmail: ${email}\nTeléfono: ${telefono}\nPrograma: ${programa}\nCarrera: ${carrera}\nEstado: ${status}\nFecha: ${created}`
+                    });
+                });
+                actionsTd.appendChild(btnVer);
+
+                // Botones de estado
+                if (status !== 'inscrito') {
+                    const btnInscribir = document.createElement('button');
+                    btnInscribir.className = 'btn btn-inscrito';
+                    btnInscribir.textContent = 'Inscribir';
+                    btnInscribir.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        changeInscripcionStatus(doc, 'inscrito');
+                    });
+                    actionsTd.appendChild(btnInscribir);
+                }
+
+                if (status !== 'proceso') {
+                    const btnProceso = document.createElement('button');
+                    btnProceso.className = 'btn btn-proceso';
+                    btnProceso.textContent = 'En Proceso';
+                    btnProceso.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        changeInscripcionStatus(doc, 'proceso');
+                    });
+                    actionsTd.appendChild(btnProceso);
+                }
+
+                if (status !== 'cancelado') {
+                    const btnCancelar = document.createElement('button');
+                    btnCancelar.className = 'btn btn-cancelado';
+                    btnCancelar.textContent = 'Cancelar';
+                    btnCancelar.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        changeInscripcionStatus(doc, 'cancelado');
+                    });
+                    actionsTd.appendChild(btnCancelar);
+                }
+
+                return tr;
+            }
+
+            function renderInscripcionList(docs) {
+                if (!docs.length) {
+                    tbodyInscripciones.innerHTML = '<tr><td colspan="9" class="small">No hay inscripciones registradas.</td></tr>';
+                    return;
+                }
+                tbodyInscripciones.innerHTML = '';
+                docs.forEach(doc => {
+                    tbodyInscripciones.appendChild(renderInscripcionRow(doc));
+                });
+            }
+
+            function changeInscripcionStatus(doc, newStatus) {
+                const copy = Object.assign({}, doc);
+                copy.status = newStatus;
+                inscripcionesDB.put(copy).then(() => {
+                    loadAllInscripciones();
+                    alert(`Inscripción actualizada a: ${newStatus}`);
+                }).catch(err => {
+                    console.error('Error updating inscripcion', err);
+                    alert('Error al actualizar el estado de la inscripción.');
+                });
+            }
+
+            function exportInscripcionesToCSV() {
+                inscripcionesDB.allDocs({ include_docs: true }).then(res => {
+                    const docs = res.rows
+                        .map(r => r.doc)
+                        .filter(d => d && d._id && d._id.indexOf('inscripcion_') === 0);
+
+                    if (docs.length === 0) {
+                        alert("No hay datos para exportar");
+                        return;
+                    }
+
+                    const headers = ["ID", "FECHA", "NOMBRE", "EMAIL", "TELEFONO", "FECHA", "CURP", "ESTADO"];
+
+                    const csvRows = [
+                        headers.join(','),
+                        ...docs.map(doc => {
+                            const created = doc.createdAt ? new Date(doc.createdAt).toLocaleString() : '';
+
+                            const clean = (text) => {
+                                if (!text) return '""';
+                                let t = String(text);
+                                t = t.replace(/(\r\n|\n|\r)/gm, " ");
+                                t = t.replace(/"/g, '""');
+                                return `"${t}"`;
+                            };
+
+                            return [
+                                clean(doc._id),
+                                clean(created),
+                                clean(doc.nombre),
+                                clean(doc.email),
+                                clean(doc.telefono),
+                                clean(doc.fecha),
+                                clean(doc.curp || ''),
+                                clean(doc.status || 'pendiente')
+                            ].join(',');
+                        })
+                    ];
+
+                    const csvContent = "\uFEFF" + csvRows.join("\n");
+                    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                    const url = URL.createObjectURL(blob);
+
+                    const link = document.createElement("a");
+                    const nombreArchivo = `Reporte_Inscripciones_REM_${new Date().toISOString().slice(0, 10)}.csv`;
+
+                    link.setAttribute("href", url);
+                    link.setAttribute("download", nombreArchivo);
+                    link.style.visibility = 'hidden';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+
+                }).catch(err => {
+                    console.error("Error al exportar:", err);
+                    alert("Ocurrió un error al generar el archivo.");
+                });
+            }
+
+            function updateInscripcionesPagination(totalPages) {
+                const prevBtn = document.getElementById('inscripcionesPrevBtn');
+                const nextBtn = document.getElementById('inscripcionesNextBtn');
+                const pageNumbers = document.getElementById('inscripcionesPageNumbers');
+                const pageInfo = document.getElementById('inscripcionesPageInfo');
+
+                // Actualizar botones
+                prevBtn.disabled = currentInscripcionesPage === 1;
+                nextBtn.disabled = currentInscripcionesPage === totalPages || totalPages === 0;
+
+                // Actualizar números de página
+                pageNumbers.innerHTML = '';
+                const maxPagesToShow = 5;
+                let startPage = Math.max(1, currentInscripcionesPage - Math.floor(maxPagesToShow / 2));
+                let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+
+                if (endPage - startPage + 1 < maxPagesToShow) {
+                    startPage = Math.max(1, endPage - maxPagesToShow + 1);
+                }
+
+                for (let i = startPage; i <= endPage; i++) {
+                    const pageBtn = document.createElement('button');
+                    pageBtn.className = 'page-number';
+                    if (i === currentInscripcionesPage) {
+                        pageBtn.classList.add('active');
+                    }
+                    pageBtn.textContent = i;
+                    pageBtn.addEventListener('click', () => {
+                        currentInscripcionesPage = i;
+                        loadAllInscripciones();
+                    });
+                    pageNumbers.appendChild(pageBtn);
+                }
+
+                // Actualizar información
+                const startItem = (currentInscripcionesPage - 1) * inscripcionesPerPage + 1;
+                const endItem = Math.min(currentInscripcionesPage * inscripcionesPerPage, totalInscripciones);
+                pageInfo.textContent = `Mostrando ${startItem}-${endItem} de ${totalInscripciones} inscripciones`;
+
+                // Event listeners para botones de navegación
+                prevBtn.onclick = () => {
+                    if (currentInscripcionesPage > 1) {
+                        currentInscripcionesPage--;
+                        loadAllInscripciones();
+                    }
+                };
+
+                nextBtn.onclick = () => {
+                    if (currentInscripcionesPage < totalPages) {
+                        currentInscripcionesPage++;
+                        loadAllInscripciones();
+                    }
+                };
+            }
+
+            // Delegated click para mostrar detalles de inscripción en sidebar
+            tbodyInscripciones.addEventListener('click', function (e) {
+                const tr = e.target.closest('tr');
+                if (!tr) return;
+                const id = tr.dataset.id;
+                if (!id) return;
+                const inscripcion = inscripcionesCache.get(id);
+                if (!inscripcion) return;
+                showSidebarForInscripcion(inscripcion);
+            });
+
+            function showSidebarForInscripcion(inscripcion) {
+                document.getElementById('g-asunto').textContent = inscripcion.programa || '(sin programa)';
+                document.getElementById('g-def').textContent = inscripcion.carrera || 'No especificada';
+                document.getElementById('g-msg').textContent = `Nombre: ${inscripcion.nombre || ''}\nEmail: ${inscripcion.email || ''}\nTeléfono: ${inscripcion.telefono || ''}\nPrograma: ${inscripcion.programa || ''}\nCarrera: ${inscripcion.carrera || ''}\nEstado: ${inscripcion.status || 'pendiente'}`;
+                document.getElementById('g-contact').textContent = inscripcion.email || '';
+
+                // Configurar botones del sidebar para inscripciones
+                const inscribirBtn = document.getElementById('g-inscribir');
+                const procesoBtn = document.getElementById('g-proceso');
+                const cancelarBtn = document.getElementById('g-cancelar');
+
+                if (inscribirBtn && procesoBtn && cancelarBtn) {
+                    inscribirBtn.onclick = function () { changeInscripcionStatus(inscripcion, 'inscrito'); };
+                    procesoBtn.onclick = function () { changeInscripcionStatus(inscripcion, 'proceso'); };
+                    cancelarBtn.onclick = function () { changeInscripcionStatus(inscripcion, 'cancelado'); };
+                }
+            }
+
+            function loadAllUsers() {
                 tbodyUsers.innerHTML = '<tr><td colspan="7" class="small">Cargando...</td></tr>';
                 usersDB.allDocs({ include_docs: true, descending: true }).then(res => {
                     const rows = res.rows.map(r => r.doc).filter(d => d && d._id && d._id.indexOf('user_') === 0);
@@ -2140,6 +2680,54 @@
                 currentContactsPage = 1;
                 loadAllContacts();
             }
+            // Selector de items por página para inscripciones
+            document.getElementById('inscripcionesPerPage').addEventListener('change', function (e) {
+                inscripcionesPerPage = parseInt(e.target.value);
+                currentInscripcionesPage = 1;
+                loadAllInscripciones();
+            });
+
+            // Event listeners para botones de exportación
+            document.getElementById('exportInscripcionesBtn').addEventListener('click', exportInscripcionesToCSV);
+            document.getElementById('refreshInscripcionesBtn').addEventListener('click', loadAllInscripciones);
+
+            // Event listeners para filtros de inscripciones
+            document.getElementById('inscripcionesSearch').addEventListener('input', function (e) {
+                inscripcionesSearchTerm = e.target.value.trim();
+                currentInscripcionesPage = 1;
+                loadAllInscripciones();
+            });
+
+            document.getElementById('clearInscripcionesSearch').addEventListener('click', function () {
+                document.getElementById('inscripcionesSearch').value = '';
+                inscripcionesSearchTerm = '';
+                currentInscripcionesPage = 1;
+                loadAllInscripciones();
+            });
+
+            document.getElementById('inscripcionesDateFilter').addEventListener('change', function (e) {
+                inscripcionesDateFilter = e.target.value;
+                currentInscripcionesPage = 1;
+                loadAllInscripciones();
+            });
+
+            document.getElementById('inscripcionesSort').addEventListener('change', function (e) {
+                inscripcionesSortOrder = e.target.value;
+                currentInscripcionesPage = 1;
+                loadAllInscripciones();
+            });
+
+            // Event listeners para pestañas de estado de inscripciones
+            const inscripcionesTabs = Array.from(document.querySelectorAll('#inscripcionesStatusTabs .tab'));
+            inscripcionesTabs.forEach(t => t.addEventListener('click', () => {
+                inscripcionesTabs.forEach(x => x.classList.remove('active'));
+                t.classList.add('active');
+                currentInscripcionesPage = 1;
+                loadAllInscripciones();
+            }));
+
+            // Suscripción a cambios en tiempo real
+            inscripcionesDB.changes({ live: true, since: 'now', include_docs: true }).on('change', loadAllInscripciones);
 
             function clearUsersFilters() {
                 usersSearchTerm = '';
@@ -2485,8 +3073,8 @@
                     alert('Mensaje copiado');
                 }).catch(() => alert('No se pudo copiar'));
             });
-
-            // Crear usuario admin por defecto si no existe
+            // Datos de prueba para inscripciones
+                      // Crear usuario admin por defecto si no existe
             // Crear datos de prueba si no existen
             function initializeTestData() {
                 // 1. Crear usuario admin por defecto si no existe
