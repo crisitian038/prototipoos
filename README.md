@@ -325,3 +325,6 @@ graph TD
 | **Modulo de inscripcion** | Conversion directa a alumnos | Alto |
 | **Restruiiccion de roles** | Mayor seguridad  | Muy Alto |
 | **Gestion de inscritos** | reducción de reportes mensuales | Alto |
+
+
+<h1 aling="center">VERSION 1.4 </h1>

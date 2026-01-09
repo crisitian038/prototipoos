@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="shortcut icon"
         href="https://acuerdo286.org/wp-content/uploads/2025/01/cropped-cropped-RED_MEXICO_FINAL-logo-32x32.png">
-        
+
     <style>
         /* Estilos generales - Igual que la página principal */
         :root {
@@ -2230,7 +2230,7 @@
 
                             <div class="form-group">
                                 <label>CURP *</label>
-                                <input type="text" id="curpInscripcion" maxlength="18" required>
+                                <input type="text" id="curpInscripcion" name="curpInscripcion" maxlength="18" required>
                             </div>
 
                             <button type="submit" class="btn btn-naranja">
@@ -2863,12 +2863,12 @@
             <!-- Sección Ruta 286 (resumen en inicio) -->
             <section class="ruta286">
                 <div class="container">
-                </br>
+                    </br>
                     <h2 class="section-title">Ruta 286 — Acuerdo 286</h2>
                     <p>Es un ordenamiento de la Secretaría de Educación Pública (SEP) que establece lineamientos
                         para la acreditación de conocimientos adquiridos de forma autodidacta o a través de la
                         experiencia laboral.</p>
-                                        </br> 
+                    </br>
                     <a href="#" class="btn" id="btnMasRuta286">Más sobre Ruta 286</a>
                 </div>
             </section>
@@ -3186,11 +3186,11 @@
                 formularioInscribe.addEventListener('submit', function (e) {
                     e.preventDefault();
 
-                   const nombre = document.getElementById('nombreCompleto').value.trim();
-const email = document.getElementById('emailInscripcion').value.trim();
-const telefono = document.getElementById('telefonoInscripcion').value.trim();
-const fecha = document.getElementById('fechaNacimiento').value;
-const curp = document.getElementById('curpInscripcion').value.trim();
+                    const nombre = document.getElementById('nombreCompleto').value.trim();
+                    const email = document.getElementById('emailInscripcion').value.trim();
+                    const telefono = document.getElementById('telefonoInscripcion').value.trim();
+                    const fecha = document.getElementById('fechaNacimiento').value;
+                    const curp = document.getElementById('curpInscripcion').value.trim();
 
 
                     if (!nombre || !email || !fecha || !curp) {
@@ -3209,7 +3209,7 @@ const curp = document.getElementById('curpInscripcion').value.trim();
                     const successEl = document.getElementById('form-success');
 
                     const doc = {
-_id: 'inscripcion_' + Date.now(),
+                        _id: 'inscripcion_' + Date.now(),
                         nombre: nombre,
                         email: email,
                         telefono: telefono,
@@ -3637,7 +3637,7 @@ _id: 'inscripcion_' + Date.now(),
 
                 // Verificar si ya hay registros
                 dbInscripciones.allDocs({ limit: 1 }).then(result => {
-                    
+
                 }).then(() => {
                     console.log('Base de datos de inscripciones inicializada con registros por defecto');
                 }).catch(err => {
@@ -3705,28 +3705,32 @@ _id: 'inscripcion_' + Date.now(),
                     formInscripcion.addEventListener('submit', function (e) {
                         e.preventDefault();
 
-                        const inscripcionData = {
-                            _id: 'inscripcion_' + Date.now(),
-                            nombreCompleto: document.getElementById('nombreCompleto').value,
-                            email: document.getElementById('emailInscripcion').value,
-                            telefono: document.getElementById('telefonoInscripcion').value,
-                            fechaNacimiento: document.getElementById('fechaNacimiento').value,
-                            carreraId: document.getElementById('carreraId').value,
-                            carreraNombre: document.getElementById('carreraNombre').value,
-                            comentarios: document.getElementById('comentarios').value,
-                            fechaInscripcion: new Date().toISOString()
-                        };
+                         const nombre = document.getElementById('nombreCompleto').value.trim();
+                        const email = document.getElementById('emailInscripcion').value.trim();
+                        const telefono = document.getElementById('telefonoInscripcion').value.trim();
+                        const fecha = document.getElementById('fechaNacimiento').value;
+                        const curp = document.getElementById('curpInscripcion').value.trim();
 
-                        if (!inscripcionData.nombreCompleto || !inscripcionData.email || !inscripcionData.telefono) {
+                        if (!nombre || !email || !fecha || !curp) {
                             alert('Por favor completa los campos obligatorios (*)');
                             return;
                         }
 
-                        // Mostrar modal de confirmación
-                        mostrarConfirmacionEnvio();
+                        const doc = {
+                            _id: 'inscripcion_' + Date.now(),
+                            nombre: nombre,
+                            email: email,
+                            telefono: telefono,
+                            fechaNacimiento: fecha,
+                            curp: curp,
+                            status: 'pendiente',
+                            createdAt: new Date().toISOString()
+                        };
+
+
 
                         if (dbInscripciones) {
-                            dbInscripciones.put(inscripcionData).then(() => {
+                            dbInscripciones.put(doc).then(() => {
                                 console.log('Inscripción guardada en PouchDB');
                             }).catch(err => {
                                 console.error('Error al guardar inscripción:', err);

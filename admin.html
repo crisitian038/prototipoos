@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="shortcut icon"
         href="https://acuerdo286.org/wp-content/uploads/2025/01/cropped-cropped-RED_MEXICO_FINAL-logo-32x32.png">
-        
+
     <style>
         /* Palette aligned with inicio.html */
         :root {
@@ -1055,10 +1055,10 @@
             <div class="panel">
                 <!-- Pestañas principales -->
                 <div class="main-tabs">
-    <button class="main-tab active" id="tabContactos">Contactos</button>
-    <button class="main-tab" id="tabUsuarios">Usuarios</button>
-    <button class="main-tab" id="tabInscripciones">Inscripciones</button>
-</div>
+                    <button class="main-tab active" id="tabContactos">Contactos</button>
+                    <button class="main-tab" id="tabUsuarios">Usuarios</button>
+                    <button class="main-tab" id="tabInscripciones">Inscripciones</button>
+                </div>
 
                 <!-- Sección de Contactos -->
                 <div id="seccionContactos">
@@ -1421,14 +1421,14 @@
             const tbodyInscripciones = document.querySelector('#inscripcionesTable tbody');
             const inscripcionesCache = new Map();
 
-// Agregar estas líneas
-const tabInscripciones = document.getElementById('tabInscripciones');
-const seccionInscripciones = document.getElementById('seccionInscripciones');
+            // Agregar estas líneas
+            const tabInscripciones = document.getElementById('tabInscripciones');
+            const seccionInscripciones = document.getElementById('seccionInscripciones');
 
-// También asegúrate de que estas variables existan
-let currentInscripcionesPage = 1;
-let inscripcionesPerPage = 10;
-let totalInscripciones = 0;
+            // También asegúrate de que estas variables existan
+            let currentInscripcionesPage = 1;
+            let inscripcionesPerPage = 10;
+            let totalInscripciones = 0;
 
 
             // Variables para filtros de inscripciones
@@ -1486,18 +1486,18 @@ let totalInscripciones = 0;
                 loadAllUsers();
             });
             // Función para mostrar la sección de inscripciones
-                function showInscripciones() {
-                    tabContactos.classList.remove('active');
-                    tabUsuarios.classList.remove('active');
-                    tabInscripciones.classList.add('active');
-                    seccionContactos.style.display = 'none';
-                    seccionUsuarios.style.display = 'none';
-                    seccionInscripciones.style.display = 'block';
+            function showInscripciones() {
+                tabContactos.classList.remove('active');
+                tabUsuarios.classList.remove('active');
+                tabInscripciones.classList.add('active');
+                seccionContactos.style.display = 'none';
+                seccionUsuarios.style.display = 'none';
+                seccionInscripciones.style.display = 'block';
 
-                    // Actualizar sidebar para inscripciones
-                    sidebarTitle.textContent = 'Detalles de Inscripción';
-                    sidebarSubtitle.textContent = 'Selecciona una inscripción para ver sus detalles.';
-                    sidebarActions.innerHTML = `
+                // Actualizar sidebar para inscripciones
+                sidebarTitle.textContent = 'Detalles de Inscripción';
+                sidebarSubtitle.textContent = 'Selecciona una inscripción para ver sus detalles.';
+                sidebarActions.innerHTML = `
             <button id="g-inscribir" class="btn btn-inscrito">Marcar Inscrito</button>
             <button id="g-proceso" class="btn btn-proceso">Marcar En Proceso</button>
             <button id="g-cancelar" class="btn btn-cancelado">Cancelar Inscripción</button>
@@ -1799,16 +1799,18 @@ let totalInscripciones = 0;
                 });
             }
 
-            function changeContactStatus(doc, newStatus) {
-                const copy = Object.assign({}, doc);
-                copy.status = newStatus;
-                contactsDB.put(copy).then(() => {
-                    loadAllContacts();
-                }).catch(err => {
-                    console.error('Error updating', err);
-                    alert('Error al actualizar el estado.');
-                });
-            }
+           function changeContactStatus(doc, nuevoEstado) {
+    doc.status = nuevoEstado;
+    
+    contactsDB.put(doc)
+        .then(function () {
+            console.log("Contacto actualizado");
+            location.reload();
+        })
+        .catch(function (err) {
+            console.error("Error al actualizar contacto:", err);
+        });
+}
             // Funciones de paginación para contactos
             function updateContactsPagination(totalPages) {
                 const prevBtn = document.getElementById('contactsPrevBtn');
@@ -1979,10 +1981,11 @@ let totalInscripciones = 0;
                 return tr;
             }
             // ========== FUNCIONES PARA INSCRIPCIONES ==========
+        if (exportBtn) exportBtn.addEventListener('click', exportInscripcionesToCSV);
             function loadAllInscripciones() {
                 tbodyInscripciones.innerHTML = '<tr><td colspan="9" class="small">Cargando...</td></tr>';
                 inscripcionesDB.allDocs({ include_docs: true, descending: true }).then(res => {
-                    const rows = res.rows.map(r => r.doc).filter(d => d && d._id && d._id.indexOf('Inscripcion_') === 0);
+                    const rows = res.rows.map(r => r.doc).filter(d => d && d._id && d._id.indexOf('inscripcion_') === 0);
                     inscripcionesCache.clear();
                     rows.forEach(d => { if (d && d._id) inscripcionesCache.set(d._id, d); });
 
@@ -2001,7 +2004,7 @@ let totalInscripciones = 0;
                                 (d.email && d.email.toLowerCase().includes(searchLower)) ||
                                 (d.telefono && d.telefono.toLowerCase().includes(searchLower)) ||
                                 (d.fecha && d.fecha.toLowerCase().includes(searchLower)) ||
-                                (d.curp && d.curp.toLowerCase().includes(searchLower));
+                                (d.curp && d.curp.toLowerCase().includes(searchLower)); 
 
                             if (!matches) return false;
                         }
@@ -2064,22 +2067,6 @@ let totalInscripciones = 0;
                 });
             }
 
-            function renderInscripcionList(rows) {
-    tbodyInscripciones.innerHTML = '';
-
-    if (!rows || !rows.length) {
-        tbodyInscripciones.innerHTML =
-            '<tr><td colspan="9" class="small">Sin registros</td></tr>';
-        return;
-    }
-
-    rows.forEach(doc => {
-        const tr = renderInscripcionRow(doc);
-        if (tr) {
-            tbodyInscripciones.appendChild(tr);
-        }
-    });
-}
 
 
             function renderInscripcionRow(doc) {
@@ -2171,17 +2158,23 @@ let totalInscripciones = 0;
                 });
             }
 
-            function changeInscripcionStatus(doc, newStatus) {
-                const copy = Object.assign({}, doc);
-                copy.status = newStatus;
-                inscripcionesDB.put(copy).then(() => {
-                    loadAllInscripciones();
-                    alert(`Inscripción actualizada a: ${newStatus}`);
-                }).catch(err => {
-                    console.error('Error updating inscripcion', err);
-                    alert('Error al actualizar el estado de la inscripción.');
-                });
-            }
+            function changeInscripcionStatus(doc, nuevoEstado) {
+    // Actualizamos el estado en el objeto
+    doc.status = nuevoEstado;
+    doc.updatedAt = new Date().toISOString();
+
+    // IMPORTANTE: Usamos .then() para esperar a la base de datos
+    inscripcionesDB.put(doc)
+        .then(function (response) {
+            console.log("Estado actualizado con éxito");
+            // SOLO recargamos cuando la base de datos terminó
+            location.reload(); 
+        })
+        .catch(function (err) {
+            console.error("Error al actualizar inscripción:", err);
+            alert("No se pudo actualizar el estado. Intenta de nuevo.");
+        });
+}
 
             function exportInscripcionesToCSV() {
                 inscripcionesDB.allDocs({ include_docs: true }).then(res => {
@@ -2308,23 +2301,52 @@ let totalInscripciones = 0;
                 showSidebarForInscripcion(inscripcion);
             });
 
-            function showSidebarForInscripcion(inscripcion) {
-                document.getElementById('g-asunto').textContent = inscripcion.programa || '(sin programa)';
-                document.getElementById('g-def').textContent = inscripcion.carrera || 'No especificada';
-                document.getElementById('g-msg').textContent = `Nombre: ${inscripcion.nombre || ''}\nEmail: ${inscripcion.email || ''}\nTeléfono: ${inscripcion.telefono || ''}\nPrograma: ${inscripcion.programa || ''}\nCarrera: ${inscripcion.carrera || ''}\nEstado: ${inscripcion.status || 'pendiente'}`;
-                document.getElementById('g-contact').textContent = inscripcion.email || '';
+           function showSidebarForInscripcion(doc) {
+    const asunto = (doc.programa || doc.carrera || 'Inscripción').toString();
+    const asuntoNorm = asunto.toLowerCase();
+    
+    const defKey = Object.keys(glossary).find(k => asuntoNorm.includes(k));
+    const defin = defKey ? glossary[defKey] : 'No hay una definición en el glosario.';
 
-                // Configurar botones del sidebar para inscripciones
-                const inscribirBtn = document.getElementById('g-inscribir');
-                const procesoBtn = document.getElementById('g-proceso');
-                const cancelarBtn = document.getElementById('g-cancelar');
+    document.getElementById('g-asunto').textContent = asunto;
+    document.getElementById('g-def').textContent = defin;
+    
+    document.getElementById('g-msg').textContent 
+        = `Nombre: ${doc.nombre || 'N/A'}\n` + 
+        `CURP: ${doc.curp || 'N/A'}\n` +
+        `Teléfono: ${doc.telefono || 'N/A'}\n` +
+        `Fecha: ${doc.fecha || 'N/A'}\n` +
+        `Estado: ${doc.status || 'pendiente'}`;
 
-                if (inscribirBtn && procesoBtn && cancelarBtn) {
-                    inscribirBtn.onclick = function () { changeInscripcionStatus(inscripcion, 'inscrito'); };
-                    procesoBtn.onclick = function () { changeInscripcionStatus(inscripcion, 'proceso'); };
-                    cancelarBtn.onclick = function () { changeInscripcionStatus(inscripcion, 'cancelado'); };
-                }
-            }
+    document.getElementById('g-contact').textContent = (doc.nombre ? doc.nombre + ' — ' : '') + (doc.email ? doc.email : '');
+
+    // CONFIGURACIÓN DE BOTONES CON PREVENCIÓN DE ERRORES
+    const inscribirBtn = document.getElementById('g-inscribir');
+    const procesoBtn = document.getElementById('g-proceso');
+    const cancelarBtn = document.getElementById('g-cancelar');
+
+    if (inscribirBtn) {
+        inscribirBtn.onclick = function (e) { 
+            e.preventDefault(); // Detiene cualquier acción por defecto del navegador
+            changeInscripcionStatus(doc, 'inscrito'); 
+        };
+    }
+    if (procesoBtn) {
+        procesoBtn.onclick = function (e) { 
+            e.preventDefault();
+            changeInscripcionStatus(doc, 'proceso'); 
+        };
+    }
+    if (cancelarBtn) {
+        cancelarBtn.onclick = function (e) { 
+            e.preventDefault();
+            changeInscripcionStatus(doc, 'cancelado'); 
+        };
+    }
+    
+    // Abrir el sidebar (asegúrate de que esta línea coincida con tu CSS/JS)
+    document.getElementById('glosario-sidebar').classList.add('active');
+}
 
             function loadAllUsers() {
                 tbodyUsers.innerHTML = '<tr><td colspan="7" class="small">Cargando...</td></tr>';
@@ -3075,7 +3097,7 @@ let totalInscripciones = 0;
                 }).catch(() => alert('No se pudo copiar'));
             });
             // Datos de prueba para inscripciones
-                      // Crear usuario admin por defecto si no existe
+            // Crear usuario admin por defecto si no existe
             // Crear datos de prueba si no existen
             function initializeTestData() {
                 // 1. Crear usuario admin por defecto si no existe
