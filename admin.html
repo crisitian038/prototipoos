@@ -10,9 +10,9 @@
     <link rel="shortcut icon"
         href="https://acuerdo286.org/wp-content/uploads/2025/01/cropped-cropped-RED_MEXICO_FINAL-logo-32x32.png">
 
-    <style>
+     <style>
         /* Palette aligned with inicio.html */
-        :root {
+ :root {
             --azul-oscuro: #0a2e5a;
             --azul-medio: #0056a6;
             --azul-claro: #007bff;
@@ -25,8 +25,6 @@
             --header-bg: var(--azul-oscuro);
         }
 
-
-
         * {
             box-sizing: border-box
         }
@@ -34,34 +32,370 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            background: linear-gradient(180deg, var(--bg), #eef6f9);
             color: var(--azul-oscuro);
-            -webkit-font-smoothing: antialiased
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* ========== FONDO MEJORADO CON EFECTOS VISUALES ========== */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -3;
+            background: 
+                /* Fondo principal con gradiente dinámico */
+                linear-gradient(135deg, 
+                    #f0f7ff 0%, 
+                    #e6f2ff 25%, 
+                    #f0f9ff 50%, 
+                    #e8f4ff 75%, 
+                    #f2f9ff 100%);
+        }
+
+        /* Elementos decorativos abstractos */
+        .bg-element {
+            position: fixed;
+            border-radius: 50%;
+            z-index: -2;
+            opacity: 0.4;
+            filter: blur(40px);
+            animation: float 15s infinite ease-in-out;
+        }
+
+        .bg-element-1 {
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(135deg, rgba(39, 245, 218, 0.6) 0%, rgba(0, 86, 166, 0.3) 100%);
+            top: -200px;
+            right: -150px;
+            animation-delay: 0s;
+        }
+
+        .bg-element-2 {
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, rgba(0, 86, 166, 0.4) 0%, rgba(10, 46, 90, 0.2) 100%);
+            bottom: -100px;
+            left: -100px;
+            animation-delay: -5s;
+        }
+
+        .bg-element-3 {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, rgba(10, 46, 90, 0.3) 0%, rgba(39, 245, 218, 0.2) 100%);
+            top: 50%;
+            left: 10%;
+            animation-delay: -10s;
+        }
+
+        /* Patrón geométrico sutil */
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(39, 245, 218, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(10, 46, 90, 0.03) 0%, transparent 50%),
+                repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(10, 46, 90, 0.01) 10px, rgba(10, 46, 90, 0.01) 20px);
+            opacity: 0.6;
+        }
+
+        @keyframes float {
+            0%, 100% { 
+                transform: translate(0, 0) rotate(0deg); 
+            }
+            33% { 
+                transform: translate(30px, -20px) rotate(120deg); 
+            }
+            66% { 
+                transform: translate(-20px, 30px) rotate(240deg); 
+            }
+        }
+
+        /* Onda decorativa en la parte inferior */
+        .wave-bg {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 200px;
+            background: linear-gradient(to top, rgba(10, 46, 90, 0.08) 0%, transparent 100%);
+            z-index: -1;
+            clip-path: polygon(0 100%, 100% 100%, 100% 50%, 0 0);
+        }
+
+        /* Partículas animadas */
+        .particle {
+            position: fixed;
+            background: var(--logo-teal);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.1;
+            animation: particle-float 20s infinite linear;
+        }
+
+        @keyframes particle-float {
+            0% {
+                transform: translateY(100vh) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.15;
+            }
+            90% {
+                opacity: 0.15;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* ========== HEADER MEJORADO ========== */
+        .admin-header {
+            background: linear-gradient(135deg, var(--azul-oscuro) 0%, #0a3a6e 100%);
+            padding: 0 30px;
+            position: sticky;
+            top: 0;
+            z-index: 1100;
+            box-shadow: 0 8px 32px rgba(10, 46, 90, 0.15);
+            border-bottom: 3px solid var(--logo-teal);
+            min-height: 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-header::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--logo-teal) 0%, rgba(39, 245, 218, 0.3) 100%);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .admin-header img {
+            height: 45px;
+            display: block;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .brand-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .admin-header .brand {
+            font-weight: 800;
+            color: white;
+            font-size: 1.3rem;
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .admin-header .brand small {
+            display: block;
+            font-weight: 500;
+            color: var(--logo-teal);
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            margin-top: 2px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Indicador de usuario */
+        .user-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 25px;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 600;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-indicator i {
+            color: var(--logo-teal);
+            font-size: 1.1rem;
+        }
+
+        /* Botón de tema mejorado */
+        #themeToggle {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(39, 245, 218, 0.3);
+            color: var(--logo-teal);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        #themeToggle:hover {
+            background: var(--logo-teal);
+            color: var(--azul-oscuro);
+            transform: rotate(15deg) scale(1.1);
+            box-shadow: 0 0 20px rgba(39, 245, 218, 0.4);
+        }
+
+        /* Botón de logout mejorado */
+        .btn-logout {
+            background: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
+            color: white !important;
+            text-decoration: none;
+            padding: 10px 22px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(225, 29, 72, 0.25);
+        }
+
+        .btn-logout:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(225, 29, 72, 0.35);
+            opacity: 0.95;
         }
 
         .container {
             max-width: 1200px;
             margin: 32px auto;
-            padding: 20px
+            padding: 20px;
+            position: relative;
+            z-index: 1;
         }
 
         /* layout: main + sidebar */
         .admin-grid {
             display: grid;
             grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
-            gap: 20px;
+            gap: 25px;
             align-items: start;
         }
 
-
+        /* Panel con efecto vidrio */
         .panel {
-            background: var(--panel);
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 20px 40px rgba(2, 24, 63, 0.06);
-            border: 1px solid rgba(2, 24, 63, 0.04)
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 
+                0 8px 32px rgba(2, 24, 63, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
         }
 
+        /* ========== DARK THEME ========== */
+        body.dark-theme {
+            --bg: #04152d;
+            --panel: #0a2e5a;
+            --azul-oscuro: #ffffff;
+            --azul-medio: #27F5DA;
+            --azul-claro: #0056a6;
+            --logo-teal: #27F5DA;
+            --muted: #94a3b8;
+            --header-bg: #0a2e5a;
+        }
+
+        body.dark-theme::before {
+            background: 
+                linear-gradient(135deg, 
+                    #04152d 0%, 
+                    #0a1e3a 25%, 
+                    #051b38 50%, 
+                    #0a2e5a 75%, 
+                    #04152d 100%);
+        }
+
+        body.dark-theme .bg-element-1 {
+            background: linear-gradient(135deg, rgba(39, 245, 218, 0.2) 0%, rgba(0, 86, 166, 0.1) 100%);
+        }
+
+        body.dark-theme .bg-element-2 {
+            background: linear-gradient(135deg, rgba(0, 86, 166, 0.15) 0%, rgba(10, 46, 90, 0.1) 100%);
+        }
+
+        body.dark-theme .bg-element-3 {
+            background: linear-gradient(135deg, rgba(10, 46, 90, 0.2) 0%, rgba(39, 245, 218, 0.1) 100%);
+        }
+
+        body.dark-theme .bg-pattern {
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(39, 245, 218, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(10, 46, 90, 0.02) 0%, transparent 50%),
+                repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(39, 245, 218, 0.01) 10px, rgba(39, 245, 218, 0.01) 20px);
+        }
+
+        body.dark-theme .wave-bg {
+            background: linear-gradient(to top, rgba(10, 46, 90, 0.2) 0%, transparent 100%);
+        }
+
+        body.dark-theme .particle {
+            background: var(--azul-medio);
+        }
+
+        body.dark-theme .admin-header {
+            background: linear-gradient(135deg, #0a2e5a 0%, #061b3d 100%);
+            border-bottom: 3px solid var(--logo-teal);
+        }
+
+        body.dark-theme .panel,
+        body.dark-theme .sidebar-panel {
+            background: rgba(10, 46, 90, 0.85);
+            border: 1px solid rgba(39, 245, 218, 0.15);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(39, 245, 218, 0.1);
+        }
+
+        body.dark-theme .user-indicator {
+            background: rgba(39, 245, 218, 0.1);
+            border: 1px solid rgba(39, 245, 218, 0.2);
+        }
+
+        body.dark-theme #themeToggle {
+            background: rgba(39, 245, 218, 0.1);
+            border: 1px solid rgba(39, 245, 218, 0.3);
+        }
+
+        /* El resto de tus estilos CSS permanece igual... */
         h1 {
             margin: 0 0 12px;
             font-size: 1.4rem;
@@ -75,7 +409,6 @@
             margin-bottom: 12px
         }
 
-        /* tabs */
         .tab {
             padding: 8px 12px;
             border-radius: 10px;
@@ -93,7 +426,6 @@
             box-shadow: 0 8px 20px rgba(39, 245, 218, 0.06)
         }
 
-        /* Pestañas principales (Contactos/Usuarios) */
         .main-tabs {
             display: flex;
             gap: 10px;
@@ -168,7 +500,6 @@
             font-weight: 700;
             color: var(--azul-medio)
         }
-
         /* Estados de usuarios */
         .status-activo {
             color: #10b981;
@@ -452,63 +783,18 @@
             color: var(--azul-oscuro);
         }
 
-        /* Header styled like inicio */
-        .admin-header {
-            background: var(--panel);
-            border-bottom: 2px solid var(--logo-teal);
-            /* Línea turquesa del index */
-            padding: 12px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 1100;
-        }
-
-        .admin-header img {
-            height: 48px;
-            display: block
-        }
-
-        .admin-header .brand {
-            font-weight: 800;
-            color: var(--azul-oscuro);
-            margin-left: 6px
-        }
-
-        .admin-header .brand small {
-            display: block;
-            font-weight: 600;
-            color: var(--muted);
-            font-size: 0.85rem
-        }
-
-        .admin-header .actions {
-            margin-left: auto;
-            display: flex;
-            gap: 8px
-        }
-
-        .admin-footer {
-            margin-top: 22px;
-            padding: 18px;
-            text-align: center;
-            color: var(--muted);
-            font-size: 0.9rem
-        }
-
         /* MODIFICACIONES PARA EL GLOSARIO/DETALLES */
         .sidebar-panel {
-            background: linear-gradient(180deg, var(--panel), #fbfdfe);
-            border-radius: 10px;
-            padding: 18px;
-            box-shadow: 0 12px 30px rgba(2, 24, 63, 0.05);
-
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 
+                0 8px 32px rgba(2, 24, 63, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
             position: sticky;
             top: 90px;
-            /* altura real del header */
-
             max-height: calc(100vh - 110px);
             overflow-y: auto;
         }
@@ -592,9 +878,10 @@
             background: var(--panel);
             width: 90%;
             max-width: 760px;
-            border-radius: 10px;
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 30px 60px rgba(2, 24, 63, 0.35)
+            box-shadow: 0 30px 60px rgba(2, 24, 63, 0.35);
+            backdrop-filter: blur(10px);
         }
 
         .modal-header {
@@ -602,7 +889,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 14px 18px;
-            background: var(--header-bg);
+            background: linear-gradient(135deg, var(--azul-oscuro) 0%, #0a3a6e 100%);
             color: #fff
         }
 
@@ -613,102 +900,56 @@
             color: var(--azul-oscuro)
         }
 
-        /* Dark theme overrides (toggle with `body.dark-theme`) */
-        /* Paleta profesional de azul oscuro para Modo Oscuro */
-        /* Dark theme con colores sólidos basados en tu index.html */
+        /* ========== DARK THEME MEJORADO ========== */
         body.dark-theme {
             --bg: #04152d;
-            /* Color sólido de fondo */
             --panel: #0a2e5a;
-            /* Color sólido de paneles */
             --azul-oscuro: #ffffff;
             --azul-medio: #27F5DA;
-            /* Color de acento turquesa */
             --azul-claro: #0056a6;
             --logo-teal: #27F5DA;
             --muted: #94a3b8;
             --header-bg: #0a2e5a;
+            --gradient-bg: linear-gradient(135deg, #04152d 0%, #0a2e5a 50%, #061b3d 100%);
         }
 
-        .theme-btn {
-            background: transparent;
-            border: 1px solid var(--logo-teal);
-            color: var(--logo-teal);
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            transition: all 0.2s ease;
-        }
-
-        .theme-btn:hover {
-            background: var(--logo-teal);
-            color: var(--panel);
-        }
-
-        .btn-logout {
-            background: #e11d48;
-            /* Rojo corporativo para salida */
-            color: #fff !important;
-            text-decoration: none;
-            padding: 8px 18px;
-            border-radius: 6px;
-            font-weight: 700;
-            font-size: 0.9rem;
-            transition: opacity 0.2s;
-            border: none;
-        }
-
-        .btn-logout:hover {
-            opacity: 0.9;
-        }
-
-        /* --- Reemplazar o añadir en tu <style> --- */
-
-        /* Botón de tema circular idéntico al front */
-        #themeToggle {
-            background: transparent;
-            border: 1px solid var(--logo-teal);
-            color: #0056a6;
-            /* Icono blanco como pediste */
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
-        }
-
-        #themeToggle:hover {
-            background: var(--logo-teal);
-            color: var(--panel);
-        }
-
-        /* Forzar colores sólidos del index.html en modo oscuro */
-        body.dark-theme {
-            --bg: #04152d !important;
-            /* Fondo sólido del front */
-            --panel: #0a2e5a !important;
-            /* Paneles sólidos del front */
-            background: #04152d !important;
+        body.dark-theme::before {
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(39, 245, 218, 0.05) 0%, transparent 55%),
+                radial-gradient(circle at 85% 30%, rgba(10, 46, 90, 0.1) 0%, transparent 55%);
         }
 
         body.dark-theme .admin-header {
-            background: #0a2e5a;
-            border-bottom: 2px solid var(--logo-teal);
+            background: linear-gradient(135deg, #0a2e5a 0%, #061b3d 100%);
+            border-bottom: 3px solid var(--logo-teal);
         }
 
-        /* Tabla con colores planos */
+        body.dark-theme .panel,
+        body.dark-theme .sidebar-panel {
+            background: rgba(10, 46, 90, 0.8);
+            border: 1px solid rgba(39, 245, 218, 0.1);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(39, 245, 218, 0.1);
+        }
+
+        body.dark-theme .user-indicator {
+            background: rgba(39, 245, 218, 0.1);
+            color: white;
+        }
+
+        body.dark-theme #themeToggle {
+            background: rgba(39, 245, 218, 0.1);
+            border: 1px solid rgba(39, 245, 218, 0.3);
+        }
+
+        body.dark-theme #themeToggle:hover {
+            background: var(--logo-teal);
+            color: var(--azul-oscuro);
+        }
+
         body.dark-theme table th {
-            background: #061b3d;
-            /* Un tono ligeramente distinto pero sólido */
+            background: rgba(6, 27, 61, 0.8);
             color: var(--logo-teal);
         }
 
@@ -717,20 +958,11 @@
             color: #e2e8f0;
         }
 
-        /* Paneles sin efectos de degradado */
-        body.dark-theme .panel,
-        body.dark-theme .sidebar-panel,
-        body.dark-theme .admin-header {
-            background: var(--panel);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
         body.dark-theme #g-msg {
-            background: #04152d;
-            border-color: rgba(39, 245, 218, 0.3);
+            background: rgba(4, 21, 45, 0.5);
+            border-color: rgba(39, 245, 218, 0.2);
         }
 
-        /* Dark theme para roles y estados */
         body.dark-theme .role-admin {
             background: rgba(39, 245, 218, 0.2);
             color: #e6fbf9;
@@ -920,6 +1152,22 @@
 
         /* Responsive */
         @media (max-width: 768px) {
+            .admin-header {
+                padding: 0 15px;
+                flex-direction: column;
+                padding: 10px;
+            }
+            
+            .header-left, .header-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .user-indicator {
+                font-size: 0.8rem;
+                padding: 4px 8px;
+            }
+            
             .filters-section {
                 flex-direction: column;
                 align-items: stretch;
@@ -1030,26 +1278,64 @@
             color: #ef4444;
             font-weight: 700;
         }
+
+        /* Footer */
+        .admin-footer {
+            margin-top: 30px;
+            padding: 20px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(10, 46, 90, 0.1);
+        }
     </style>
 </head>
 
 <body>
+    <!-- Elementos de fondo -->
+    <div class="bg-element bg-element-1"></div>
+    <div class="bg-element bg-element-2"></div>
+    <div class="bg-element bg-element-3"></div>
+    <div class="bg-pattern"></div>
+    <div class="wave-bg"></div>
+
+    <!-- Partículas animadas -->
+    <div class="particle" style="width: 8px; height: 8px; left: 5%; animation-delay: 0s;"></div>
+    <div class="particle" style="width: 6px; height: 6px; left: 15%; animation-delay: -2s;"></div>
+    <div class="particle" style="width: 10px; height: 10px; left: 25%; animation-delay: -4s;"></div>
+    <div class="particle" style="width: 7px; height: 7px; left: 35%; animation-delay: -6s;"></div>
+    <div class="particle" style="width: 9px; height: 9px; left: 45%; animation-delay: -8s;"></div>
+    <div class="particle" style="width: 5px; height: 5px; left: 55%; animation-delay: -10s;"></div>
+    <div class="particle" style="width: 8px; height: 8px; left: 65%; animation-delay: -12s;"></div>
+    <div class="particle" style="width: 12px; height: 12px; left: 75%; animation-delay: -14s;"></div>
+    <div class="particle" style="width: 6px; height: 6px; left: 85%; animation-delay: -16s;"></div>
+    <div class="particle" style="width: 9px; height: 9px; left: 95%; animation-delay: -18s;"></div>
+
+    <!-- Navbar mejorado -->
     <header class="admin-header">
-        <div style="display: flex; align-items: center; gap: 12px;">
-            <img src="logo.png" alt="logo" style="height: 45px;">
-            <div class="brand">
-                Red Educativa México
-                <small style="display: block; font-size: 0.75rem; color: var(--muted);">Panel de Administración</small>
+        <div class="header-left">
+            <img src="logo.png" alt="logo">
+            <div class="brand-container">
+                <div class="brand">Red Educativa México</div>
+                <small>Panel de Administración</small>
             </div>
         </div>
 
-        <div class="actions" style="display: flex; align-items: center; gap: 15px;">
+        <div class="header-right">
+            <div class="user-indicator">
+                <i class="fas fa-user-circle"></i>
+                <span id="currentUsername">Administrador</span>
+            </div>
             <button id="themeToggle" title="Cambiar Tema">
                 <i class="fas fa-moon"></i>
             </button>
-            <a href="Index.html" class="btn-logout">Cerrar Sesión</a>
+            <a href="./Index.html" class="btn-logout">
+                <i class="fas fa-sign-out-alt"></i>
+                Cerrar Sesión
+            </a>
         </div>
     </header>
+
     <div class="container">
         <div class="admin-grid">
             <div class="panel">
@@ -1072,6 +1358,12 @@
                             <button id="exportBtn" class="tab"
                                 style="background: var(--azul-claro); color: white; border: none;">Exportar CSV</button>
                             <button id="refreshBtn" class="tab">Actualizar</button>
+
+                            <button id="exportContactsPDF" class="tab"
+                                style="background:#dc2626;color:white;border:none;">
+                                Exportar PDF
+                            </button>
+
                         </div>
                     </div>
 
@@ -1154,6 +1446,10 @@
                             <button id="exportUsersBtn" class="tab"
                                 style="background: var(--azul-claro); color: white; border: none;">Exportar CSV</button>
                             <button id="refreshUsersBtn" class="tab">Actualizar</button>
+                            <button id="exportUsersPDF" class="tab" style="background:#dc2626;color:white;border:none;">
+                                Exportar PDF
+                            </button>
+
                             <button id="addUserBtn" class="tab"
                                 style="background: var(--logo-teal); color: #042533; border: none;">Nuevo
                                 Usuario</button>
@@ -1240,6 +1536,11 @@
                         <div>
                             <button id="exportInscripcionesBtn" class="tab"
                                 style="background: var(--azul-claro); color: white; border: none;">Exportar CSV</button>
+                            <button id="exportInscripcionesPDF" class="tab"
+                                style="background:#dc2626;color:white;border:none;">
+                                Exportar PDF
+                            </button>
+
                             <button id="refreshInscripcionesBtn" class="tab">Actualizar</button>
                         </div>
                     </div>
@@ -1412,6 +1713,9 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/pouchdb@7.3.0/dist/pouchdb.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+
     <script>
         (function () {
             // Base de datos de inscripciones
@@ -1505,6 +1809,32 @@
 
                 loadAllInscripciones();
             }
+
+             document.addEventListener('DOMContentLoaded', function() {
+            const container = document.body;
+            
+            // Crear 20 partículas adicionales
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Tamaño aleatorio entre 3 y 12px
+                const size = Math.random() * 9 + 3;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Posición aleatoria
+                particle.style.left = `${Math.random() * 100}%`;
+                
+                // Animación con retraso aleatorio
+                particle.style.animationDelay = `-${Math.random() * 20}s`;
+                
+                // Duración de animación aleatoria
+                particle.style.animationDuration = `${Math.random() * 10 + 15}s`;
+                
+                container.appendChild(particle);
+            }
+        });
 
             // Funciones para cambiar entre secciones
             function showContactos() {
@@ -1639,6 +1969,101 @@
                     return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;', "'": "&#39;" }[m];
                 });
             }
+            async function exportTableToPDF(tableId, titulo, nombreArchivo) {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF('l', 'pt', 'a4');
+
+                // ===== CARGAR LOGO =====
+                const logoUrl = './logo.png'; // <-- AJUSTA si tu logo tiene otro nombre
+                const logoBase64 = await loadImageAsBase64(logoUrl);
+
+                // Logo
+                doc.addImage(logoBase64, 'PNG', 40, 20, 120, 45);
+
+                // Título
+                doc.setFontSize(16);
+                doc.text(titulo, 200, 50);
+
+                // Fecha
+                doc.setFontSize(10);
+                doc.text(
+                    `Fecha de exportación: ${new Date().toLocaleString()}`,
+                    200,
+                    68
+                );
+
+                // ===== OBTENER TABLA SIN "ACCIONES" =====
+                const table = document.getElementById(tableId);
+                const clonedTable = table.cloneNode(true);
+
+                // Eliminar última columna (Acciones)
+                clonedTable.querySelectorAll('tr').forEach(row => {
+                    if (row.cells.length) {
+                        row.deleteCell(row.cells.length - 1);
+                    }
+                });
+
+                doc.autoTable({
+                    html: clonedTable,
+                    startY: 90,
+                    theme: 'grid',
+                    headStyles: {
+                        fillColor: [10, 46, 90],
+                        textColor: 255,
+                        fontSize: 9
+                    },
+                    styles: {
+                        fontSize: 8,
+                        cellPadding: 4
+                    },
+                    margin: { left: 40, right: 40 }
+                });
+
+                doc.save(nombreArchivo);
+            }
+
+            // ===== UTILIDAD PARA CARGAR IMAGEN =====
+            function loadImageAsBase64(url) {
+                return new Promise((resolve, reject) => {
+                    const img = new Image();
+                    img.crossOrigin = 'Anonymous';
+                    img.onload = function () {
+                        const canvas = document.createElement('canvas');
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0);
+                        resolve(canvas.toDataURL('image/png'));
+                    };
+                    img.onerror = reject;
+                    img.src = url;
+                });
+            }
+
+            // ===== EXPORTAR PDF =====
+            document.getElementById('exportContactsPDF')?.addEventListener('click', () => {
+                exportTableToPDF(
+                    'recordsTable',
+                    'Reporte de Contactos - Red Educativa México',
+                    `Contactos_REM_${new Date().toISOString().slice(0, 10)}.pdf`
+                );
+            });
+
+            document.getElementById('exportUsersPDF')?.addEventListener('click', () => {
+                exportTableToPDF(
+                    'usersTable',
+                    'Reporte de Usuarios - Red Educativa México',
+                    `Usuarios_REM_${new Date().toISOString().slice(0, 10)}.pdf`
+                );
+            });
+
+            document.getElementById('exportInscripcionesPDF')?.addEventListener('click', () => {
+                exportTableToPDF(
+                    'inscripcionesTable',
+                    'Reporte de Inscripciones - Red Educativa México',
+                    `Inscripciones_REM_${new Date().toISOString().slice(0, 10)}.pdf`
+                );
+            });
 
             // Exportar CSV de contactos
             const exportBtn = document.getElementById('exportBtn');
@@ -1799,18 +2224,18 @@
                 });
             }
 
-           function changeContactStatus(doc, nuevoEstado) {
-    doc.status = nuevoEstado;
-    
-    contactsDB.put(doc)
-        .then(function () {
-            console.log("Contacto actualizado");
-            location.reload();
-        })
-        .catch(function (err) {
-            console.error("Error al actualizar contacto:", err);
-        });
-}
+            function changeContactStatus(doc, nuevoEstado) {
+                doc.status = nuevoEstado;
+
+                contactsDB.put(doc)
+                    .then(function () {
+                        console.log("Contacto actualizado");
+                        location.reload();
+                    })
+                    .catch(function (err) {
+                        console.error("Error al actualizar contacto:", err);
+                    });
+            }
             // Funciones de paginación para contactos
             function updateContactsPagination(totalPages) {
                 const prevBtn = document.getElementById('contactsPrevBtn');
@@ -1981,7 +2406,7 @@
                 return tr;
             }
             // ========== FUNCIONES PARA INSCRIPCIONES ==========
-        if (exportBtn) exportBtn.addEventListener('click', exportInscripcionesToCSV);
+            if (exportBtn) exportBtn.addEventListener('click', exportInscripcionesToCSV);
             function loadAllInscripciones() {
                 tbodyInscripciones.innerHTML = '<tr><td colspan="9" class="small">Cargando...</td></tr>';
                 inscripcionesDB.allDocs({ include_docs: true, descending: true }).then(res => {
@@ -2004,7 +2429,7 @@
                                 (d.email && d.email.toLowerCase().includes(searchLower)) ||
                                 (d.telefono && d.telefono.toLowerCase().includes(searchLower)) ||
                                 (d.fecha && d.fecha.toLowerCase().includes(searchLower)) ||
-                                (d.curp && d.curp.toLowerCase().includes(searchLower)); 
+                                (d.curp && d.curp.toLowerCase().includes(searchLower));
 
                             if (!matches) return false;
                         }
@@ -2159,22 +2584,22 @@
             }
 
             function changeInscripcionStatus(doc, nuevoEstado) {
-    // Actualizamos el estado en el objeto
-    doc.status = nuevoEstado;
-    doc.updatedAt = new Date().toISOString();
+                // Actualizamos el estado en el objeto
+                doc.status = nuevoEstado;
+                doc.updatedAt = new Date().toISOString();
 
-    // IMPORTANTE: Usamos .then() para esperar a la base de datos
-    inscripcionesDB.put(doc)
-        .then(function (response) {
-            console.log("Estado actualizado con éxito");
-            // SOLO recargamos cuando la base de datos terminó
-            location.reload(); 
-        })
-        .catch(function (err) {
-            console.error("Error al actualizar inscripción:", err);
-            alert("No se pudo actualizar el estado. Intenta de nuevo.");
-        });
-}
+                // IMPORTANTE: Usamos .then() para esperar a la base de datos
+                inscripcionesDB.put(doc)
+                    .then(function (response) {
+                        console.log("Estado actualizado con éxito");
+                        // SOLO recargamos cuando la base de datos terminó
+                        location.reload();
+                    })
+                    .catch(function (err) {
+                        console.error("Error al actualizar inscripción:", err);
+                        alert("No se pudo actualizar el estado. Intenta de nuevo.");
+                    });
+            }
 
             function exportInscripcionesToCSV() {
                 inscripcionesDB.allDocs({ include_docs: true }).then(res => {
@@ -2301,52 +2726,52 @@
                 showSidebarForInscripcion(inscripcion);
             });
 
-           function showSidebarForInscripcion(doc) {
-    const asunto = (doc.programa || doc.carrera || 'Inscripción').toString();
-    const asuntoNorm = asunto.toLowerCase();
-    
-    const defKey = Object.keys(glossary).find(k => asuntoNorm.includes(k));
-    const defin = defKey ? glossary[defKey] : 'No hay una definición en el glosario.';
+            function showSidebarForInscripcion(doc) {
+                const asunto = (doc.programa || doc.carrera || 'Inscripción').toString();
+                const asuntoNorm = asunto.toLowerCase();
 
-    document.getElementById('g-asunto').textContent = asunto;
-    document.getElementById('g-def').textContent = defin;
-    
-    document.getElementById('g-msg').textContent 
-        = `Nombre: ${doc.nombre || 'N/A'}\n` + 
-        `CURP: ${doc.curp || 'N/A'}\n` +
-        `Teléfono: ${doc.telefono || 'N/A'}\n` +
-        `Fecha: ${doc.fecha || 'N/A'}\n` +
-        `Estado: ${doc.status || 'pendiente'}`;
+                const defKey = Object.keys(glossary).find(k => asuntoNorm.includes(k));
+                const defin = defKey ? glossary[defKey] : 'No hay una definición en el glosario.';
 
-    document.getElementById('g-contact').textContent = (doc.nombre ? doc.nombre + ' — ' : '') + (doc.email ? doc.email : '');
+                document.getElementById('g-asunto').textContent = asunto;
+                document.getElementById('g-def').textContent = defin;
 
-    // CONFIGURACIÓN DE BOTONES CON PREVENCIÓN DE ERRORES
-    const inscribirBtn = document.getElementById('g-inscribir');
-    const procesoBtn = document.getElementById('g-proceso');
-    const cancelarBtn = document.getElementById('g-cancelar');
+                document.getElementById('g-msg').textContent
+                    = `Nombre: ${doc.nombre || 'N/A'}\n` +
+                    `CURP: ${doc.curp || 'N/A'}\n` +
+                    `Teléfono: ${doc.telefono || 'N/A'}\n` +
+                    `Fecha: ${doc.fecha || 'N/A'}\n` +
+                    `Estado: ${doc.status || 'pendiente'}`;
 
-    if (inscribirBtn) {
-        inscribirBtn.onclick = function (e) { 
-            e.preventDefault(); // Detiene cualquier acción por defecto del navegador
-            changeInscripcionStatus(doc, 'inscrito'); 
-        };
-    }
-    if (procesoBtn) {
-        procesoBtn.onclick = function (e) { 
-            e.preventDefault();
-            changeInscripcionStatus(doc, 'proceso'); 
-        };
-    }
-    if (cancelarBtn) {
-        cancelarBtn.onclick = function (e) { 
-            e.preventDefault();
-            changeInscripcionStatus(doc, 'cancelado'); 
-        };
-    }
-    
-    // Abrir el sidebar (asegúrate de que esta línea coincida con tu CSS/JS)
-    document.getElementById('glosario-sidebar').classList.add('active');
-}
+                document.getElementById('g-contact').textContent = (doc.nombre ? doc.nombre + ' — ' : '') + (doc.email ? doc.email : '');
+
+                // CONFIGURACIÓN DE BOTONES CON PREVENCIÓN DE ERRORES
+                const inscribirBtn = document.getElementById('g-inscribir');
+                const procesoBtn = document.getElementById('g-proceso');
+                const cancelarBtn = document.getElementById('g-cancelar');
+
+                if (inscribirBtn) {
+                    inscribirBtn.onclick = function (e) {
+                        e.preventDefault(); // Detiene cualquier acción por defecto del navegador
+                        changeInscripcionStatus(doc, 'inscrito');
+                    };
+                }
+                if (procesoBtn) {
+                    procesoBtn.onclick = function (e) {
+                        e.preventDefault();
+                        changeInscripcionStatus(doc, 'proceso');
+                    };
+                }
+                if (cancelarBtn) {
+                    cancelarBtn.onclick = function (e) {
+                        e.preventDefault();
+                        changeInscripcionStatus(doc, 'cancelado');
+                    };
+                }
+
+                // Abrir el sidebar (asegúrate de que esta línea coincida con tu CSS/JS)
+                document.getElementById('glosario-sidebar').classList.add('active');
+            }
 
             function loadAllUsers() {
                 tbodyUsers.innerHTML = '<tr><td colspan="7" class="small">Cargando...</td></tr>';

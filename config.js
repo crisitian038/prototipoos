@@ -1,9 +1,12 @@
 // config.js
-const GITHUB_REPO_NAME = 'tu-repo'; // Cambia esto
+const GITHUB_REPO_NAME = 'prototipoos';
 
 // Determinar si estamos en GitHub Pages o localhost
 const IS_GITHUB_PAGES = window.location.hostname.includes('github.io');
 const BASE_PATH = IS_GITHUB_PAGES ? `/${GITHUB_REPO_NAME}` : '';
+
+// Función helper para construir rutas consistentemente
+const buildPath = (page) => `${BASE_PATH}${BASE_PATH && page ? '/' : ''}${page}`;
 
 // Configuración global
 window.AppConfig = {
@@ -11,11 +14,11 @@ window.AppConfig = {
     basePath: BASE_PATH,
     isGithubPages: IS_GITHUB_PAGES,
     pages: {
-        home: `${BASE_PATH}/index.html`,
-        login: `${BASE_PATH}/login.html`,
-        admin: `${BASE_PATH}/admin.html`,
-        error404: `${BASE_PATH}/404.html`,
-        offline: `${BASE_PATH}/offline.html`
+        home: buildPath('index.html'),
+        login: buildPath('login.html'),
+        admin: buildPath('admin.html'),
+        error404: buildPath('404.html'),
+        offline: buildPath('offline.html')
     }
 };
 

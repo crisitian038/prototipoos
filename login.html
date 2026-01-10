@@ -1,791 +1,53 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Red Educativa México - Panel de Administración</title>
+    <title>Red Educativa México - Acceso</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="shortcut icon"
-        href="https://acuerdo286.org/wp-content/uploads/2025/01/cropped-cropped-RED_MEXICO_FINAL-logo-32x32.png">
-        
+    <link rel="shortcut icon" href="https://acuerdo286.org/wp-content/uploads/2025/01/cropped-cropped-RED_MEXICO_FINAL-logo-32x32.png">
+
     <style>
-        /* Palette aligned with inicio.html */
         :root {
             --azul-oscuro: #0a2e5a;
             --azul-medio: #0056a6;
             --azul-claro: #007bff;
             --logo-teal: #27F5DA;
-            --naranja: #27F5DA;
-            --bg: #f6f8fb;
-            --panel: #ffffff;
+            --bg: #f0f4f8;
+            --panel: rgba(255, 255, 255, 0.85); /* Transparencia para el blur */
             --muted: #6b7280;
-            --muted-2: #94a3b8;
-            --header-bg: var(--azul-oscuro);
+            --glass-border: rgba(255, 255, 255, 0.3);
         }
 
-        * {
-            box-sizing: border-box
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            background: linear-gradient(180deg, var(--bg), #eef6f9);
-            color: var(--azul-oscuro);
-            -webkit-font-smoothing: antialiased
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 32px auto;
-            padding: 20px
-        }
-
-        /* layout: main + sidebar */
-        .admin-grid {
-            display: grid;
-            grid-template-columns: 1fr 320px;
-            gap: 20px;
-            align-items: start;
-            min-height: calc(100vh - 200px)
-        }
-
-        .panel {
-            background: var(--panel);
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 20px 40px rgba(2, 24, 63, 0.06);
-            border: 1px solid rgba(2, 24, 63, 0.04)
-        }
-
-        h1 {
-            margin: 0 0 12px;
-            font-size: 1.4rem;
-            color: var(--azul-oscuro)
-        }
-
-        .controls {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-bottom: 12px
-        }
-
-        /* tabs */
-        .tab {
-            padding: 8px 12px;
-            border-radius: 10px;
-            background: transparent;
-            border: 1px solid rgba(10, 46, 90, 0.06);
-            cursor: pointer;
-            color: var(--azul-oscuro);
-            font-weight: 600
-        }
-
-        .tab.active {
-            background: var(--logo-teal);
-            color: #042533;
-            border-color: transparent;
-            box-shadow: 0 8px 20px rgba(39, 245, 218, 0.06)
-        }
-
-        .table-wrap {
-            overflow: auto;
-            margin-top: 12px
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            table-layout: fixed;
-            background: transparent
-        }
-
-        th,
-        td {
-            padding: 10px 10px;
-            border-bottom: 1px solid #eef4f8;
-            text-align: left;
-            font-size: 0.95rem;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap
-        }
-
-        th {
-            background: linear-gradient(180deg, #fbfdfe, #fbfdfe);
-            color: var(--muted);
-            font-weight: 700
-        }
-
-        td.status {
-            font-weight: 700;
-            color: var(--azul-medio)
-        }
-
-        /* column widths to avoid oversized expansion */
-        th:nth-child(1),
-        td:nth-child(1) {
-            width: 120px
-        }
-
-        th:nth-child(2),
-        td:nth-child(2) {
-            width: 160px
-        }
-
-        th:nth-child(6),
-        td:nth-child(6) {
-            width: 160px
-        }
-
-        th:nth-child(7),
-        td:nth-child(7) {
-            width: 360px
-        }
-
-        th:nth-child(8),
-        td:nth-child(8) {
-            width: 110px
-        }
-
-        /* Ampliar espacio para acciones para que los botones no se recorten */
-        th:nth-child(9),
-        td:nth-child(9) {
-            width: 260px;
-            min-width: 200px
-        }
-
-        /* message cell: allow multi-line clamp to avoid blowing row height */
-        td.message {
-            white-space: normal;
-            word-break: break-word;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            max-height: 4.5em;
-            line-height: 1.5
-        }
-
-        /* acciones: permitir wrap y mostrar botones completos */
-        .actions {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            align-items: center
-        }
-
-        .actions .btn {
-            white-space: nowrap;
-            padding: 8px 10px;
-            font-size: 0.9rem
-        }
-
-        td.actions {
-            overflow: visible
-        }
-
-        td.message {
-            cursor: pointer
-        }
-
-        /* Buttons aligned with inicio palette */
-        .btn {
-            padding: 8px 12px;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            font-weight: 700;
-            background: var(--azul-claro);
-            color: #fff
-        }
-
-        .btn.revisar {
-            background: var(--logo-teal);
-            color: #042533
-        }
-
-        .btn.deshabilitar {
-            background: #f3f4f6;
-            color: var(--muted)
-        }
-
-        .copy-btn {
-            padding: 8px 10px;
-            border-radius: 8px;
-            border: none;
-            background: rgba(10, 46, 90, 0.9);
-            color: #fff;
-            cursor: pointer
-        }
-
-        .small {
-            font-size: 0.85rem;
-            color: var(--muted)
-        }
-
-        .topline {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px
-        }
-
-        .note {
-            color: var(--muted);
-            font-size: 0.9rem
-        }
-
-        /* Header styled like inicio */
-        .admin-header {
-            background: var(--panel);
-            border-bottom: 2px solid var(--logo-teal);
-            /* Línea turquesa del index */
-            padding: 12px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 1100;
-        }
-
-        .admin-header img {
-            height: 48px;
-            display: block
-        }
-
-        .admin-header .brand {
-            font-weight: 800;
-            color: var(--azul-oscuro);
-            margin-left: 6px
-        }
-
-        .admin-header .brand small {
-            display: block;
-            font-weight: 600;
-            color: var(--muted);
-            font-size: 0.85rem
-        }
-
-        .admin-header .actions {
-            margin-left: auto;
-            display: flex;
-            gap: 8px
-        }
-
-        .admin-footer {
-            margin-top: 22px;
-            padding: 18px;
-            text-align: center;
-            color: var(--muted);
-            font-size: 0.9rem
-        }
-
-        /* MODIFICACIONES PARA EL GLOSARIO/DETALLES */
-        .sidebar-panel {
-            background: linear-gradient(180deg, var(--panel), #fbfdfe);
-            border-radius: 10px;
-            padding: 18px;
-            box-shadow: 0 12px 30px rgba(2, 24, 63, 0.05);
-            height: fit-content;
-            max-height: 80vh;
-            overflow-y: auto;
-            position: sticky;
-            top: 20px;
-        }
-
-        /* Contenedor del contenido del glosario con scroll */
-        #glossaryContent {
-            max-height: 60vh;
-            overflow-y: auto;
-            padding-right: 5px;
-        }
-
-        /* Personalizar scrollbar para mejor apariencia */
-        #glossaryContent::-webkit-scrollbar,
-        .sidebar-panel::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        #glossaryContent::-webkit-scrollbar-track,
-        .sidebar-panel::-webkit-scrollbar-track {
-            background: rgba(10, 46, 90, 0.05);
-            border-radius: 3px;
-        }
-
-        #glossaryContent::-webkit-scrollbar-thumb,
-        .sidebar-panel::-webkit-scrollbar-thumb {
-            background: var(--logo-teal);
-            border-radius: 3px;
-        }
-
-        /* Ajustar entrada del glosario para mejor presentación */
-        .glossary-entry {
-            margin-bottom: 16px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid rgba(10, 46, 90, 0.08);
-        }
-
-        .glossary-entry:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-        }
-
-        /* Área de mensaje completo en glosario */
-        #g-msg {
-            max-height: 180px;
-            overflow-y: auto;
-            font-size: 0.95rem;
-            color: var(--dark);
-            background: rgba(10, 46, 90, 0.03);
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px solid rgba(10, 46, 90, 0.08);
-            white-space: pre-wrap;
-            word-break: break-word;
-        }
-
-        /* Para pantallas más pequeñas, cambiar a una sola columna */
-        @media (max-width: 1100px) {
-            .admin-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .sidebar-panel {
-                max-height: 400px;
-                position: static;
-                margin-top: 20px;
-            }
-        }
-
-        /* Modal for full message */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.6);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 2200
-        }
-
-        .modal {
-            background: var(--panel);
-            width: 90%;
-            max-width: 760px;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 30px 60px rgba(2, 24, 63, 0.35)
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 14px 18px;
-            background: var(--header-bg);
-            color: #fff
-        }
-
-        .modal-body {
-            padding: 18px;
-            max-height: 60vh;
-            overflow: auto;
-            color: var(--azul-oscuro)
-        }
-
-        /* Dark theme overrides (toggle with `body.dark-theme`) */
-        /* Paleta profesional de azul oscuro para Modo Oscuro */
-        /* Dark theme con colores sólidos basados en tu index.html */
         body.dark-theme {
             --bg: #04152d;
-            /* Color sólido de fondo */
-            --panel: #0a2e5a;
-            /* Color sólido de paneles */
+            --panel: rgba(10, 46, 90, 0.85);
             --azul-oscuro: #ffffff;
-            --azul-medio: #27F5DA;
-            /* Color de acento turquesa */
-            --azul-claro: #0056a6;
-            --logo-teal: #27F5DA;
             --muted: #94a3b8;
-            --header-bg: #0a2e5a;
+            --glass-border: rgba(39, 245, 218, 0.1);
         }
 
-        .theme-btn {
-            background: transparent;
-            border: 1px solid var(--logo-teal);
-            color: var(--logo-teal);
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            transition: all 0.2s ease;
-        }
+        * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
 
-        .theme-btn:hover {
-            background: var(--logo-teal);
-            color: var(--panel);
-        }
-
-        .btn-logout {
-            background: #e11d48;
-            /* Rojo corporativo para salida */
-            color: #fff !important;
-            text-decoration: none;
-            padding: 8px 18px;
-            border-radius: 6px;
-            font-weight: 700;
-            font-size: 0.9rem;
-            transition: opacity 0.2s;
-            border: none;
-        }
-
-        .btn-logout:hover {
-            opacity: 0.9;
-        }
-
-        /* --- Reemplazar o añadir en tu <style> --- */
-
-        /* Botón de tema circular idéntico al front */
-        #themeToggle {
-            background: transparent;
-            border: 1px solid var(--logo-teal);
-            color: #0056a6;
-            /* Icono blanco como pediste */
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
-        }
-
-        #themeToggle:hover {
-            background: var(--logo-teal);
-            color: var(--panel);
-        }
-
-        /* Forzar colores sólidos del index.html en modo oscuro */
-        body.dark-theme {
-            --bg: #04152d !important;
-            /* Fondo sólido del front */
-            --panel: #0a2e5a !important;
-            /* Paneles sólidos del front */
-            background: #04152d !important;
-        }
-
-        body.dark-theme .admin-header {
-            background: #0a2e5a;
-            border-bottom: 2px solid var(--logo-teal);
-        }
-
-        /* Tabla con colores planos */
-        body.dark-theme table th {
-            background: #061b3d;
-            /* Un tono ligeramente distinto pero sólido */
-            color: var(--logo-teal);
-        }
-
-        body.dark-theme table td {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            color: #e2e8f0;
-        }
-
-        /* Paneles sin efectos de degradado */
-        body.dark-theme .panel,
-        body.dark-theme .sidebar-panel,
-        body.dark-theme .admin-header {
-            background: var(--panel);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        body.dark-theme #g-msg {
-            background: #04152d;
-            border-color: rgba(39, 245, 218, 0.3);
-        }
-
-        /* ========== ESTILOS PARA EL LOGIN ========== */
-  .login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 15px; /* Reducimos un poco el padding para ganar espacio en móvil */
-    background: linear-gradient(135deg, rgba(10, 46, 90, 0.9), rgba(5, 88, 122, 0.8));
-}
-
-       .login-card {
-    background: var(--panel);
-    border-radius: 16px;
-    padding: 30px 20px; /* Reducido de 40px para que quepa mejor en pantallas chicas */
-    box-shadow: 0 25px 50px rgba(2, 24, 63, 0.2);
-    width: 100%;
-    max-width: 420px;
-    border: 1px solid rgba(2, 24, 63, 0.1);
-}
-        .login-logo {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .login-logo img {
-            height: 60px;
-            margin-bottom: 15px;
-        }
-
-        .login-logo h2 {
-            color: var(--azul-oscuro);
+        body {
             margin: 0;
-            font-size: 1.5rem;
-        }
-
-        .login-logo p {
-            color: var(--muted);
-            font-size: 0.9rem;
-            margin-top: 5px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--azul-oscuro);
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid var(--gris-medio);
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--logo-teal);
-            box-shadow: 0 0 0 3px rgba(39, 245, 218, 0.1);
-        }
-
-        /* Contenedor especial para la contraseña */
-        .password-container {
-            position: relative;
-        }
-
-        .password-toggle {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: var(--muted);
-            cursor: pointer;
-            padding: 5px;
-            font-size: 1.1rem;
-            transition: color 0.3s;
-        }
-
-        .password-toggle:hover {
-            color: var(--azul-oscuro);
-        }
-
-        .password-toggle:focus {
-            outline: none;
-            color: var(--logo-teal);
-        }
-
-        .login-btn {
-            width: 100%;
-            padding: 12px;
-            background: var(--logo-teal);
-            color: #042533;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 10px;
-        }
-
-        .login-btn:hover {
-            background: #1de3c9;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(39, 245, 218, 0.2);
-        }
-
-        .login-btn:active {
-            transform: translateY(0);
-        }
-
-        .login-links {
-            text-align: center;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(10, 46, 90, 0.1);
+            min-height: 100vh;
             display: flex;
-            flex-direction: column;
-            gap: 10px;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg);
+            /* Círculos decorativos de fondo para resaltar el blur */
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(39, 245, 218, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(0, 86, 166, 0.15) 0%, transparent 40%);
+            overflow-x: hidden;
         }
 
-        .login-links a {
-            color: var(--azul-claro);
-            text-decoration: none;
-            font-size: 0.9rem;
-        }
-
-        .login-links a:hover {
-            text-decoration: underline;
-        }
-
-        .error-message {
-            background: #fee;
-            color: #c00;
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 15px;
-            font-size: 0.9rem;
-            display: none;
-        }
-
-        .error-message.show {
-            display: block;
-        }
-
-        .success-message {
-            background: #dfd;
-            color: #070;
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 15px;
-            font-size: 0.9rem;
-            display: none;
-        }
-
-        .success-message.show {
-            display: block;
-        }
-
-        /* Pestañas de login/registro */
-        .auth-tabs {
-            display: flex;
-            margin-bottom: 20px;
-            border-bottom: 1px solid rgba(10, 46, 90, 0.1);
-        }
-
-        .auth-tab {
-            flex: 1;
-            padding: 12px;
-            background: none;
-            border: none;
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--muted);
-            cursor: pointer;
-            text-align: center;
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .auth-tab.active {
-            color: var(--azul-oscuro);
-        }
-
-        .auth-tab.active::after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: var(--logo-teal);
-            border-radius: 3px 3px 0 0;
-        }
-
-        .auth-form {
-            display: none;
-        }
-
-        .auth-form.active {
-            display: block;
-        }
-
-        /* Dark theme para login */
-        body.dark-theme .login-container {
-            background: linear-gradient(135deg, #04152d, #061b3d);
-        }
-
-        body.dark-theme .login-card {
-            background: var(--panel);
-            border-color: rgba(39, 245, 218, 0.1);
-        }
-
-        body.dark-theme .login-logo h2 {
-            color: #ffffff;
-        }
-
-        body.dark-theme .form-group label {
-            color: #e2e8f0;
-        }
-
-        body.dark-theme .form-group input {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-        }
-
-        body.dark-theme .form-group input:focus {
-            border-color: var(--logo-teal);
-            box-shadow: 0 0 0 3px rgba(39, 245, 218, 0.2);
-        }
-
-        body.dark-theme .password-toggle {
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        body.dark-theme .password-toggle:hover {
-            color: var(--logo-teal);
-        }
-
-        body.dark-theme .login-links {
-            border-top-color: rgba(255, 255, 255, 0.1);
-        }
-
-        body.dark-theme .login-links a {
-            color: var(--logo-teal);
-        }
-
-        body.dark-theme .auth-tabs {
-            border-bottom-color: rgba(255, 255, 255, 0.1);
-        }
-
-        body.dark-theme .auth-tab {
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        body.dark-theme .auth-tab.active {
-            color: #ffffff;
-        }
-
-        /* Estilos para el botón de volver */
+        /* --- BOTÓN VOLVER --- */
         .back-home {
-            position: absolute;
+            position: fixed;
             top: 20px;
             left: 20px;
             text-decoration: none;
@@ -794,64 +56,172 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 10px 18px;
+            padding: 10px 20px;
             background: var(--panel);
+            backdrop-filter: blur(10px);
             border-radius: 50px;
-            /* Bordes más redondeados para un look moderno */
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             z-index: 1000;
-            border: 1px solid rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
         }
 
-        /* HOVER EN TEMA CLARO: Fondo turquesa, texto azul oscuro */
         .back-home:hover {
-            transform: translateY(-2px);
             background: var(--logo-teal);
-            color: var(--azul-oscuro);
-            box-shadow: 0 6px 20px rgba(39, 245, 218, 0.3);
+            color: #042533;
+            transform: translateX(5px);
         }
 
-        /* --- AJUSTES PARA TEMA OSCURO --- */
-        body.dark-theme .back-home {
-            background: #1e293b;
+        /* --- CONTENEDOR PRINCIPAL SPLIT --- */
+        .login-wrapper {
+            display: flex;
+            width: 100%;
+            max-width: 1000px;
+            min-height: 600px;
+            margin: 20px;
+            background: var(--panel);
+            backdrop-filter: blur(15px); /* El efecto de desenfoque */
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        /* LADO IZQUIERDO: IMAGEN */
+        .login-visual {
+            flex: 1.2;
+            background: linear-gradient(rgba(10, 46, 90, 0.7), rgba(10, 46, 90, 0.7)), 
+                        url('https://images.unsplash.com/photo-1523050335192-ce12554e9f9a?q=80&w=1470&auto=format&fit=crop'); /* Imagen educativa */
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            color: white;
+            text-align: center;
+        }
+
+        .visual-content h2 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
             color: var(--logo-teal);
-            border-color: rgba(255, 255, 255, 0.1);
         }
 
-        /* HOVER EN TEMA OSCURO: Fondo turquesa, texto azul muy oscuro */
-        body.dark-theme .back-home:hover {
-            background: var(--logo-teal);
-            color: #05162b;
-            /* Azul casi negro para máximo contraste sobre el turquesa */
-            box-shadow: 0 6px 20px rgba(39, 245, 218, 0.4);
+        .visual-content p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            opacity: 0.9;
         }
-        /* --- NUEVOS AJUSTES RESPONSIVOS --- */
-@media (max-width: 480px) {
-    .back-home {
-        top: 10px;
-        left: 10px;
-        padding: 8px 12px;
-        font-size: 0.8rem;
-    }
 
-    .login-logo img {
-        height: 50px; /* Logo un poco más pequeño */
-    }
+        /* LADO DERECHO: FORMULARIO */
+        .login-section {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
 
-    .login-logo h2 {
-        font-size: 1.2rem; /* Título más pequeño */
-    }
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
 
-    .auth-tab {
-        font-size: 0.9rem; /* Pestañas ajustadas */
-        padding: 10px 5px;
-    }
+        .login-header img {
+            height: 70px;
+            margin-bottom: 10px;
+        }
 
-    .login-card {
-        padding: 25px 15px;
-    }
-}
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 25px;
+            background: rgba(0,0,0,0.05);
+            border-radius: 12px;
+            padding: 5px;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--muted);
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .auth-tab.active {
+            background: white;
+            color: var(--azul-oscuro);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        /* FORMULARIOS */
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--azul-oscuro); font-size: 0.9rem; }
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 10px;
+            background: rgba(255,255,255,0.5);
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--logo-teal);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(39, 245, 218, 0.15);
+        }
+
+        .password-container { position: relative; }
+        .password-toggle {
+            position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+            background: none; border: none; color: var(--muted); cursor: pointer;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--azul-oscuro);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            background: var(--azul-medio);
+            transform: translateY(-2px);
+        }
+
+        .error-message, .success-message {
+            padding: 12px; border-radius: 8px; margin-bottom: 15px; font-size: 0.85rem; display: none;
+        }
+        .error-message.show { display: block; background: #fee2e2; color: #991b1b; }
+        .success-message.show { display: block; background: #dcfce7; color: #166534; }
+
+        .auth-form { display: none; }
+        .auth-form.active { display: block; }
+
+        /* MODO OSCURO AJUSTES */
+        body.dark-theme .auth-tab.active { background: var(--azul-oscuro); color: white; }
+        body.dark-theme .form-group input { background: rgba(0,0,0,0.2); color: white; border-color: rgba(255,255,255,0.1); }
+
+        /* RESPONSIVE */
+        @media (max-width: 850px) {
+            .login-visual { display: none; }
+            .login-wrapper { max-width: 450px; }
+        }
     </style>
 </head>
 
@@ -860,101 +230,66 @@
         <i class="fas fa-arrow-left"></i>
         <span>Volver al Inicio</span>
     </a>
-    <!-- Página de Login -->
-    <div class="login-container">
-        <div class="login-card">
-            <div class="login-logo">
-                <img src="logo.png" alt="Red Educativa México">
-                <h2>Panel de Administración</h2>
-                <p>Acceso restringido al personal autorizado</p>
+
+    <div class="login-wrapper">
+        <div class="login-visual">
+            <div class="visual-content">
+                <i class="fas fa-graduation-cap" style="font-size: 4rem; margin-bottom: 20px; color: var(--logo-teal);"></i>
+                <h2>Bienvenido de nuevo</h2>
+                <p>Accede al panel administrativo de Red Educativa México para gestionar contenidos y procesos académicos.</p>
+            </div>
+        </div>
+
+        <div class="login-section">
+            <div class="login-header">
+                <img src="https://acuerdo286.org/wp-content/uploads/2025/01/cropped-cropped-RED_MEXICO_FINAL-logo-32x32.png" alt="Logo">
+                <h3 style="margin:0; color: var(--azul-oscuro);">Panel Admin</h3>
             </div>
 
-            <!-- Mensajes de error/éxito -->
-            <div id="loginError" class="error-message">
-                Credenciales incorrectas. Por favor, intente nuevamente.
-            </div>
+            <div id="loginError" class="error-message">Credenciales incorrectas.</div>
+            <div id="registerSuccess" class="success-message">¡Registro exitoso! Ya puedes entrar.</div>
 
-            <div id="registerSuccess" class="success-message">
-                ¡Usuario registrado exitosamente! Ahora puede iniciar sesión.
-            </div>
-
-            <!-- Pestañas Login/Registro -->
             <div class="auth-tabs">
-                <button class="auth-tab active" id="loginTab">Iniciar Sesión</button>
-                <button class="auth-tab" id="registerTab">Registrarse</button>
+                <button class="auth-tab active" id="loginTab">Ingresar</button>
+                <button class="auth-tab" id="registerTab">Nuevo Registro</button>
             </div>
 
-            <!-- Formulario de Login -->
             <form id="loginForm" class="auth-form active">
                 <div class="form-group">
-                    <label for="username">Usuario</label>
-                    <input type="text" id="username" name="username" placeholder="Ingrese su usuario" required>
+                    <label>Usuario</label>
+                    <input type="text" id="username" placeholder="Tu usuario" required>
                 </div>
-
                 <div class="form-group">
-                    <label for="password">Contraseña</label>
+                    <label>Contraseña</label>
                     <div class="password-container">
-                        <input type="password" id="password" name="password" placeholder="Ingrese su contraseña"
-                            required>
-                        <button type="button" class="password-toggle" id="togglePassword"
-                            aria-label="Mostrar contraseña">
+                        <input type="password" id="password" placeholder="••••••••" required>
+                        <button type="button" class="password-toggle" id="togglePassword">
                             <i class="fas fa-eye"></i>
                         </button>
                     </div>
                 </div>
-
-                <button type="submit" class="login-btn">
-                    <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
-                </button>
+                <button type="submit" class="login-btn">Entrar al Panel</button>
             </form>
 
-            <!-- Formulario de Registro -->
             <form id="registerForm" class="auth-form">
                 <div class="form-group">
-                    <label for="regUsername">Nombre de usuario</label>
-                    <input type="text" id="regUsername" name="regUsername" placeholder="Elija un nombre de usuario"
-                        required>
+                    <label>Nuevo Usuario</label>
+                    <input type="text" id="regUsername" placeholder="Nombre de usuario" required>
                 </div>
-
                 <div class="form-group">
-                    <label for="regPassword">Contraseña</label>
-                    <div class="password-container">
-                        <input type="password" id="regPassword" name="regPassword"
-                            placeholder="Cree una contraseña segura" required>
-                        <button type="button" class="password-toggle" id="toggleRegPassword"
-                            aria-label="Mostrar contraseña">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </div>
+                    <label>Contraseña</label>
+                    <input type="password" id="regPassword" placeholder="Crea una clave" required>
                 </div>
-
                 <div class="form-group">
-                    <label for="confirmPassword">Confirmar contraseña</label>
-                    <div class="password-container">
-                        <input type="password" id="confirmPassword" name="confirmPassword"
-                            placeholder="Repita la contraseña" required>
-                        <button type="button" class="password-toggle" id="toggleConfirmPassword"
-                            aria-label="Mostrar contraseña">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </div>
+                    <label>Repetir Contraseña</label>
+                    <input type="password" id="confirmPassword" placeholder="Confirma tu clave" required>
                 </div>
-
-                <div class="form-group">
-                    <label for="regEmail">Correo electrónico (opcional)</label>
-                    <input type="email" id="regEmail" name="regEmail" placeholder="email@ejemplo.com">
-                </div>
-
-                <button type="submit" class="login-btn">
-                    <i class="fas fa-user-plus"></i> Registrarse
-                </button>
+                <button type="submit" class="login-btn" style="background: var(--logo-teal); color: #042533;">Registrarme</button>
             </form>
 
-            <div class="login-links">
-                <p style="font-size: 0.85rem; color: var(--muted); text-align: center;">
-                    Credenciales por defecto: admin / admin123
-                </p>
-            </div>
+            <p style="text-align: center; font-size: 0.75rem; color: var(--muted); margin-top: 20px;">
+                Admin: <b>admin</b> / Clave: <b>admin123</b>
+            </p>
         </div>
     </div>
 
@@ -1084,9 +419,17 @@
                             // LOGIN EXITOSO
                             loginError.classList.remove('show');
 
+                            const sessionData = {
+                                username: user.username,
+                                role: user.role || 'user',  // ← IMPORTANTE: Guardar el rol
+                                fullName: user.fullName || user.username,
+                                email: user.email || '',
+                                loggedInAt: new Date().toISOString()
+                            };
+
                             // Guardar sesión
-                            localStorage.setItem('adminLoggedIn', 'true');
-                            localStorage.setItem('adminUser', user.username);
+                            localStorage.setItem('currentUser', JSON.stringify(sessionData));
+                            localStorage.setItem('isAuthenticated', 'true');
 
                             // REDIRECCIÓN REAL: Aquí se detiene el código y cambia de página
                             window.location.href = './admin.html';

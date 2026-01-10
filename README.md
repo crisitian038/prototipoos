@@ -269,7 +269,7 @@ Para problemas relacionados con las nuevas funciones.
 2. Revisa la consola de navegador para errores especificos.
 
 
-<h1 aling="center">VERSION 1.3 </h1>
+<h1 align="center">VERSION 1.3 </h1>
 
 # Nuevas caracteristicas y mejoras.
 ## Sistema de inscripciones.
@@ -327,4 +327,127 @@ graph TD
 | **Gestion de inscritos** | reducción de reportes mensuales | Alto |
 
 
-<h1 aling="center">VERSION 1.4 </h1>
+<h1 align="center">VERSION 1.5</h1>
+
+# Optemizacion y correccion de errores 
+> En esta actualizacion se sentro en la estabilidad de los prototipos resolviendo conflictos criticos en la persistencia de datos y mejorando  la integridad visual, del panel administrador 
+
+## Correccion en el sistema de suscripciones 
+Se detectaron y solucionaron problemas en el ciclo de vida del registro de inscripciones los cuales afectaban la base de datos:
+- **Sincronizacion de PouchDB** Se cirrigio el conflicto de guardado que en ocaciones bloqueba el registro de todo lo demas en la base de datos 
+- **Validacion de campos** Se mejoro la captura de datos en el formulario de inscipcion, para asegurar que contenga la informacion necesaria antes de ser enviada a el almacenamiento local 
+
+## Mejoras en la vista de administrador
+Se realizo un reestructuracion en la logica de renderizado del panel para evitar errores de visualizacion.
+- **Reparacion de tablas** Se soluciono el problema en el script que carga que causaba el conflicto entre tablas ocacionando que no se visualizaran dichas tablas.
+- **Independencia de modulos** A hora cada seccion administrativa carga de forma independiente. si un registro tiene un error de formato, el resto de la informacion sigue siendo visible y funcional. 
+- **Depuracio  UI** Limpieza de elementos que se visualizan que se ensiman o no respondian correctamente tales como la navbar con la sidebar. 
+
+# Detalles tecnicos de la version 1.5
+
+## Logica de renderizado seguro 
+Se implementaron bloques `try-catch` en la lectura de base de datos para garantizar que el panel no se rompa.
+
+```javascript
+async function loadAdminTables() {
+    try {
+        await loadInscripciones();
+    } catch (error) {
+        console.error("Error al cargar inscripciones:", error);
+        showTableErrorMessage('inscriptions-container');
+    }
+    
+    await loadContacts(); 
+    await loadUsers();
+}
+```
+
+# Impacto de Mejoras
+
+| Características | Solucion aplicada | Estado |
+| :--- | :--- | :---: |
+| **Bloqueo de tablas generales** | Renderizado Modular indeoendiente | Corregido |
+| **Fallo en registro de inscipciones** | Optimizacion de promesas en pouchdb | Corregido |
+| **Incosistencia de Datos** | Limpieza de esquemas en el almacenamiento | Corregido |
+
+
+# flujo de correccion de datos
+
+```mermaid
+graph LR
+    A[Usuario se inscribe] --> B{Validación de Datos}
+    B -- Éxito --> C[Almacenamiento Seguro PouchDB]
+    B -- Error --> D[Aviso al Usuario]
+    C --> E[Panel Admin]
+    E --> F[Carga Tabla Inscritos]
+    E --> G[Carga Tabla Contactos]
+    F -- Si falla --> H[Muestra Error Local y sigue]
+    G -- Si falla --> I[Muestra Error Local y sigue]
+```
+
+
+<h1 align="center">VERSION 1.7</h1>
+ 
+# Rediseño de interfaz y Reportes 
+> En esta version nos enfocamos en la experiencia de usuario (UX) y la identificacion visual, renovando los puntos criticos de interaccion y añadiendo capacidades de reportes 
+
+## esportaciones PDF 
+Se han implementado una de las funciones mas escenciales para la  gestion administrativa 
+- **Reportes Dinamicos** ahora es posible exportar los listado de comtactos, usuarios y inscripciones directamente a pdf.
+- **Formato profecional** los documentos generados incluyen el membrete de red educativa Mexico, tablas organizadas y fechas de generacion, ideales para impresion de archivos fisicos 
+
+## rediseño visual (UI/UX)
+se realizo una actualizacion estetica para mejorar la legibilidad y modernidad del sitio 
+- **Nuevo login** la pantalla de acceso fue rediseñada para ser mas limpia y segura con mejores validaciones visuales y un estilo minimalista 
+-- **panel de administracion 3.0**  - layout optimizado para aprovechar mejor el espacio de la pantalla 
+  - icnonografia actualizada y paleta de colores corregidos para reducir la fatiga visual. 
+  - tablas de datos mas fluidas y responsivas. 
+- **ajustes de diseñogeneral** se corrigieron detalles de espaciado (padding/margin), tipografias y sombras en toda la plataforma, para un acabado mas pulido
+
+# Detalles tecnicos de la version 1.7
+## implementacion de la exportacion 
+> se integro logica de renderizado que convierte los datos de pouchdb en estructuras listas en pdf.
+
+```javascript
+// Estructura lógica para la generación de reportes
+async function exportToPDF(data, title) {
+    const doc = new PDFDocument();
+    doc.header('Red Educativa México - Reporte Oficial');
+    doc.table(data); // Renderizado de tablas desde la BD local
+    doc.save(`${title}_${Date.now()}.pdf`);
+}
+```
+
+# comparativas visuales 
+
+| Modulo | Antes | Ahora 1.7 |
+| :--- | :--- | :---: |
+| **Login** | funcional basico | interfaz moderna pero minimalista |
+| **Admin Panel** | tablas densas y rigidas  | diseño fluido y gestion de espacios |
+| **Reportes** | solo visualizacion y esportar en csv | EXportacion e pdf |
+| **Estilos** | Variables estandar | diseño premium corregido |
+
+# Flujo de generacion de reportes 
+
+```mermaid
+graph TD
+    A[Administrador] --> B[Selecciona Tabla]
+    B --> C{Formato de Salida}
+    C -- PDF --> D[Generación de documento formal]
+    C -- CSV --> E[Generación de hoja de cálculo]
+    D --> F[Descarga Automática]
+    E --> F
+```
+  
+  # guia de estilos actualizados 
+  - colores primarios actualizados para cumplir estandares de accesibilidad 
+  - componentes: se entandarizaron los botones y campos de entrada, login y administrador para mantener coherencia visual en todo el proyecto 
+
+<h1 align="center">VERSION 1.8</h1>
+
+# se hizo reiseño a el apartado de administrador, login, pantalla de offline y pantalla de error 
+
+<h1 align="center">VERSION 2.0</h1>
+
+# quedo establecido todo el resieño de la web 
+
