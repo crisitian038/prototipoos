@@ -7,7 +7,7 @@
 # Descripcion del proyecto. 
 Red Educativa Mexico es una plataforma web integral para servicos educativos, especificamente enfocada en la evaluacion ycertificacion  de competencias bajo el acuerdo 286
 de la sep, el sistema permite explorar carreras, solicitar informacion, gestionar contactos/dudas mientras que el administrador gestiona los registros desdeun panel.
-# Caracteristicas prncipales. 
+# Caracteristicas principales. 
 ## Para usuarios. 
 > Pagina principal(index.html).
 - Sitio web responsivo con diseño moderno y tema claro y oscuro.
@@ -443,11 +443,16 @@ graph TD
   - colores primarios actualizados para cumplir estandares de accesibilidad 
   - componentes: se entandarizaron los botones y campos de entrada, login y administrador para mantener coherencia visual en todo el proyecto 
 
-<h1 align="center">VERSION 1.8</h1>
+<h1 align="center">VERSION 1.9</h1>
 
-# se hizo reiseño a el apartado de administrador, login, pantalla de offline y pantalla de error 
+# Rediseño de Interfaces 
+> La web alcanzo la madures visual en esta version, he reconstruido por completo la interfaz de pagina para ofrecer una mejor experiencia de usuario, alineada con la identidad visual de la empresa. 
 
-<h1 align="center">VERSION 2.0</h1>
+## Transformacion de la interfaz de usuario(UI)
+se ha remplazado el diseño anterior por una arquitectura visual moderna, limpia y de alto impacto 
 
-# quedo establecido todo el resieño de la web 
+- **Hero section dinammico** Rediseño del area principal con mejoras llamdas a la accion (CTA) y una jerarquia visual y clara.
+- **Navegacion fluida** El menu y los elemtos de interfaz 
 
+se realizo cambio en el diseño sumado al cambio en las cardas de inicio en las cuales se ha cambiado la forma en que se ven para las noticias/eventos y carreras destacadas, esto con el fin de poder enganchar al usuario al ver evento o noticias importantes en los que se muestra momentos importantes en los que fueron parte
+sumado al rediseño de la web y el cambio de colores tales como vino y un poco de dorado dandole una vista similar a la de gobierno pero claro sin que pareciera que esta pagina es parte de ellos 
