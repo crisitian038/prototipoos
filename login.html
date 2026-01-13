@@ -11,10 +11,10 @@
 
     <style>
         :root {
-            --azul-oscuro: #0a2e5a;
-            --azul-medio: #0056a6;
-            --azul-claro: #007bff;
-            --logo-teal: #27F5DA;
+            --azul-oscuro: #5A0C28;
+            --azul-medio: #9D2449;
+            --azul-claro: #B52E5C;
+            --logo-teal: #D4AF37;
             --bg: #f0f4f8;
             --panel: rgba(255, 255, 255, 0.85); /* Transparencia para el blur */
             --muted: #6b7280;
@@ -23,7 +23,7 @@
 
         body.dark-theme {
             --bg: #04152d;
-            --panel: rgba(10, 46, 90, 0.85);
+            --panel: rgba(139, 30, 63, 0.1);
             --azul-oscuro: #ffffff;
             --muted: #94a3b8;
             --glass-border: rgba(39, 245, 218, 0.1);
@@ -40,8 +40,8 @@
             background: var(--bg);
             /* Círculos decorativos de fondo para resaltar el blur */
             background-image: 
-                radial-gradient(circle at 10% 20%, rgba(39, 245, 218, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(0, 86, 166, 0.15) 0%, transparent 40%);
+                radial-gradient(circle at 10% 20%, rgba(245, 39, 39, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(166, 0, 0, 0.15) 0%, transparent 40%);
             overflow-x: hidden;
         }
 
@@ -91,7 +91,7 @@
         /* LADO IZQUIERDO: IMAGEN */
         .login-visual {
             flex: 1.2;
-            background: linear-gradient(rgba(10, 46, 90, 0.7), rgba(10, 46, 90, 0.7)), 
+            background: linear-gradient(rgba(90, 10, 10, 0.7), rgba(90, 10, 10, 0.7)), 
                         url('https://images.unsplash.com/photo-1523050335192-ce12554e9f9a?q=80&w=1470&auto=format&fit=crop'); /* Imagen educativa */
             background-size: cover;
             background-position: center;
@@ -177,7 +177,7 @@
             outline: none;
             border-color: var(--logo-teal);
             background: white;
-            box-shadow: 0 0 0 4px rgba(39, 245, 218, 0.15);
+            box-shadow: 0 0 0 4px rgba(245, 39, 39, 0.15);
         }
 
         .password-container { position: relative; }

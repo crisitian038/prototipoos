@@ -8,19 +8,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="shortcut icon"
         href="https://acuerdo286.org/wp-content/uploads/2025/01/cropped-cropped-RED_MEXICO_FINAL-logo-32x32.png">
-    
+     <link rel="shortcut icon"
+        href="https://acuerdo286.org/wp-content/uploads/2025/01/cropped-cropped-RED_MEXICO_FINAL-logo-32x32.png">
     <style>
         /* Palette aligned with your project */
         :root {
-            --azul-oscuro: #0a2e5a;
-            --azul-medio: #0056a6;
-            --azul-claro: #007bff;
-            --logo-teal: #27F5DA;
-            --naranja: #27F5DA;
-            --bg: #f6f8fb;
+            --azul-oscuro: #5A0C28;
+            --azul-medio: #9D2449;
+            --azul-claro: #B52E5C;
+            --logo-teal: #D4AF37;
+            --naranja: #D4AF37;
+            --bg: #fbf6f6;
             --panel: #ffffff;
-            --muted: #6b7280;
-            --muted-2: #94a3b8;
+            --muted: #806b6b;
+            --muted-2: #b89494;
         }
 
         * {
@@ -38,8 +39,8 @@
 
         body {
             background: linear-gradient(  135deg,
-        #f7fbff 0%,
-        #eef6ff 50%,
+        #fff7f7 0%,
+        #ffeeee 50%,
         #ffffff 100%);
             color: var(--azul-oscuro);
             min-height: 100vh;
@@ -65,8 +66,8 @@
             height: min(500px, 80vw);
   background: linear-gradient(
         135deg,
-        rgba(39, 245, 218, 0.35),
-        rgba(0, 86, 166, 0.18)
+        rgba(245, 39, 39, 0.35),
+        rgba(166, 0, 0, 0.18)
     );
                 top: -20%;
             right: -10%;
@@ -77,8 +78,8 @@
             height: min(400px, 70vw);
 background: linear-gradient(
         135deg,
-        rgba(0, 86, 166, 0.25),
-        rgba(10, 46, 90, 0.12)
+        rgba(166, 0, 0, 0.25),
+        rgba(90, 10, 10, 0.12)
     );            bottom: -15%;
             left: -10%;
         }
@@ -91,8 +92,8 @@ background: linear-gradient(
             bottom: 0;
             z-index: -2;
             background-image: 
-                radial-gradient(circle at 20% 80%, rgba(39, 245, 218, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(10, 46, 90, 0.03) 0%, transparent 50%);
+                radial-gradient(circle at 20% 80%, rgba(245, 39, 39, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(90, 10, 10, 0.03) 0%, transparent 50%);
             pointer-events: none;
         }
 
@@ -102,7 +103,7 @@ background: linear-gradient(
             border-radius: 20px;
             padding: clamp(30px, 5vw, 50px) clamp(20px, 4vw, 40px);
             box-shadow: 
-                0 15px 40px rgba(2, 24, 63, 0.1),
+                0 15px 40px rgba(63, 2, 2, 0.1),
                 inset 0 1px 0 rgba(255, 255, 255, 0.9);
             border: 1px solid rgba(255, 255, 255, 0.4);
             backdrop-filter: none;
@@ -128,7 +129,7 @@ background: linear-gradient(
         .offline-header {
             margin-bottom: clamp(20px, 4vw, 30px);
             padding-bottom: clamp(15px, 3vw, 20px);
-            border-bottom: 2px solid rgba(10, 46, 90, 0.08);
+            border-bottom: 2px solid rgba(90, 10, 10, 0.08);
         }
 
         .logo-offline {
@@ -279,24 +280,24 @@ background: linear-gradient(
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--logo-teal) 0%, #1ed9c1 100%);
+            background: linear-gradient(135deg, var(--logo-teal) 0%, #d91e1e 100%);
             color: var(--azul-oscuro);
-            box-shadow: 0 4px 15px rgba(39, 245, 218, 0.25);
+            box-shadow: 0 4px 15px rgba(245, 39, 39, 0.25);
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(39, 245, 218, 0.35);
+            box-shadow: 0 6px 20px rgba(245, 39, 39, 0.35);
         }
 
         .btn-secondary {
-            background: rgba(10, 46, 90, 0.1);
+            background: rgba(90, 10, 10, 0.1);
             color: var(--azul-oscuro);
-            border: 1px solid rgba(10, 46, 90, 0.2);
+            border: 1px solid rgba(90, 10, 10, 0.2);
         }
 
         .btn-secondary:hover {
-            background: rgba(10, 46, 90, 0.15);
+            background: rgba(90, 10, 10, 0.15);
             transform: translateY(-2px);
         }
 
@@ -304,7 +305,7 @@ background: linear-gradient(
         .suggestions {
             margin-top: clamp(25px, 5vw, 40px);
             padding-top: clamp(15px, 3vw, 20px);
-            border-top: 1px solid rgba(10, 46, 90, 0.08);
+            border-top: 1px solid rgba(90, 10, 10, 0.08);
         }
 
         .suggestions h3 {
@@ -343,7 +344,7 @@ background: linear-gradient(
         .offline-footer {
             margin-top: clamp(25px, 5vw, 40px);
             padding-top: clamp(15px, 3vw, 20px);
-            border-top: 1px solid rgba(10, 46, 90, 0.08);
+            border-top: 1px solid rgba(90, 10, 10, 0.08);
             color: var(--muted);
             font-size: clamp(0.8rem, 2.2vw, 0.9rem);
         }
@@ -368,15 +369,15 @@ background: linear-gradient(
         /* Dark theme */
         @media (prefers-color-scheme: dark) {
             body {
-                background: linear-gradient(135deg, #04152d 0%, #0a1e3a 100%);
+                background: linear-gradient(135deg, #2d0404 0%, #3a0a0a 100%);
             }
 
             .offline-container {
-                background: rgba(10, 46, 90, 0.85);
-                border: 1px solid rgba(39, 245, 218, 0.15);
+                background: rgba(90, 10, 10, 0.85);
+                border: 1px solid rgba(245, 39, 39, 0.15);
                 box-shadow: 
                     0 15px 40px rgba(0, 0, 0, 0.3),
-                    inset 0 1px 0 rgba(39, 245, 218, 0.1);
+                    inset 0 1px 0 rgba(245, 39, 39, 0.1);
             }
 
             .brand {
